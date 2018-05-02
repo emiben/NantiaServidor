@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.nantia.repo.UsuarioRepository;
 
 @SpringBootApplication
-public class NantiaServidorApplication implements CommandLineRunner{
+public class NantiaServidorApplication{
 
 	@Autowired
 	UsuarioRepository repository;
@@ -17,9 +17,4 @@ public class NantiaServidorApplication implements CommandLineRunner{
 		SpringApplication.run(NantiaServidorApplication.class, args);
 	}
 
-	@Override
-	public void run(String... arg0) throws Exception {
-		// clear all record if existed before do the tutorial with new data 
-		repository.deleteAll();
-	}
 }
