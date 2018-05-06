@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.nantia.model.Usuario;
 import com.nantia.service.IUsuarioService;
@@ -54,7 +52,7 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario, UriComponentsBuilder builder) {
+	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
 		LOG.info("creating new user: {}", usuario);
 
         if (usuarioService.existe(usuario)){
@@ -64,8 +62,6 @@ public class UsuarioController {
 
         Usuario newUsuario = usuarioService.addUsuario(usuario);
 
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.setLocation(builder.path("/user/{id}").buildAndExpand(newUsuario.getId()).toUri());
         return new ResponseEntity<Usuario>(newUsuario, HttpStatus.CREATED);
 	}
 	
