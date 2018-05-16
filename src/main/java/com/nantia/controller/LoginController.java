@@ -14,6 +14,9 @@ import com.nantia.model.Login;
 import com.nantia.model.Usuario;
 import com.nantia.service.ILoginService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/login")
 public class LoginController {
