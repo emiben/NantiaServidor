@@ -10,6 +10,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 	Usuario findByUsuario(String usuario);
 	List<Usuario> findByNombre(String nombre);
 	List<Usuario> findByApellido(String apellido);
-	List<Usuario> findByRol(String rol);
+	List<Usuario> findByRol(int rol);
 	Usuario findByUsuarioAndContrasenia(String nombreUsuario, String contrasenia);
 }
