@@ -1,6 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,94 +11,152 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Clientes")
+@Table(name = "clientes")
 public class Cliente implements Serializable{
 	
 	private static final long serialVersionUID = -3009157732242241606L;
 	
-	@Column(name = "Nombre")
-	private String nombre;
-	
-	@Column(name = "Direccion")
-	private String direccion;
-
-	@Column(name = "Apellido")
-	private String apellido;
-	
-	@Column(name = "Telefono")
-	private String telefono;
-	
-	@Column(name = "Codigo", unique=true)
-	private int codigo;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@Column(name = "idDocumento")
+	private int idDocumento;
+	
+	@Column(name = "tipoDocumento")
+	private String tipoDocumento;
+	
+	@Column(name = "descripcion")
+	private String descripcion;
+
+	@Column(name = "saldo")
+	private float saldo;
+	
+	@Column(name = "envases")
+	private int envases;
+	
+	@Column(name = "idLista")
+	private int idLista;
+	
+	@Column(name = "idDirecciones")
+	private int idDirecciones;
+	
+	@Column(name = "fechaAlta")
+	private Date fechaAlta;
+	
+	@Column(name = "mail")
+	private String mail;
+	
+	@Column(name = "activo")
+	private Boolean activo;
 
 	protected Cliente() {
 	}
 	
-	public Cliente(String nombre, String direccion, String apellido, String telefono, int codigo) {
-		this.nombre = nombre;
-		this.direccion = direccion;
-		this.apellido = apellido;		
-		this.telefono = telefono;
-		this.codigo = codigo;
+	public Cliente(int idDocumento, String tipoDocumento, String descripcion, float saldo, int envases, int idLista, int idDirecciones, Date fechaAlta, String mail, Boolean activo) {
+		this.idDocumento = idDocumento;
+		this.tipoDocumento = tipoDocumento;
+		this.descripcion = descripcion;
+		this.saldo = saldo;		
+		this.envases = envases;
+		this.idLista = idLista;
+		this.idDirecciones = idDirecciones;
+		this.fechaAlta = fechaAlta;		
+		this.mail = mail;
+		this.activo = activo;
 	}
 	
 	
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public int getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
-	}
 	
-	public String getNombre() {
-		return nombre;
+
+	public int getIdDocumento() {
+		return idDocumento;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setIdDocumento(int idDocumento) {
+		this.idDocumento = idDocumento;
 	}
 
-	public String getApellido() {
-		return apellido;
+	public String getTipoDocumento() {
+		return tipoDocumento;
 	}
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 
-	public String getDireccion() {
-		return direccion;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public String getTelefono() {
-		return telefono;
+	public float getSaldo() {
+		return saldo;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setSaldo(float saldo) {
+		this.saldo = saldo;
+	}
+
+	public int getEnvases() {
+		return envases;
+	}
+
+	public void setEnvases(int envases) {
+		this.envases = envases;
+	}
+
+	public int getIdLista() {
+		return idLista;
+	}
+
+	public void setIdLista(int idLista) {
+		this.idLista = idLista;
+	}
+
+	public int getIdDirecciones() {
+		return idDirecciones;
+	}
+
+	public void setIdDirecciones(int idDirecciones) {
+		this.idDirecciones = idDirecciones;
+	}
+
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Clientes[Nombre='%s', Direccion='%s', Apellido='%s', Telefono='%s', Codigo=%d, Id=%d]",
-				nombre, direccion, apellido, telefono, codigo, id);
-	}
+		return String.format("clientes[Id=%d]",
+				id);
+	}	
 
 }

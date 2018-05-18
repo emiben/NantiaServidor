@@ -21,8 +21,8 @@ public class ClienteService implements IClienteService{
 	private ClienteRepository clienteRepository;
 	
 
-	private Cliente findByCodigo(int codigo) {
-		Cliente cli = clienteRepository.findByCodigo(codigo);
+	private Cliente findByTipoDocumento(String tipoDocumento) {
+		Cliente cli = clienteRepository.findByTipoDocumento(tipoDocumento);
 		return cli;
 	}
 
@@ -58,7 +58,7 @@ public class ClienteService implements IClienteService{
 
 	@Override
 	public boolean existe(Cliente cliente) {
-		return findByCodigo(cliente.getCodigo()) != null;
+		return findByTipoDocumento(cliente.getTipoDocumento()) != null;
 	}
 
 }

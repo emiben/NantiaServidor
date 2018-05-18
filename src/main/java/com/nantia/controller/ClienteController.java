@@ -59,7 +59,7 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 		LOG.info("creando un nuevo cliente: {}", cliente);
 
         if (clienteService.existe(cliente)){
-            LOG.info("el cliente con nombre " + cliente.getNombre() + " ya existe");
+            LOG.info("el cliente con nombre " + cliente.getTipoDocumento() + " ya existe");
             return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);
         }
 
@@ -93,6 +93,7 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
         }
 
         clienteService.deleteCliente(id);
+        LOG.info("Cliente con id: {} eliminando con áxito", id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
