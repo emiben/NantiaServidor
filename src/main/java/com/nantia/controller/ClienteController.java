@@ -77,7 +77,7 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
             LOG.info("Cliente con id {} no encontrado", id);
             return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
         }
-
+        LOG.info("Id: ()", currentCliente.getId());
         Cliente clienteUpd = clienteService.updateCliente(cliente);
         return new ResponseEntity<Cliente>(clienteUpd, HttpStatus.OK);
 	}

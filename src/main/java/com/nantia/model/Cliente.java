@@ -2,32 +2,55 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+
 
 @Entity
 @Table(name = "clientes")
-public class Cliente implements Serializable{
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Cliente implements Serializable{
 	
-	private static final long serialVersionUID = -3009157732242241606L;
-	
+
+	private static final long serialVersionUID = 1L;
+
+	//private static final long serialVersionUID = -3009157732242241606L;
+	/*
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	*/
 	
-	@Column(name = "idDocumento")
-	private int idDocumento;
-	
+	@Id
+    @GeneratedValue (strategy=GenerationType.TABLE , generator= "idsGenerator" )
+    @TableGenerator (name= "idsGenerator" , table= "idsGenerator" , 
+           pkColumnName= "id" , pkColumnValue= "clientes" , valueColumnName= "clienteIds" ) 
+    @Column (name =  "id" , unique = true  , nullable = false  )
+	private long id;
+		
 	@Column(name = "tipoDocumento")
-	private String tipoDocumento;
+	private tipoDocumento tipoDocumento;
+	
+	@Column(name = "nroDocumento")
+	private String nroDocumento;
 	
 	@Column(name = "descripcion")
 	private String descripcion;
+	
+	@Column(name = "celular")
+	private String celular;
 
 	@Column(name = "saldo")
 	private float saldo;
@@ -38,12 +61,9 @@ public class Cliente implements Serializable{
 	@Column(name = "idLista")
 	private int idLista;
 	
-	@Column(name = "idDirecciones")
-	private int idDirecciones;
-	
 	@Column(name = "fechaAlta")
 	private Date fechaAlta;
-	
+
 	@Column(name = "mail")
 	private String mail;
 	
@@ -53,36 +73,41 @@ public class Cliente implements Serializable{
 	protected Cliente() {
 	}
 	
-	public Cliente(int idDocumento, String tipoDocumento, String descripcion, float saldo, int envases, int idLista, int idDirecciones, Date fechaAlta, String mail, Boolean activo) {
-		this.idDocumento = idDocumento;
+	public Cliente(tipoDocumento tipoDocumento, String nroDocumento, String descripcion, String celular, float saldo, int envases, int idLista, Date fechaAlta, String mail, Boolean activo) {
 		this.tipoDocumento = tipoDocumento;
+		this.nroDocumento = nroDocumento;
 		this.descripcion = descripcion;
+		this.celular = celular;
 		this.saldo = saldo;		
 		this.envases = envases;
 		this.idLista = idLista;
-		this.idDirecciones = idDirecciones;
 		this.fechaAlta = fechaAlta;		
 		this.mail = mail;
 		this.activo = activo;
 	}
 	
-	
-	
-
-	public int getIdDocumento() {
-		return idDocumento;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdDocumento(int idDocumento) {
-		this.idDocumento = idDocumento;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getTipoDocumento() {
+	public tipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(String tipoDocumento) {
+	public void setTipoDocumento(tipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
+	}
+
+	public String getNroDocumento() {
+		return nroDocumento;
+	}
+
+	public void setNroDocumento(String nroDocumento) {
+		this.nroDocumento = nroDocumento;
 	}
 
 	public String getDescripcion() {
@@ -91,6 +116,14 @@ public class Cliente implements Serializable{
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public float getSaldo() {
@@ -116,15 +149,7 @@ public class Cliente implements Serializable{
 	public void setIdLista(int idLista) {
 		this.idLista = idLista;
 	}
-
-	public int getIdDirecciones() {
-		return idDirecciones;
-	}
-
-	public void setIdDirecciones(int idDirecciones) {
-		this.idDirecciones = idDirecciones;
-	}
-
+	
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
@@ -152,11 +177,18 @@ public class Cliente implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	
 	@Override
 	public String toString() {
-		return String.format("clientes[Id=%d]",
+		return String.format("clientes[id=%d]",
 				id);
 	}	
+	
+	public enum tipoDocumento {
+	    CI,
+	    RUT,
+	    NA,	   
+	}
+
 
 }

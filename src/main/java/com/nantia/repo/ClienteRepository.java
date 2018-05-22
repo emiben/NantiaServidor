@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.nantia.model.Cliente;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Long>{
-	Cliente findByTipoDocumento(String tipoDocumento);
+	Cliente findByNroDocumento(String nroDocumento);
 	List<Cliente> findByMail(String apellido);
 	
 }
