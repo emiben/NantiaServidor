@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -23,17 +21,6 @@ public class Direccion implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@ManyToOne
-	@JoinColumn(name="idEmpresa")
-	private Empresa empresa;
-	
-	@ManyToOne
-	@JoinColumn(name="idPersona")
-	private Persona persona;
-	
-	@Column(name = "idRuta")
-	private long idRuta;
-		
 	@Column(name = "direccion")
 	private String direccion;
 	
@@ -61,16 +48,10 @@ public class Direccion implements Serializable{
 	@Column(name = "dirCobro")
 	private Boolean dirCobro;
 
-	@Column(name = "idZona")
-	private long idZona;
-
 	protected Direccion() {
 	}
 	
-	public Direccion(Empresa empresa, Persona persona, long idRuta, String direccion, float cordLon, float cordLat, String telefono, String esquina1, String esquina2, String observaciones, Boolean principal, Boolean dirCobro, long idZona) {
-		this.empresa = empresa;
-		this.persona = persona;
-		this.idRuta = idRuta;
+	public Direccion(String direccion, float cordLon, float cordLat, String telefono, String esquina1, String esquina2, String observaciones, Boolean principal, Boolean dirCobro) {
 		this.direccion = direccion;
 		this.cordLon = cordLon;
 		this.cordLat = cordLat;		
@@ -80,23 +61,16 @@ public class Direccion implements Serializable{
 		this.observaciones = observaciones;
 		this.principal = principal;
 		this.dirCobro = dirCobro;
-		this.idZona = idZona;
 	}
 
+	
+	
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public long getIdRuta() {
-		return idRuta;
-	}
-
-	public void setIdRuta(long idRuta) {
-		this.idRuta = idRuta;
 	}
 
 	public String getDireccion() {
@@ -171,14 +145,6 @@ public class Direccion implements Serializable{
 		this.dirCobro = dirCobro;
 	}
 
-	public long getIdZona() {
-		return idZona;
-	}
-
-	public void setIdZona(long idZona) {
-		this.idZona = idZona;
-	}
-	
 	@Override
 	public String toString() {
 		return String.format("direcciones[id=%d]",

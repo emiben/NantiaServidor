@@ -12,7 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -21,70 +24,75 @@ import javax.persistence.TableGenerator;
 @Entity
 @Table(name = "clientes")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Cliente implements Serializable{
+public class Cliente implements Serializable{
 	
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5966354327901311107L;
 
-	//private static final long serialVersionUID = -3009157732242241606L;
-	/*
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	*/
-	
-	@Id
-    @GeneratedValue (strategy=GenerationType.TABLE , generator= "idsGenerator" )
-    @TableGenerator (name= "idsGenerator" , table= "idsGenerator" , 
-           pkColumnName= "id" , pkColumnValue= "clientes" , valueColumnName= "clienteIds" ) 
-    @Column (name =  "id" , unique = true  , nullable = false  )
-	private long id;
 		
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "direcciones_id")	
+	private Direccion direccion;
+	
 	@Column(name = "tipoDocumento")
 	private tipoDocumento tipoDocumento;
 	
 	@Column(name = "nroDocumento")
 	private String nroDocumento;
 	
-	@Column(name = "descripcion")
-	private String descripcion;
+	@Column(name = "nombre1")
+	private String nombre1;
+	
+	@Column(name = "nombre2")
+	private String nombre2;
+	
+	@Column(name = "saldo")
+	private float saldo;
+	
+	@Column(name = "fechaNacimiento")
+	private Date fechaNacimiento;
+	
+	@Column(name = "fechaAlta")
+	private Date fechaAlta;	
 	
 	@Column(name = "celular")
 	private String celular;
 
-	@Column(name = "saldo")
-	private float saldo;
-	
-	@Column(name = "envases")
-	private int envases;
+	@Column(name = "mail")
+	private String mail;	
 	
 	@Column(name = "idLista")
 	private int idLista;
 	
-	@Column(name = "fechaAlta")
-	private Date fechaAlta;
+	@Column(name = "observaciones")
+	private String observaciones;
 
-	@Column(name = "mail")
-	private String mail;
-	
 	@Column(name = "activo")
 	private Boolean activo;
-
+	
+	
 	protected Cliente() {
 	}
 	
-	public Cliente(tipoDocumento tipoDocumento, String nroDocumento, String descripcion, String celular, float saldo, int envases, int idLista, Date fechaAlta, String mail, Boolean activo) {
+	public Cliente(tipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
-		this.descripcion = descripcion;
-		this.celular = celular;
+		this.nombre1 = nombre1;
+		this.nombre2 = nombre2;
 		this.saldo = saldo;		
-		this.envases = envases;
-		this.idLista = idLista;
+		this.fechaNacimiento = fechaNacimiento;		
 		this.fechaAlta = fechaAlta;		
+		this.celular = celular;
 		this.mail = mail;
+		this.idLista = idLista;
+		this.observaciones = observaciones;
 		this.activo = activo;
 	}
+	
+	
 	
 	public long getId() {
 		return id;
@@ -110,20 +118,20 @@ public abstract class Cliente implements Serializable{
 		this.nroDocumento = nroDocumento;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public String getNombre1() {
+		return nombre1;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setNombre1(String nombre1) {
+		this.nombre1 = nombre1;
 	}
 
-	public String getCelular() {
-		return celular;
+	public String getNombre2() {
+		return nombre2;
 	}
 
-	public void setCelular(String celular) {
-		this.celular = celular;
+	public void setNombre2(String nombre2) {
+		this.nombre2 = nombre2;
 	}
 
 	public float getSaldo() {
@@ -134,28 +142,28 @@ public abstract class Cliente implements Serializable{
 		this.saldo = saldo;
 	}
 
-	public int getEnvases() {
-		return envases;
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	public void setEnvases(int envases) {
-		this.envases = envases;
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public int getIdLista() {
-		return idLista;
-	}
-
-	public void setIdLista(int idLista) {
-		this.idLista = idLista;
-	}
-	
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
 
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public String getMail() {
@@ -166,6 +174,22 @@ public abstract class Cliente implements Serializable{
 		this.mail = mail;
 	}
 
+	public int getIdLista() {
+		return idLista;
+	}
+
+	public void setIdLista(int idLista) {
+		this.idLista = idLista;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
 	public Boolean getActivo() {
 		return activo;
 	}
@@ -174,14 +198,17 @@ public abstract class Cliente implements Serializable{
 		this.activo = activo;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+	
+	public Direccion getDireccion() {
+		return direccion;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("clientes[id=%d]",
-				id);
+		return String.format("clientes[id=%d]",	id);
 	}	
 	
 	public enum tipoDocumento {

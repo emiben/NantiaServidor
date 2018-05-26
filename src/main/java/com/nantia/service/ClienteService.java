@@ -15,8 +15,7 @@ import com.nantia.repo.ClienteRepository;
 @Service
 public class ClienteService implements IClienteService{
 	
-	//private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
-	
+
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
