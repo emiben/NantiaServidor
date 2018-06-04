@@ -1,9 +1,6 @@
 package com.nantia.controller;
 
 import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Cliente;
+import com.nantia.model.EnvasesEnPrestamo;
 import com.nantia.service.IClienteService;
+import com.nantia.service.IEnvasesEnPrestamoService;
 
 
 @RestController
@@ -27,6 +26,8 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 	
 	@Autowired
 	IClienteService clienteService;
+	@Autowired
+	IEnvasesEnPrestamoService envasesEnPrestamoService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Cliente>> getAllClientes() {
@@ -50,6 +51,22 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
             LOG.info("cliente por id {} no encontrado", id);
             return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
         }
+        else
+        {
+        	LOG.info("cliente: {}", cliente.getId());
+        	List<EnvasesEnPrestamo> listEnvasesEnPrestamo = envasesEnPrestamoService.getEnvasesEnPrestamoByCliente(cliente);
+        	LOG.info("listEnvasesEnPrestamo2: {}", listEnvasesEnPrestamo.size());
+        	if (listEnvasesEnPrestamo == null || listEnvasesEnPrestamo.isEmpty()){
+        		LOG.info("el cliente no tiene envases");
+        	}
+        	else {
+        		LOG.info("el cliente tiene {} envases", listEnvasesEnPrestamo.size());
+        		
+        		for (EnvasesEnPrestamo x : listEnvasesEnPrestamo)
+                    cliente.addEnvasesEnPrestamo(x); 
+        	}
+        	
+        }	
 
         return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
@@ -59,7 +76,7 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 		LOG.info("creando un nuevo cliente: {}", cliente);
 
         if (clienteService.existe(cliente)){
-            LOG.info("el cliente con nombre " + cliente.getTipoDocumento() + " ya existe");
+            LOG.info("el cliente con documento " + cliente.getNroDocumento() + " ya existe");
             return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);
         }
 

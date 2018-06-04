@@ -8,6 +8,6 @@ import com.nantia.model.Cliente;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 	Cliente findByNroDocumento(String nroDocumento);
-	List<Cliente> findByMail(String apellido);
+	List<Cliente> findByMail(String mail);
 	
 }

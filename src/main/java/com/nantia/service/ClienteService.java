@@ -1,7 +1,10 @@
 package com.nantia.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nantia.controller.ClienteController;
+import com.nantia.controller.EnvasesEnPrestamoControler;
 import com.nantia.model.Cliente;
+import com.nantia.model.EnvasesEnPrestamo;
 import com.nantia.repo.ClienteRepository;
+import com.nantia.repo.EnvasesEnPrestamoRepository;
 
 @Service
 public class ClienteService implements IClienteService{
 	
+	private final Logger LOG = LoggerFactory.getLogger(EnvasesEnPrestamoControler.class);
+
 
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -27,15 +35,14 @@ public class ClienteService implements IClienteService{
 
 	@Override
 	public List<Cliente> getAllClientes() {
-		//LOG.info("getAllClientes");
-		List<Cliente> list = new ArrayList<>();		
+		List<Cliente> list = new ArrayList<>();	
 		clienteRepository.findAll().forEach(e -> list.add(e));
-		//LOG.info("size: " + list.size());
 		return list;
 	}
 
 	@Override
 	public Cliente getClienteById(long clienteId) {
+		LOG.info("getClienteById: {}", clienteId);
 		Cliente cli = clienteRepository.findOne(clienteId);
 		return cli;
 	}

@@ -2,28 +2,30 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
 @Entity
 @Table(name = "clientes")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Cliente implements Serializable{
 	
 
@@ -31,14 +33,15 @@ public class Cliente implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@Column(name = "clienteId")
+	private long clienteId;
 		
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "direcciones_id")	
 	private Direccion direccion;
 	
 	@Column(name = "tipoDocumento")
-	private tipoDocumento tipoDocumento;
+	private TipoDocumento tipoDocumento;
 	
 	@Column(name = "nroDocumento")
 	private String nroDocumento;
@@ -73,11 +76,20 @@ public class Cliente implements Serializable{
 	@Column(name = "activo")
 	private Boolean activo;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "diaSemana")
+	private DiaSemana diaSemana;
 	
+	@OneToMany(mappedBy = "clientes")
+	@JsonIgnore
+	private Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
+
+	
+   
 	protected Cliente() {
 	}
 	
-	public Cliente(tipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo) {
+	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, DiaSemana diaSemana, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
@@ -90,23 +102,25 @@ public class Cliente implements Serializable{
 		this.idLista = idLista;
 		this.observaciones = observaciones;
 		this.activo = activo;
+		this.diaSemana = diaSemana;
+		this.setEnvasesEnPrestamo = envasesEnPrestamo;
 	}
 	
 	
 	
 	public long getId() {
-		return id;
+		return clienteId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setId(long clienteId) {
+		this.clienteId = clienteId;
 	}
 
-	public tipoDocumento getTipoDocumento() {
+	public TipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(tipoDocumento tipoDocumento) {
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 
@@ -206,12 +220,41 @@ public class Cliente implements Serializable{
 		return direccion;
 	}
 	
+
+	public long getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(long clienteId) {
+		this.clienteId = clienteId;
+	}
+
+	public DiaSemana getDiaSemana() {
+		return diaSemana;
+	}
+
+	public void setDiaSemana(DiaSemana diaSemana) {
+		this.diaSemana = diaSemana;
+	}
+
+	public Set<EnvasesEnPrestamo> getEnvasesEnPrestamo() {
+		return setEnvasesEnPrestamo;
+	}
+
+	public void setEnvasesEnPrestamo(Set<EnvasesEnPrestamo> envasesEnPrestamo) {
+		this.setEnvasesEnPrestamo = envasesEnPrestamo;
+	}
+
+	public void addEnvasesEnPrestamo(EnvasesEnPrestamo envasesEnPrestamo) {
+        this.setEnvasesEnPrestamo.add(envasesEnPrestamo);
+    }   
+	
 	@Override
 	public String toString() {
-		return String.format("clientes[id=%d]",	id);
+		return String.format("clientes[id=%d]",	clienteId);
 	}	
 	
-	public enum tipoDocumento {
+	public enum TipoDocumento {
 	    CI,
 	    RUT,
 	    NA,	   
