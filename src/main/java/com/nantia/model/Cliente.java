@@ -93,7 +93,7 @@ public class Cliente implements Serializable{
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
-		this.nombre2 = nombre2;
+		this.nombre2 = nombre2; 
 		this.saldo = saldo;		
 		this.fechaNacimiento = fechaNacimiento;		
 		this.fechaAlta = fechaAlta;		
