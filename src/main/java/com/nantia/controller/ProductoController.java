@@ -60,7 +60,7 @@ public class ProductoController {
 		LOG.info("creating new product: {}", producto);
 
         if (productoService.existe(producto)){
-            LOG.info("a product with name " + producto.getNombre() + " " + producto.getPresentacion() + " already exists");
+            LOG.info("El producto con nombre " + producto.getNombreProducto() + " ya existe");
             return new ResponseEntity<Producto>(HttpStatus.CONFLICT);
         }
 
