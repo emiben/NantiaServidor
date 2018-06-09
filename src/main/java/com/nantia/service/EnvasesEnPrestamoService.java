@@ -25,8 +25,6 @@ public class EnvasesEnPrestamoService implements IEnvasesEnPrestamoService{
 	
 	
 	private EnvasesEnPrestamo findByClientesAndEnvasetipos(Cliente clienteId, EnvasesTipos tipoId) {
-		//long clienteId, long tipoId
-		//LOG.info("buscando envases en prestamo por clienteId: {} y tipoId: {}", clienteId, tipoId);
 		EnvasesEnPrestamo env = envasesEnPrestamoRepository.findByClientesAndEnvasetipos(clienteId, tipoId);
 		LOG.info("ya se busco el envases en prestamo");
 		return env;

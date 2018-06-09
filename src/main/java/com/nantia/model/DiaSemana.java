@@ -10,15 +10,15 @@ public enum DiaSemana {
     VIERNES,
     SABADO;
 	
-    public static String getDiaSemana(DiaSemana diaSemana){  
+    public static DiaSemana getDiaSemana(String diaSemana){  
 	  switch (diaSemana){  
-	   case DOMINGO : return "DOMINGO";  
-	   case LUNES : return "LUNES"; 
-	   case MARTES : return "MARTES";  
-	   case MIERCOLES : return "MIERCOLES"; 
-	   case JUEVES : return "JUEVES";  
-	   case VIERNES : return "VIERNES"; 
-	   case SABADO : return "SABADO"; 
+	   case "DOMINGO" : return DiaSemana.DOMINGO;  
+	   case "LUNES" : return DiaSemana.LUNES; 
+	   case "MARTES" : return DiaSemana.MARTES; 
+	   case "MIERCOLES" : return DiaSemana.MIERCOLES; 
+	   case "JUEVES" : return DiaSemana.JUEVES;  
+	   case "VIERNES" : return DiaSemana.VIERNES; 
+	   case "SABADO" : return DiaSemana.SABADO; 
 	   default : return null;  
 	  }  
 	 }  

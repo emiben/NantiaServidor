@@ -4,13 +4,16 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\control
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\DireccionRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\EnvasesTipoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IEnvasesEnPrestamoService.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DataClienteController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\LoginService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\EnvasesEnPrestamoRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ClienteRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\UsuarioService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\UsuarioRepository.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DiaSemanaController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DireccionController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\LoginController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IDiaSemanaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\UsuarioController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Direccion.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\NantiaServidorApplication.java
@@ -24,8 +27,10 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\D
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IUsuarioService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\EnvasesEnPrestamoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IDireccionService.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\DataCliente.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\EnvasesTipoRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvasesTipos.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\DiaSemanaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\EnvasesTipoController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\DireccionService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Usuario.java

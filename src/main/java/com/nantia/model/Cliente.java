@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -75,10 +77,13 @@ public class Cliente implements Serializable{
 
 	@Column(name = "activo")
 	private Boolean activo;
-	
+
+
+	@ElementCollection(targetClass = DiaSemana.class)
+	@CollectionTable(name = "cliente_dias", joinColumns = @JoinColumn(name = "cliente_id"))
 	@Enumerated(EnumType.STRING)
-	@Column(name = "diaSemana")
-	private DiaSemana diaSemana;
+	@Column(name = "dias_id")
+	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
 	@OneToMany(mappedBy = "clientes")
 	@JsonIgnore
@@ -89,7 +94,7 @@ public class Cliente implements Serializable{
 	protected Cliente() {
 	}
 	
-	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, DiaSemana diaSemana, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
+	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
@@ -102,7 +107,7 @@ public class Cliente implements Serializable{
 		this.idLista = idLista;
 		this.observaciones = observaciones;
 		this.activo = activo;
-		this.diaSemana = diaSemana;
+		this.dias = dias;
 		this.setEnvasesEnPrestamo = envasesEnPrestamo;
 	}
 	
@@ -229,26 +234,32 @@ public class Cliente implements Serializable{
 		this.clienteId = clienteId;
 	}
 
-	public DiaSemana getDiaSemana() {
-		return diaSemana;
-	}
-
-	public void setDiaSemana(DiaSemana diaSemana) {
-		this.diaSemana = diaSemana;
-	}
-
-	public Set<EnvasesEnPrestamo> getEnvasesEnPrestamo() {
-		return setEnvasesEnPrestamo;
-	}
-
-	public void setEnvasesEnPrestamo(Set<EnvasesEnPrestamo> envasesEnPrestamo) {
-		this.setEnvasesEnPrestamo = envasesEnPrestamo;
-	}
+	public void addDias(DiaSemana diaSemana) {
+        this.dias.add(diaSemana);
+    } 
 
 	public void addEnvasesEnPrestamo(EnvasesEnPrestamo envasesEnPrestamo) {
         this.setEnvasesEnPrestamo.add(envasesEnPrestamo);
     }   
 	
+	
+	
+	public Set<DiaSemana> getDias() {
+		return dias;
+	}
+
+	public void setDias(Set<DiaSemana> dias) {
+		this.dias = dias;
+	}
+
+	public Set<EnvasesEnPrestamo> getSetEnvasesEnPrestamo() {
+		return setEnvasesEnPrestamo;
+	}
+
+	public void setSetEnvasesEnPrestamo(Set<EnvasesEnPrestamo> setEnvasesEnPrestamo) {
+		this.setEnvasesEnPrestamo = setEnvasesEnPrestamo;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("clientes[id=%d]",	clienteId);
