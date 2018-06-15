@@ -26,13 +26,12 @@ public class EnvasesEnPrestamo implements Serializable{
 	private long id;	
 	
 		
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "envases_id")  
-	@JsonIgnore
 	private EnvasesTipos envasetipos;
 	
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne
 	@JoinColumn(name = "clientes_id")
 	@JsonIgnore
 	private Cliente clientes;

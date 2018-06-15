@@ -8,6 +8,7 @@ public interface IEnvasesTipoService {
 	
 	List<EnvasesTipos> getAllEnvasesTipo();
 	EnvasesTipos getEnvasesTipoById(long envasesTiposId);
+	EnvasesTipos getEnvasesTipoByDescripcion(String descripcion);
 	EnvasesTipos addEnvasesTipo(EnvasesTipos envasesTipos);
 	EnvasesTipos updateEnvasesTipo(EnvasesTipos envasesTipos);
 	void deleteEnvasesTipo(long envasesTiposId);

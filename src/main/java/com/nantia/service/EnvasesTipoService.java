@@ -18,7 +18,7 @@ public class EnvasesTipoService implements IEnvasesTipoService{
 	@Autowired
 	private EnvasesTipoRepository envasesTipoRepository;
 	
-	private EnvasesTipos findByDescripcion(String descripcion) {
+	 EnvasesTipos findByDescripcion(String descripcion) {
 		EnvasesTipos env = envasesTipoRepository.findByDescripcion(descripcion);
 		return env;
 	}
@@ -33,6 +33,12 @@ public class EnvasesTipoService implements IEnvasesTipoService{
 	@Override
 	public EnvasesTipos getEnvasesTipoById(long envasesTiposId) {
 		EnvasesTipos envase = envasesTipoRepository.findOne(envasesTiposId);
+		return envase;
+	}
+	
+	@Override
+	public EnvasesTipos getEnvasesTipoByDescripcion(String descripcion) {
+		EnvasesTipos envase = findByDescripcion(descripcion);
 		return envase;
 	}
 

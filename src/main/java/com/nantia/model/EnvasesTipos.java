@@ -40,11 +40,11 @@ public class EnvasesTipos implements Serializable{
 	@JoinTable(name="TipoEnvaseEnvasePmo", joinColumns={@JoinColumn(name="IdEnvEnPmo")}, inverseJoinColumns={@JoinColumn(name="IdEnvaseEnPrestamo")})
     private Set<EnvasesEnPrestamo> envases = new HashSet<EnvasesEnPrestamo>();
 	*/
-	@OneToMany(mappedBy = "envasetipos")
-	private Set<EnvasesEnPrestamo> envasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
+	//@OneToMany(mappedBy = "envasetipos")
+	//private Set<EnvasesEnPrestamo> envasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
 	
 		
-	protected EnvasesTipos() {
+	public EnvasesTipos() {
 	}
 	
 	public EnvasesTipos(String descripcion) {
@@ -68,7 +68,7 @@ public class EnvasesTipos implements Serializable{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
+	/*
 	public Set<EnvasesEnPrestamo> getEnvasesEnPrestamo() {
         return envasesEnPrestamo;
     }
@@ -80,7 +80,7 @@ public class EnvasesTipos implements Serializable{
     public void addEnvasesEnPrestamo(EnvasesEnPrestamo envasesEnPrestamo) {
         this.envasesEnPrestamo.add(envasesEnPrestamo);
     }
-
+*/
 	@Override
 	public String toString() {
 		return String.format("tiposenvases[id=%d]",	id);

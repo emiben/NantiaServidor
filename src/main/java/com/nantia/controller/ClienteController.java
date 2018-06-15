@@ -1,6 +1,9 @@
 package com.nantia.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nantia.model.Cliente;
 import com.nantia.model.EnvasesEnPrestamo;
+import com.nantia.model.EnvasesTipos;
 import com.nantia.service.IClienteService;
 import com.nantia.service.IEnvasesEnPrestamoService;
+import com.nantia.service.IEnvasesTipoService;
 
 
 @RestController
@@ -28,10 +32,12 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 	IClienteService clienteService;
 	@Autowired
 	IEnvasesEnPrestamoService envasesEnPrestamoService;
+	@Autowired
+	IEnvasesTipoService envasesTipoService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Cliente>> getAllClientes() {
-		LOG.info("trayendo todos los clientes");
+		LOG.info("trayendo todos los clientes"); 
         List<Cliente> clientes = clienteService.getAllClientes();
         
         if (clientes == null || clientes.isEmpty()){
@@ -62,8 +68,11 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
         	else {
         		LOG.info("el cliente tiene {} envases", listEnvasesEnPrestamo.size());
         		
-        		for (EnvasesEnPrestamo x : listEnvasesEnPrestamo)
+        		for (EnvasesEnPrestamo x : listEnvasesEnPrestamo) {
+        			EnvasesTipos envasesTipos = envasesTipoService.getEnvasesTipoById(x.getEnvasetipos().getId());
+        			x.setEnvasetipos(envasesTipos);
                     cliente.addEnvasesEnPrestamo(x); 
+                    }
         	}
         	
         }	
@@ -71,10 +80,23 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
         return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente) {
-		LOG.info("creando un nuevo cliente: {}", cliente);
-
+		LOG.info("creando un nuevo cliente: {}", cliente.getNombre1());
+	
+		Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();
+		LOG.info("dataCliente.getSetEnvases: {}", cliente.getSetEnvasesEnPrestamo().size());
+				
+		Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
+	    while(iteEnvases.hasNext()) {
+	    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
+	    	envaseEnPrestamo.setClientes(cliente);
+	    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
+	    }
+		
+		cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
+	
         if (clienteService.existe(cliente)){
             LOG.info("el cliente con documento " + cliente.getNroDocumento() + " ya existe");
             return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);
@@ -84,6 +106,8 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 
         return new ResponseEntity<Cliente>(newCliente, HttpStatus.CREATED);
 	}
+	
+	
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Cliente> updateCliente(@PathVariable int id, @RequestBody Cliente cliente) {

@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nantia.model.Cliente.TipoDocumento;
 
 public class DataCliente implements Serializable{
@@ -29,6 +31,7 @@ public class DataCliente implements Serializable{
 	private String observaciones;
 	private Boolean activo;
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
+	@JsonIgnore
 	SortedMap<String, Integer> setEnvases = new TreeMap<String, Integer>();
 	
 	
@@ -176,21 +179,16 @@ public class DataCliente implements Serializable{
 		this.dias = dias;
 	}
 
-	public SortedMap<String, Integer> getSm() {
+	public SortedMap<String, Integer> getSetEnvases() {
 		return setEnvases;
 	}
 
-	public void setSm(SortedMap<String, Integer> setEnvases) {
+	public void setSetEnvases(SortedMap<String, Integer> setEnvases) {
 		this.setEnvases = setEnvases;
 	}
 
+	
+	
 
-/*
-	public class Envases
-	{
-	    public String envase; 
-	    public int cantidad; 
-	 };
-	 */
 
 }

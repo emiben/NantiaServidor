@@ -85,7 +85,7 @@ public class DataClienteController {
             		
             		cantEnvases.put(envasesEnPrestamo.getEnvasetipos().getDescripcion(), envasesEnPrestamo.getCantidad());
             		LOG.info("Descripcion: {}, cantidad: {}", envasesEnPrestamo.getEnvasetipos().getDescripcion(), envasesEnPrestamo.getCantidad());
-            		dataCliente.setSm(cantEnvases);
+            		//dataCliente.setEnvases(cantEnvases);
             	}
             	
             	listDataCliente.add(dataCliente);
@@ -123,7 +123,7 @@ public class DataClienteController {
     		dataCliente.setNombre1(cliente.getNombre1());
     		dataCliente.setNombre2(cliente.getNombre2());
     		dataCliente.setNroDocumento(cliente.getNroDocumento());
-    		dataCliente.setObservaciones(cliente.getNroDocumento());
+    		dataCliente.setObservaciones(cliente.getObservaciones());
     		dataCliente.setSaldo(cliente.getSaldo());
     		dataCliente.setTipoDocumento(cliente.getTipoDocumento());
     		dataCliente.setDias(cliente.getDias());
@@ -138,7 +138,7 @@ public class DataClienteController {
         		cantEnvases.put(envasesEnPrestamo.getEnvasetipos().getDescripcion(), envasesEnPrestamo.getCantidad());
         		LOG.info("Descripcion: {}, cantidad: {}", envasesEnPrestamo.getEnvasetipos().getDescripcion(), envasesEnPrestamo.getCantidad());
         	}
-        	dataCliente.setSm(cantEnvases);
+        	dataCliente.setSetEnvases(cantEnvases);
         	
         	return new ResponseEntity<DataCliente>(dataCliente, HttpStatus.OK);
         }

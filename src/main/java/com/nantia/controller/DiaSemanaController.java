@@ -24,7 +24,7 @@ public class DiaSemanaController {
 	@Autowired
 	IDiaSemanaService diaSemanaService;
 	@Autowired
-	IClienteService clienteService;
+	IClienteService clienteService; 
 	
 	@RequestMapping(value = "{clienteId}/{diaSemana}", method = RequestMethod.POST)
 	public ResponseEntity<DiaSemana> addDiaSemanaCliente(@PathVariable Long clienteId,@PathVariable String diaSemana) {

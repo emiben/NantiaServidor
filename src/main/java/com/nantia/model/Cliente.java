@@ -12,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -85,13 +86,13 @@ public class Cliente implements Serializable{
 	@Column(name = "dias_id")
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
-	@OneToMany(mappedBy = "clientes")
-	@JsonIgnore
+
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "clientes")
 	private Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
 
 	
    
-	protected Cliente() {
+	public Cliente() {
 	}
 	
 	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
