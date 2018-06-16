@@ -85,16 +85,13 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 	public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente) {
 		LOG.info("creando un nuevo cliente: {}", cliente.getNombre1());
 	
-		Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();
-		LOG.info("dataCliente.getSetEnvases: {}", cliente.getSetEnvasesEnPrestamo().size());
-				
+		Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();						
 		Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
 	    while(iteEnvases.hasNext()) {
 	    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
 	    	envaseEnPrestamo.setClientes(cliente);
 	    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
-	    }
-		
+	    }		
 		cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
 	
         if (clienteService.existe(cliente)){
@@ -118,7 +115,16 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
             LOG.info("Cliente con id {} no encontrado", id);
             return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
         }
-        LOG.info("Id: ()", currentCliente.getId());
+        
+        Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();						
+		Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
+	    while(iteEnvases.hasNext()) {
+	    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
+	    	envaseEnPrestamo.setClientes(cliente);
+	    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
+	    }		
+		cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
+		
         Cliente clienteUpd = clienteService.updateCliente(cliente);
         return new ResponseEntity<Cliente>(clienteUpd, HttpStatus.OK);
 	}

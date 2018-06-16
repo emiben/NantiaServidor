@@ -74,6 +74,7 @@ public class EnvasesEnPrestamo implements Serializable{
 		this.envasetipos = envasetipos;
 	}
 
+
 	public int getCantidad() {
 		return cantidad;
 	}
