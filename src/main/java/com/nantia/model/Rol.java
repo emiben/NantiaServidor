@@ -22,8 +22,10 @@ public class Rol implements Serializable {
 	@Column(name = "nombreRol", unique=true)
 	private String nombreRol;
 
+	protected Rol() {
+	}
+	
 	public Rol(long id, String nombreRol) {
-		super();
 		this.id = id;
 		this.nombreRol = nombreRol;
 	}

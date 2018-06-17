@@ -34,7 +34,7 @@ public class RolController {
         List<Rol> roles = rolService.getAllRoles();
 
         if (roles == null || roles.isEmpty()){
-            LOG.info("no se encontraron usuarios");
+            LOG.info("no se encontraron roles");
             return new ResponseEntity<List<Rol>>(HttpStatus.NO_CONTENT);
         }
 
