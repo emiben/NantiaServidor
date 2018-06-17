@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Direccion;
 import com.nantia.service.IDireccionService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/direcciones")
 public class DireccionController {

@@ -24,43 +24,35 @@ public class Direccion implements Serializable{
 	@Column(name = "direccion")
 	private String direccion;
 	
-	@Column(name = "cordLon")
-	private float cordLon;
+	@Column(name = "coordLon")
+	private float coordLon;
 
-	@Column(name = "cordLat")
-	private float cordLat;
+	@Column(name = "coordLat")
+	private float coordLat;
 	
 	@Column(name = "telefono")
 	private String telefono;
 		
-	@Column(name = "esquina1")
-	private String esquina1;
+	@Column(name = "ciudad")
+	private String ciudad;
 	
-	@Column(name = "esquina2")
-	private String esquina2;
+	@Column(name = "departamento")
+	private String departamento;
 	
-	@Column(name = "observaciones")
-	private String observaciones;
+	@Column(name = "codigoPostal")
+	private long codigoPostal;
 	
-	@Column(name = "principal")
-	private Boolean principal;
-	
-	@Column(name = "dirCobro")
-	private Boolean dirCobro;
-
 	protected Direccion() {
 	}
 	
-	public Direccion(String direccion, float cordLon, float cordLat, String telefono, String esquina1, String esquina2, String observaciones, Boolean principal, Boolean dirCobro) {
+	public Direccion(String direccion, float coordLon, float coordLat, String telefono, String ciudad, String departamento, long codigoPostal) {
 		this.direccion = direccion;
-		this.cordLon = cordLon;
-		this.cordLat = cordLat;		
+		this.coordLon = coordLon;
+		this.coordLat = coordLat;		
 		this.telefono = telefono;
-		this.esquina1 = esquina1;
-		this.esquina2 = esquina2;		
-		this.observaciones = observaciones;
-		this.principal = principal;
-		this.dirCobro = dirCobro;
+		this.ciudad = ciudad;
+		this.departamento = departamento;
+		this.codigoPostal = codigoPostal;
 	}
 
 	
@@ -81,20 +73,20 @@ public class Direccion implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public float getCordLon() {
-		return cordLon;
+	public float getCoordLon() {
+		return coordLon;
 	}
 
-	public void setCordLon(float cordLon) {
-		this.cordLon = cordLon;
+	public void setCoordLon(float coordLon) {
+		this.coordLon = coordLon;
 	}
 
-	public float getCordLat() {
-		return cordLat;
+	public float getCoordLat() {
+		return coordLat;
 	}
 
-	public void setCordLat(float cordLat) {
-		this.cordLat = cordLat;
+	public void setCoordLat(float coordLat) {
+		this.coordLat = coordLat;
 	}
 
 	public String getTelefono() {
@@ -105,46 +97,31 @@ public class Direccion implements Serializable{
 		this.telefono = telefono;
 	}
 
-	public String getEsquina1() {
-		return esquina1;
+	public String getCudad() {
+		return ciudad;
 	}
 
-	public void setEsquina1(String esquina1) {
-		this.esquina1 = esquina1;
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
 	}
 
-	public String getEsquina2() {
-		return esquina2;
+	public String getDepartamento() {
+		return departamento;
 	}
 
-	public void setEsquina2(String esquina2) {
-		this.esquina2 = esquina2;
+	public void setDepartamento(String departamento) {
+		this.departamento = departamento;
 	}
 
-	public String getObservaciones() {
-		return observaciones;
+	public long getCodigoPostal() {
+		return codigoPostal;
 	}
 
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
+	public void setCodigoPostal(long codigoPostal) {
+		this.codigoPostal = codigoPostal;
 	}
 
-	public Boolean getPrincipal() {
-		return principal;
-	}
-
-	public void setPrincipal(Boolean principal) {
-		this.principal = principal;
-	}
-
-	public Boolean getDirCobro() {
-		return dirCobro;
-	}
-
-	public void setDirCobro(Boolean dirCobro) {
-		this.dirCobro = dirCobro;
-	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("direcciones[id=%d]",

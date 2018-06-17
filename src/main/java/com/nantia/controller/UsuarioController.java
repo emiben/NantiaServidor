@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Usuario;
 import com.nantia.service.IUsuarioService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/usuarios")
 public class UsuarioController {

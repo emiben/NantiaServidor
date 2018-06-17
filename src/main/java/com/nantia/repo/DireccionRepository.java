@@ -6,7 +6,7 @@ import com.nantia.model.Direccion;
 
 
 public interface DireccionRepository extends CrudRepository<Direccion, Long>{
-	Direccion findByCordLonAndCordLat(float coordLat, float coordLon);
+	Direccion findByCoordLonAndCoordLat(float coordLat, float coordLon);
 	Direccion findByDireccion(String direccion);
 	//List<Direccion> findByIdZona(long idZona);
 }

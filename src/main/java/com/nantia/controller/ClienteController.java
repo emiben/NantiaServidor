@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Cliente;
 import com.nantia.service.IClienteService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/clientes")
 public class ClienteController {
