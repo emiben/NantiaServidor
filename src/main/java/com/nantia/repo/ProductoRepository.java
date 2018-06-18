@@ -9,5 +9,5 @@ import com.nantia.model.Producto;
 public interface ProductoRepository extends CrudRepository<Producto, Long> {
 
 	List<Producto> findByRetornable(boolean retornable);
-	Producto findByNombreProducto(String nombre);
+	Producto findByNombre(String nombre);
 }

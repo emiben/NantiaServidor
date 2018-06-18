@@ -22,7 +22,7 @@ public class ListaPrecio implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "listasId")
+	@Column(name = "id")
 	private long id;
 		
 	@Column(name = "nombreLista")	
@@ -30,10 +30,10 @@ public class ListaPrecio implements Serializable{
 	
 	@Column(name = "fechaAlta")
 	private Date fechaAlta;
-	
+	/*
 	@OneToMany(mappedBy = "listas")
 	private Set<ProductoLista> productoLista = new HashSet<ProductoLista>();
-
+*/
 	
 	protected ListaPrecio() {
 	}
@@ -65,7 +65,7 @@ public class ListaPrecio implements Serializable{
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-
+/*
 	public Set<ProductoLista> getProductoLista() {
 		return productoLista;
 	}
@@ -73,7 +73,7 @@ public class ListaPrecio implements Serializable{
 	public void setProductoLista(Set<ProductoLista> productoLista) {
 		this.productoLista = productoLista;
 	}
-	
+	*/
 	@Override
 	public String toString() {
 		return String.format("ProductoLista[id=%d]", id);

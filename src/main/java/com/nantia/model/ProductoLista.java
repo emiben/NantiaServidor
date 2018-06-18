@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "productoLista")
+@Table(name = "productolista")
 public class ProductoLista  implements Serializable{
 	
 
@@ -34,13 +34,12 @@ public class ProductoLista  implements Serializable{
 	private Date actualizado;
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "listas_id")  
-	@JsonIgnore
-	private ListaPrecio ListaPrecio;
+	private ListaPrecio listaPrecio;
+		
 	
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "productos_id")
 	@JsonIgnore
 	private Producto productos;
@@ -73,11 +72,11 @@ public class ProductoLista  implements Serializable{
 	}
 
 	public ListaPrecio getListaPrecio() {
-		return ListaPrecio;
+		return listaPrecio;
 	}
 
 	public void setListaId(ListaPrecio ListaPrecio) {
-		this.ListaPrecio = ListaPrecio;
+		this.listaPrecio = ListaPrecio;
 	}
 
 	public Producto getProductos() {

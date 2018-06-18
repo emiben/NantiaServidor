@@ -1,6 +1,8 @@
 package com.nantia.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Producto;
+import com.nantia.model.ProductoLista;
 import com.nantia.service.IProductoService;
 
 @CrossOrigin(origins = "*")
@@ -57,10 +60,21 @@ public class ProductoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Producto> addProducto(@RequestBody Producto producto) {
-		LOG.info("creating new product: {}", producto);
-
+		LOG.info("Creando el nuevo producto: {}", producto);
+		
+		//**
+		Set<ProductoLista> setProductoLista = producto.getSetProductoLista();						
+		Iterator<ProductoLista> iteEnvases = producto.getSetProductoLista().iterator();
+	    while(iteEnvases.hasNext()) {
+	    	ProductoLista productoLista = iteEnvases.next();
+	    	productoLista.setProductos(producto);
+	    	setProductoLista.add(productoLista);
+	    }		
+	    producto.setSetProductoLista(setProductoLista);
+		//**
+		
         if (productoService.existe(producto)){
-            LOG.info("El producto con nombre " + producto.getNombreProducto() + " ya existe");
+            LOG.info("El producto con nombre " + producto.getNombre() + " ya existe");
             return new ResponseEntity<Producto>(HttpStatus.CONFLICT);
         }
 
@@ -79,6 +93,17 @@ public class ProductoController {
             return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
         }
 
+      //**
+  		Set<ProductoLista> setProductoLista = producto.getSetProductoLista();						
+  		Iterator<ProductoLista> iteEnvases = producto.getSetProductoLista().iterator();
+  	    while(iteEnvases.hasNext()) {
+  	    	ProductoLista productoLista = iteEnvases.next();
+  	    	productoLista.setProductos(producto);
+  	    	setProductoLista.add(productoLista);
+  	    }		
+  	    producto.setSetProductoLista(setProductoLista);
+  		//**
+      	    
         Producto productoUpd = productoService.updateProducto(producto);
         return new ResponseEntity<Producto>(productoUpd, HttpStatus.OK);
 	}

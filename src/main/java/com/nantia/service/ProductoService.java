@@ -45,7 +45,7 @@ public class ProductoService implements IProductoService {
 
 	@Override
 	public boolean existe(Producto producto) {
-		return productoRepository.findByNombreProducto(producto.getNombreProducto())
+		return productoRepository.findByNombre(producto.getNombre())
 				!= null;
 	}
 
