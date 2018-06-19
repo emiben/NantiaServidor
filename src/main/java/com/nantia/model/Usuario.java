@@ -2,12 +2,17 @@ package com.nantia.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 
 @Entity
@@ -29,12 +34,16 @@ public class Usuario implements Serializable {
 	@Column(name = "apellido")
 	private String apellido;
 	
+//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "id", referencedColumnName="id")
+//	private Rol rol;
 	@Column(name = "rol")
 	private int rol;
 	
 	@Column(name = "contrasenia")
 	private String contrasenia;
-
+	
+	
 	protected Usuario() {
 	}
 
@@ -95,9 +104,4 @@ public class Usuario implements Serializable {
 		this.contrasenia = contrasenia;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Usuario[id=%d, usuario='%s', nombre='%s', apellido='%s', rol=%d, contrasenia='%s']",
-				id, usuario, nombre, apellido, rol, contrasenia);
-	}
 }
