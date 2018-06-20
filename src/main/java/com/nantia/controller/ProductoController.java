@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,21 +59,10 @@ public class ProductoController {
         return new ResponseEntity<Producto>(producto, HttpStatus.OK);
 	}
 	
-	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Producto> addProducto(@RequestBody Producto producto) {
 		LOG.info("Creando el nuevo producto: {}", producto);
-		
-		//**
-		Set<ProductoLista> setProductoLista = producto.getSetProductoLista();						
-		Iterator<ProductoLista> iteEnvases = producto.getSetProductoLista().iterator();
-	    while(iteEnvases.hasNext()) {
-	    	ProductoLista productoLista = iteEnvases.next();
-	    	productoLista.setProductos(producto);
-	    	setProductoLista.add(productoLista);
-	    }		
-	    producto.setSetProductoLista(setProductoLista);
-		//**
 		
         if (productoService.existe(producto)){
             LOG.info("El producto con nombre " + producto.getNombre() + " ya existe");
@@ -93,16 +84,6 @@ public class ProductoController {
             return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
         }
 
-      //**
-  		Set<ProductoLista> setProductoLista = producto.getSetProductoLista();						
-  		Iterator<ProductoLista> iteEnvases = producto.getSetProductoLista().iterator();
-  	    while(iteEnvases.hasNext()) {
-  	    	ProductoLista productoLista = iteEnvases.next();
-  	    	productoLista.setProductos(producto);
-  	    	setProductoLista.add(productoLista);
-  	    }		
-  	    producto.setSetProductoLista(setProductoLista);
-  		//**
       	    
         Producto productoUpd = productoService.updateProducto(producto);
         return new ResponseEntity<Producto>(productoUpd, HttpStatus.OK);

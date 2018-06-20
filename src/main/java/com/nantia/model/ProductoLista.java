@@ -6,10 +6,12 @@ import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,6 +29,17 @@ public class ProductoLista  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;	
 	
+	@ManyToOne
+	@JoinColumn(name = "listas_id")  
+	@JsonIgnore
+	private ListaPrecio listaPrecio;
+		
+	   
+	@ManyToOne
+	@JoinColumn(name = "productos_id")
+	private Producto productos;
+	
+	
 	@Column(name = "precio")
 	private float precio;
 	
@@ -34,15 +47,7 @@ public class ProductoLista  implements Serializable{
 	private Date actualizado;
 	
 	
-	@ManyToOne
-	@JoinColumn(name = "listas_id")  
-	private ListaPrecio listaPrecio;
-		
 	
-	@ManyToOne
-	@JoinColumn(name = "productos_id")
-	@JsonIgnore
-	private Producto productos;
 	
 	protected ProductoLista() {
 	}
@@ -75,7 +80,7 @@ public class ProductoLista  implements Serializable{
 		return listaPrecio;
 	}
 
-	public void setListaId(ListaPrecio ListaPrecio) {
+	public void setListaPrecio(ListaPrecio ListaPrecio) {
 		this.listaPrecio = ListaPrecio;
 	}
 

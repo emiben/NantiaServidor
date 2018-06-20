@@ -2,7 +2,10 @@ package com.nantia.controller;
 
 import com.nantia.service.IListaPrecioService;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.ListaPrecio;
+import com.nantia.model.ProductoLista;
 
 
 @RestController
@@ -55,18 +59,27 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
         return new ResponseEntity<ListaPrecio>(listaPrecio, HttpStatus.OK);
 	}
 	
-	@Transactional
+	//@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ListaPrecio> addListaPrecio(@RequestBody ListaPrecio listaPrecio) {
 		LOG.info("creando lista de precios: {}", listaPrecio);
-
-        if (listaPrecioService.existe(listaPrecio)){
+		
+		Set<ProductoLista> setProductoLista =  listaPrecio.getSetProductoLista();						
+		Iterator<ProductoLista> iteProLis = listaPrecio.getSetProductoLista().iterator();
+	    while(iteProLis.hasNext()) {
+	    	ProductoLista productoLista = iteProLis.next();
+	    	productoLista.setListaPrecio(listaPrecio);
+	    	setProductoLista.add(productoLista);
+	    }		
+	    listaPrecio.setProductoLista(setProductoLista);
+		
+		if (listaPrecioService.existe(listaPrecio)){
             LOG.info("La lista de precios con nombre " + listaPrecio.getNombreLista() + " ya existe");
             return new ResponseEntity<ListaPrecio>(HttpStatus.CONFLICT);
         }
-
-        ListaPrecio newListaPrecio = listaPrecioService.addListaPrecio(listaPrecio);
-
+			
+		ListaPrecio newListaPrecio = listaPrecioService.addListaPrecio(listaPrecio);
+        
         return new ResponseEntity<ListaPrecio>(newListaPrecio, HttpStatus.CREATED);
 	}
 	

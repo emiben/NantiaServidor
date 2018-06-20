@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,10 +32,11 @@ public class ListaPrecio implements Serializable{
 	
 	@Column(name = "fechaAlta")
 	private Date fechaAlta;
-	/*
-	@OneToMany(mappedBy = "listas")
-	private Set<ProductoLista> productoLista = new HashSet<ProductoLista>();
-*/
+	
+
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "listaPrecio")
+	private Set<ProductoLista> setProductoLista = new HashSet<ProductoLista>();
+	
 	
 	protected ListaPrecio() {
 	}
@@ -65,19 +68,23 @@ public class ListaPrecio implements Serializable{
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-/*
-	public Set<ProductoLista> getProductoLista() {
-		return productoLista;
+
+	
+	public Set<ProductoLista> getSetProductoLista() {
+		return setProductoLista;
 	}
 
-	public void setProductoLista(Set<ProductoLista> productoLista) {
-		this.productoLista = productoLista;
+	public void setProductoLista(Set<ProductoLista> setProductoLista) {
+		this.setProductoLista = setProductoLista;
 	}
-	*/
+	
+	
+	
 	@Override
 	public String toString() {
 		return String.format("ProductoLista[id=%d]", id);
 	}
-	
+
+
 	
 }

@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "productos", uniqueConstraints={@UniqueConstraint(columnNames = {"nombre"})}) 
+@Table(name = "productos") //, uniqueConstraints={@UniqueConstraint(columnNames = {"nombre"})}
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 3258306168943102469L;
@@ -38,9 +38,6 @@ public class Producto implements Serializable {
 	
 	@Column(name = "retornable")
 	private boolean retornable;
-
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "productos")
-	private Set<ProductoLista> setProductoLista = new HashSet<ProductoLista>();
 
 	public long getProductoId() {
 		return productoId;
@@ -82,12 +79,4 @@ public class Producto implements Serializable {
 		this.retornable = retornable;
 	}
 
-	public Set<ProductoLista> getSetProductoLista() {
-		return setProductoLista;
-	}
-
-	public void setSetProductoLista(Set<ProductoLista> setProductoLista) {
-		this.setProductoLista = setProductoLista;
-	}
-	
 }
