@@ -32,12 +32,6 @@ public class Direccion implements Serializable{
 	
 	@Column(name = "telefono")
 	private String telefono;
-		
-	@Column(name = "esquina1")
-	private String esquina1;
-	
-	@Column(name = "esquina2")
-	private String esquina2;
 	
 	@Column(name = "ciudad")
 	private String ciudad;
@@ -48,24 +42,18 @@ public class Direccion implements Serializable{
 	@Column(name = "codPostal")
 	private String codPostal;
 	
-	@Column(name = "observaciones")
-	private String observaciones;
-	
 
 	protected Direccion() {
 	}
 	
-	public Direccion(String direccion, float coordLon, float coordLat, String telefono, String esquina1, String esquina2, String observaciones, String ciudad, String departamento, String codPostal) {
+	public Direccion(String direccion, float coordLon, float coordLat, String telefono, String ciudad, String departamento, String codPostal) {
 		this.direccion = direccion;
 		this.coordLon = coordLon;
 		this.coordLat = coordLat;		
 		this.telefono = telefono;
-		this.esquina1 = esquina1;
-		this.esquina2 = esquina2;	
 		this.ciudad = ciudad;
 		this.departamento = departamento;
 		this.codPostal = codPostal;
-		this.observaciones = observaciones;
 	}
 	
 	
@@ -109,25 +97,6 @@ public class Direccion implements Serializable{
 		this.telefono = telefono;
 	}
 
-	public String getEsquina1() {
-		return esquina1;
-	}
-
-	public void setEsquina1(String esquina1) {
-		this.esquina1 = esquina1;
-	}
-
-	public String getEsquina2() {
-		return esquina2;
-	}
-
-	public void setEsquina2(String esquina2) {
-		this.esquina2 = esquina2;
-	}
-
-	public String getObservaciones() {
-		return observaciones;
-	}
 
 	public String getCiudad() {
 		return ciudad;
@@ -151,10 +120,6 @@ public class Direccion implements Serializable{
 
 	public void setCodPostal(String codPostal) {
 		this.codPostal = codPostal;
-	}
-
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
 	}
 
 	@Override

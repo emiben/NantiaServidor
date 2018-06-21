@@ -36,8 +36,7 @@ public class Cliente implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "clienteId")
-	private long clienteId;
+	private long id;
 		
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "direcciones_id")	
@@ -115,11 +114,11 @@ public class Cliente implements Serializable{
 	
 	
 	public long getId() {
-		return clienteId;
+		return id;
 	}
 
 	public void setId(long clienteId) {
-		this.clienteId = clienteId;
+		this.id = clienteId;
 	}
 
 	public TipoDocumento getTipoDocumento() {
@@ -227,14 +226,6 @@ public class Cliente implements Serializable{
 	}
 	
 
-	public long getClienteId() {
-		return clienteId;
-	}
-
-	public void setClienteId(long clienteId) {
-		this.clienteId = clienteId;
-	}
-
 	public void addDias(DiaSemana diaSemana) {
         this.dias.add(diaSemana);
     } 
@@ -263,7 +254,7 @@ public class Cliente implements Serializable{
 
 	@Override
 	public String toString() {
-		return String.format("clientes[id=%d]",	clienteId);
+		return String.format("clientes[id=%d]",	id);
 	}	
 	
 	public enum TipoDocumento {

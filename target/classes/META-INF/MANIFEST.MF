@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: SpringJPA-PostgreSQL
 Implementation-Version: 0.0.1
-Built-By: pablo
+Built-By: Emi
 Implementation-Vendor-Id: com.nantia
-Build-Jdk: 1.8.0_171
+Build-Jdk: 1.8.0_161
 Implementation-URL: http://projects.spring.io/spring-boot/SpringJPA-Po
  stgreSQ/
 Created-By: Maven Integration for Eclipse
