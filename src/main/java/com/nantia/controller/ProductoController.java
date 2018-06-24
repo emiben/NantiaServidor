@@ -1,7 +1,7 @@
 package com.nantia.controller;
 
 import java.util.List;
-
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nantia.model.Producto;
 import com.nantia.service.IProductoService;
 
@@ -54,13 +53,13 @@ public class ProductoController {
         return new ResponseEntity<Producto>(producto, HttpStatus.OK);
 	}
 	
-	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Producto> addProducto(@RequestBody Producto producto) {
-		LOG.info("creating new product: {}", producto);
-
+		LOG.info("Creando el nuevo producto: {}", producto);
+		
         if (productoService.existe(producto)){
-            LOG.info("a product with name " + producto.getNombre() + " " + producto.getPresentacion() + " already exists");
+            LOG.info("El producto con nombre " + producto.getNombre() + " ya existe");
             return new ResponseEntity<Producto>(HttpStatus.CONFLICT);
         }
 
@@ -78,7 +77,7 @@ public class ProductoController {
             LOG.info("Product with id {} not found", id);
             return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
         }
-
+      	    
         Producto productoUpd = productoService.updateProducto(producto);
         return new ResponseEntity<Producto>(productoUpd, HttpStatus.OK);
 	}

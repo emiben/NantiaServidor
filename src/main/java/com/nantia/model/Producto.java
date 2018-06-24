@@ -1,25 +1,30 @@
 package com.nantia.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "producto", uniqueConstraints={
-	    @UniqueConstraint(columnNames = {"nombre", "presentacion"})}) 
+@Table(name = "productos") 
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 3258306168943102469L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private long productoId;
 	
 	@Column(name = "nombre")
 	private String nombre;
@@ -33,12 +38,12 @@ public class Producto implements Serializable {
 	@Column(name = "retornable")
 	private boolean retornable;
 
-	public long getId() {
-		return id;
+	public long getProductoId() {
+		return productoId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setProductoId(long productoId) {
+		this.productoId = productoId;
 	}
 
 	public String getNombre() {
@@ -48,7 +53,7 @@ public class Producto implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
+	
 	public String getPresentacion() {
 		return presentacion;
 	}
@@ -72,5 +77,5 @@ public class Producto implements Serializable {
 	public void setRetornable(boolean retornable) {
 		this.retornable = retornable;
 	}
-	
+
 }
