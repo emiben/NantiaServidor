@@ -7,5 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 import com.nantia.model.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
+	Usuario findByUsuario(String usuario);
+	List<Usuario> findByNombre(String nombre);
 	List<Usuario> findByApellido(String apellido);
+	List<Usuario> findByRol(int rol);
+	Usuario findByUsuarioAndContrasenia(String nombreUsuario, String contrasenia);
 }

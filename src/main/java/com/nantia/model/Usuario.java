@@ -9,17 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = -3009157732242241606L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "usuario")
+	@Column(name = "usuario", unique=true)
 	private String usuario;
 
 	@Column(name = "nombre")
@@ -42,6 +42,55 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.rol = rol;
+		this.contrasenia = contrasenia;
+	}
+	
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public int getRol() {
+		return rol;
+	}
+
+	public void setRol(int rol) {
+		this.rol = rol;
+	}
+
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
 
