@@ -17,14 +17,13 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "productos") //, uniqueConstraints={@UniqueConstraint(columnNames = {"nombre"})}
+@Table(name = "productos") 
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 3258306168943102469L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "productosId")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long productoId;
 	
 	@Column(name = "nombre")

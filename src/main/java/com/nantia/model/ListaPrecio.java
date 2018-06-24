@@ -14,17 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(name = "listas")
+@Table(name = "listasdeprecios", uniqueConstraints = {@UniqueConstraint(columnNames = {"nombreLista"})})
 public class ListaPrecio implements Serializable{
 	
 	private static final long serialVersionUID = 666261282935880237L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 		
 	@Column(name = "nombreLista")	
@@ -78,13 +78,9 @@ public class ListaPrecio implements Serializable{
 		this.setProductoLista = setProductoLista;
 	}
 	
-	
-	
 	@Override
 	public String toString() {
 		return String.format("ProductoLista[id=%d]", id);
 	}
-
-
 	
 }

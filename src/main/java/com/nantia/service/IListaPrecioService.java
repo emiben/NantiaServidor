@@ -2,6 +2,7 @@ package com.nantia.service;
 
 import java.util.List;
 import com.nantia.model.ListaPrecio;
+import com.nantia.model.Producto;
 
 public interface IListaPrecioService {
 	

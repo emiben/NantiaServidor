@@ -59,11 +59,11 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
         return new ResponseEntity<ListaPrecio>(listaPrecio, HttpStatus.OK);
 	}
 	
-	//@Transactional
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ListaPrecio> addListaPrecio(@RequestBody ListaPrecio listaPrecio) {
 		LOG.info("creando lista de precios: {}", listaPrecio);
-		
+				
 		Set<ProductoLista> setProductoLista =  listaPrecio.getSetProductoLista();						
 		Iterator<ProductoLista> iteProLis = listaPrecio.getSetProductoLista().iterator();
 	    while(iteProLis.hasNext()) {
@@ -71,8 +71,8 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
 	    	productoLista.setListaPrecio(listaPrecio);
 	    	setProductoLista.add(productoLista);
 	    }		
-	    listaPrecio.setProductoLista(setProductoLista);
-		
+	    listaPrecio.setProductoLista(setProductoLista);    
+	    
 		if (listaPrecioService.existe(listaPrecio)){
             LOG.info("La lista de precios con nombre " + listaPrecio.getNombreLista() + " ya existe");
             return new ResponseEntity<ListaPrecio>(HttpStatus.CONFLICT);
@@ -84,12 +84,20 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
 	}
 	
 	
-	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ListaPrecio> updateListaPrecio(@PathVariable int id, @RequestBody ListaPrecio listaPrecio) {
 		LOG.info("Actualizando lista de precios: {}", listaPrecio);
 		ListaPrecio currentListaPrecio = listaPrecioService.getListaPrecioById(id);
 
+		Set<ProductoLista> setProductoLista =  listaPrecio.getSetProductoLista();						
+		Iterator<ProductoLista> iteProLis = listaPrecio.getSetProductoLista().iterator();
+	    while(iteProLis.hasNext()) {
+	    	ProductoLista productoLista = iteProLis.next();
+	    	productoLista.setListaPrecio(listaPrecio);
+	    	setProductoLista.add(productoLista);
+	    }		
+	    listaPrecio.setProductoLista(setProductoLista);  
+	    
         if (currentListaPrecio == null){
             LOG.info("Lista de precio con id {} no encontrado", id);
             return new ResponseEntity<ListaPrecio>(HttpStatus.NOT_FOUND);
@@ -98,7 +106,7 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
         ListaPrecio listaPrecioUpd = listaPrecioService.updateListaPrecio(listaPrecio);
         return new ResponseEntity<ListaPrecio>(listaPrecioUpd, HttpStatus.OK);
 	}
-	
+	//
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteListaPrecio(@PathVariable("id") int id){
         LOG.info("Eliminando cliente con id: {}", id);

@@ -2,7 +2,6 @@ package com.nantia.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,13 @@ public class ListaPrecioService implements IListaPrecioService{
 
 	@Autowired
 	private ListaDePrecioRepository listaDePrecioRepository;
-
 	
 	private ListaPrecio findByNombre(String nombre) {
 		ListaPrecio lPrecio = listaDePrecioRepository.findByNombreLista(nombre);
 		return lPrecio;
 	}
 	
+
 	@Override
 	public List<ListaPrecio> getAllListaPrecio() {
 		List<ListaPrecio> list = new ArrayList<>();	

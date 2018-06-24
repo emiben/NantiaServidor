@@ -14,11 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "productolista")
+@Table(name = "productolista", uniqueConstraints = {@UniqueConstraint(columnNames = {"listas_id", "productos_id"})})
 public class ProductoLista  implements Serializable{
 	
 
@@ -26,7 +27,7 @@ public class ProductoLista  implements Serializable{
 
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;	
 	
 	@ManyToOne
@@ -37,7 +38,7 @@ public class ProductoLista  implements Serializable{
 	   
 	@ManyToOne
 	@JoinColumn(name = "productos_id")
-	private Producto productos;
+	private Producto producto;
 	
 	
 	@Column(name = "precio")
@@ -45,8 +46,6 @@ public class ProductoLista  implements Serializable{
 	
 	@Column(name = "actualizado")
 	private Date actualizado;
-	
-	
 	
 	
 	protected ProductoLista() {
@@ -85,11 +84,11 @@ public class ProductoLista  implements Serializable{
 	}
 
 	public Producto getProductos() {
-		return productos;
+		return producto;
 	}
 
 	public void setProductos(Producto productos) {
-		this.productos = productos;
+		this.producto = productos;
 	}
 
 	@Override

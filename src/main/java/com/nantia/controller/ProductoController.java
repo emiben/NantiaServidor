@@ -1,11 +1,7 @@
 package com.nantia.controller;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nantia.model.Producto;
-import com.nantia.model.ProductoLista;
 import com.nantia.service.IProductoService;
 
 @CrossOrigin(origins = "*")
@@ -83,7 +77,6 @@ public class ProductoController {
             LOG.info("Product with id {} not found", id);
             return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
         }
-
       	    
         Producto productoUpd = productoService.updateProducto(producto);
         return new ResponseEntity<Producto>(productoUpd, HttpStatus.OK);
