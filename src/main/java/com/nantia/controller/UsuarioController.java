@@ -2,6 +2,8 @@ package com.nantia.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nantia.model.Caja;
 import com.nantia.model.Usuario;
 import com.nantia.service.IUsuarioService;
 
@@ -53,12 +56,17 @@ public class UsuarioController {
         return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
-		LOG.info("creating new user: {}", usuario);
-
+		LOG.info("creando un nuevo usuario: {}", usuario);
+		LOG.info("cajaid {} - cajasaldo {}", usuario.getCaja().getId(), usuario.getCaja().getSaldo());
+		
+		Caja caja = new Caja(usuario.getCaja().getId(), usuario.getCaja().getSaldo());
+		usuario.setCaja(caja);
+		
         if (usuarioService.existe(usuario)){
-            LOG.info("a user with name " + usuario.getUsuario() + " already exists");
+            LOG.info("el usuario con nombre " + usuario.getUsuario() + " ya existe");
             return new ResponseEntity<Usuario>(HttpStatus.CONFLICT);
         }
 

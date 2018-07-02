@@ -34,7 +34,8 @@ public class UsuarioService implements IUsuarioService{
 	}
 
 	@Override
-	public synchronized Usuario addUsuario(Usuario usuario) {
+	public Usuario addUsuario(Usuario usuario) {
+		//synchronized
 		return usuarioRepository.save(usuario);
 	}
 

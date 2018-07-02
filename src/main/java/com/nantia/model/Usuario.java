@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
@@ -24,6 +26,10 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "cajas_id")
+	private Caja caja;
 	
 	@Column(name = "usuario", unique=true)
 	private String usuario;
@@ -34,25 +40,28 @@ public class Usuario implements Serializable {
 	@Column(name = "apellido")
 	private String apellido;
 	
-//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "id", referencedColumnName="id")
-//	private Rol rol;
 	@Column(name = "rol")
 	private int rol;
 	
 	@Column(name = "contrasenia")
 	private String contrasenia;
 	
+	@Column(name = "esVendedor")
+	private boolean esVendedor;
+	
+	
 	
 	protected Usuario() {
 	}
 
-	public Usuario(String usuario, String nombre, String apellido, int rol, String contrasenia) {
+	public Usuario(String usuario, String nombre, String apellido, int rol, String contrasenia, boolean esVendedor) {
 		this.usuario = usuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.rol = rol;
 		this.contrasenia = contrasenia;
+		this.esVendedor = esVendedor;
+		
 	}
 	
 	
@@ -103,5 +112,22 @@ public class Usuario implements Serializable {
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
+
+	public boolean isEsVendedor() {
+		return esVendedor;
+	}
+
+	public void setEsVendedor(boolean esVendedor) {
+		this.esVendedor = esVendedor;
+	}
+
+	public Caja getCaja() {
+		return caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
+	}
+	
 
 }

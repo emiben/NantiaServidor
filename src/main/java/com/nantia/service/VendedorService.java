@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.nantia.model.Usuario;
 import com.nantia.model.Vendedor;
 import com.nantia.repo.UsuarioRepository;
-import com.nantia.repo.VendedorRepository;
+
 
 public class VendedorService implements IVendedorService {
 
