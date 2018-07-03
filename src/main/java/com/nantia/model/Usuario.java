@@ -27,10 +27,6 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "cajas_id")
-	private Caja caja;
-	
 	@Column(name = "usuario", unique=true)
 	private String usuario;
 
@@ -40,8 +36,9 @@ public class Usuario implements Serializable {
 	@Column(name = "apellido")
 	private String apellido;
 	
-	@Column(name = "rol")
-	private int rol;
+	@ManyToOne
+	@JoinColumn(name="rol_id")
+	private Rol rol;
 	
 	@Column(name = "contrasenia")
 	private String contrasenia;
@@ -49,18 +46,19 @@ public class Usuario implements Serializable {
 	@Column(name = "esVendedor")
 	private boolean esVendedor;
 	
+	@Column(name = "saldoCaja")
+	private float saldoCaja;
 	
-	
-	protected Usuario() {
+	public Usuario() {
 	}
 
-	public Usuario(String usuario, String nombre, String apellido, int rol, String contrasenia, boolean esVendedor) {
+	public Usuario(String usuario, String nombre, String apellido, String contrasenia, boolean esVendedor, float saldoCaja) {
 		this.usuario = usuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.rol = rol;
 		this.contrasenia = contrasenia;
 		this.esVendedor = esVendedor;
+		this.saldoCaja = saldoCaja;
 		
 	}
 	
@@ -97,14 +95,6 @@ public class Usuario implements Serializable {
 		this.apellido = apellido;
 	}
 
-	public int getRol() {
-		return rol;
-	}
-
-	public void setRol(int rol) {
-		this.rol = rol;
-	}
-
 	public String getContrasenia() {
 		return contrasenia;
 	}
@@ -121,13 +111,22 @@ public class Usuario implements Serializable {
 		this.esVendedor = esVendedor;
 	}
 
-	public Caja getCaja() {
-		return caja;
+	public float getSaldoCaja() {
+		return saldoCaja;
 	}
 
-	public void setCaja(Caja caja) {
-		this.caja = caja;
+	public void setSaldoCaja(float saldoCaja) {
+		this.saldoCaja = saldoCaja;
 	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 	
 
 }

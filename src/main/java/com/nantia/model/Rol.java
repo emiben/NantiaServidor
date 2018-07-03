@@ -1,7 +1,6 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +20,8 @@ public class Rol implements Serializable {
 	
 	@Column(name = "nombreRol", unique=true)
 	private String nombreRol;
-
-	protected Rol() {
+		 
+	public Rol() {
 	}
 	
 	public Rol(long id, String nombreRol) {
@@ -44,10 +43,6 @@ public class Rol implements Serializable {
 
 	public void setNombreRol(String nombreRol) {
 		this.nombreRol = nombreRol;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

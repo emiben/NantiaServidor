@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nantia.model.Caja;
+import com.nantia.model.Rol;
 import com.nantia.model.Usuario;
 import com.nantia.service.IUsuarioService;
 
@@ -60,10 +60,12 @@ public class UsuarioController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
 		LOG.info("creando un nuevo usuario: {}", usuario);
-		LOG.info("cajaid {} - cajasaldo {}", usuario.getCaja().getId(), usuario.getCaja().getSaldo());
 		
-		Caja caja = new Caja(usuario.getCaja().getId(), usuario.getCaja().getSaldo());
-		usuario.setCaja(caja);
+		Rol rol = new Rol();
+		rol.setId(usuario.getRol().getId());
+		rol.setNombreRol(usuario.getRol().getNombreRol());
+		usuario.setRol(rol);   
+	    
 		
         if (usuarioService.existe(usuario)){
             LOG.info("el usuario con nombre " + usuario.getUsuario() + " ya existe");
