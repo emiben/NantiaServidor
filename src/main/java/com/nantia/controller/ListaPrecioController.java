@@ -21,8 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.ListaPrecio;
 import com.nantia.model.ProductoLista;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/listaprecio")
 public class ListaPrecioController {
