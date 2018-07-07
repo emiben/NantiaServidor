@@ -25,10 +25,10 @@ public class Direccion implements Serializable{
 	private String direccion;
 	
 	@Column(name = "coordLon")
-	private float coordLon;
+	private String coordLon;
 
 	@Column(name = "coordLat")
-	private float coordLat;
+	private String coordLat;
 	
 	@Column(name = "telefono")
 	private String telefono;
@@ -46,7 +46,7 @@ public class Direccion implements Serializable{
 	protected Direccion() {
 	}
 	
-	public Direccion(String direccion, float coordLon, float coordLat, String telefono, String ciudad, String departamento, String codPostal) {
+	public Direccion(String direccion, String coordLon, String coordLat, String telefono, String ciudad, String departamento, String codPostal) {
 		this.direccion = direccion;
 		this.coordLon = coordLon;
 		this.coordLat = coordLat;		
@@ -73,19 +73,19 @@ public class Direccion implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public float getCoordLon() {
+	public String getCoordLon() {
 		return coordLon;
 	}
 
-	public void setCoordLon(float coordLon) {
+	public void setCoordLon(String coordLon) {
 		this.coordLon = coordLon;
 	}
 
-	public float getCoordLat() {
+	public String getCoordLat() {
 		return coordLat;
 	}
 
-	public void setCoordLat(float coordLat) {
+	public void setCoordLat(String coordLat) {
 		this.coordLat = coordLat;
 	}
 
