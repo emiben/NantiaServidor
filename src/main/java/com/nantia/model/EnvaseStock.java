@@ -6,21 +6,18 @@ import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "envasestock")//, uniqueConstraints = {@UniqueConstraint(columnNames = {"stock_id"})}
+@Table(name = "envasestock")
 public class EnvaseStock implements Serializable {
 	
 	private static final long serialVersionUID = 5394273125528765283L;
@@ -41,7 +38,7 @@ public class EnvaseStock implements Serializable {
 	private Date fecha;
 	
 	@OneToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name = "envasetipos_id")//@MapsId	
+	@JoinColumn(name = "envasetipos_id")	
 	private EnvasesTipos envasesTipos;
 	
 	protected EnvaseStock() {
