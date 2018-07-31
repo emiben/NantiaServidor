@@ -1,6 +1,8 @@
 package com.nantia.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nantia.model.ProductoLista;
 import com.nantia.model.Reparto;
+import com.nantia.model.Ruta;
+import com.nantia.model.RutaCliente;
 import com.nantia.service.IRepartoService;
 
 
@@ -57,6 +62,22 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Reparto> addReparto(@RequestBody Reparto reparto) {
 		LOG.info("creando un nuevo reparto: {}", reparto);
+		
+		//*******
+		
+		Ruta ruta = reparto.getRuta();
+		
+		Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						
+		Iterator<RutaCliente> iteRuCli = ruta.getSetRutaCliente().iterator();
+	    while(iteRuCli.hasNext()) {
+	    	RutaCliente rutaCliente = iteRuCli.next();
+	    	rutaCliente.setRuta(ruta);
+	    	setRutaCliente.add(rutaCliente);
+	    }		
+	    ruta.setSetRutaCliente(setRutaCliente);
+		reparto.setRuta(ruta);
+		
+		//*******
 
         if (repartoService.existe(reparto)){
             LOG.info("el reparto: " + reparto.getDescripcion() + " ya existe");

@@ -41,7 +41,7 @@ public class Reparto implements Serializable {
 	@Column(name = "fecha")
 	private Date fecha;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "ruta_id")	
 	private Ruta ruta;
 	
@@ -54,10 +54,19 @@ public class Reparto implements Serializable {
 		this.vendedor2 = vendedor2;
 		this.vehiculo = vehiculo;
 		this.fecha = fecha;
-		this.fecha = fecha;
+		this.ruta = ruta;
 	}
 	
+	
 		
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -108,7 +117,7 @@ public class Reparto implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Reparto[id=%d, descripcion=%s, vendedor1=%s, vendedor2=%s, descripcion=%s, fecha=%tF, ruta=%s]", id, descripcion, vendedor1.getNombre(), vendedor2.getNombre(), descripcion, fecha, ruta.getNombre());
+		return String.format("Reparto[id=%d, descripcion=%s, vendedor1=%s, vendedor2=%s, descripcion=%s, fecha=%tF, ruta=%s]", id, descripcion, vendedor1.getNombre(), vendedor2.getNombre(), vehiculo.getMatricula(), fecha, ruta.getNombre());
 	}
 	
 }
