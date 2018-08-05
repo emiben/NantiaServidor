@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "envasestock")//, uniqueConstraints = {@UniqueConstraint(columnNames = {"stock_id"})}
+@Table(name = "envasestock")
 public class EnvaseStock implements Serializable {
 	
 	private static final long serialVersionUID = 5394273125528765283L;
@@ -39,7 +39,7 @@ public class EnvaseStock implements Serializable {
 	private Date fecha;
 	
 	@OneToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name = "envasetipos_id")//@MapsId	
+	@JoinColumn(name = "envasetipos_id")
 	private EnvasesTipos envasesTipos;
 	
 	protected EnvaseStock() {
