@@ -1,6 +1,8 @@
 package com.nantia.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nantia.model.EnvaseStock;
+import com.nantia.model.ProductoLista;
+import com.nantia.model.ProductoStock;
+import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
 import com.nantia.service.IFabricaService;
 import com.nantia.service.IVehiculoService;
@@ -67,6 +73,30 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
             return new ResponseEntity<Vehiculo>(HttpStatus.CONFLICT);
         }
 
+        Stock stock = vehiculo.getStock();
+        if (stock != null){
+			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
+			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
+		    while(iteEnvStk.hasNext()) {
+		    	EnvaseStock envaseStock = iteEnvStk.next();
+		    	envaseStock.setStock(stock);
+		    	setEnvaseStock.add(envaseStock);
+		    }		
+		    stock.setSetEnvaseStock(setEnvaseStock);    
+		    
+		    
+		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
+			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
+		    while(iteProStk.hasNext()) {
+		    	ProductoStock productoStock = iteProStk.next();
+		    	productoStock.setStock(stock);
+		    	setProductoStock.add(productoStock);
+		    }		
+		    stock.setSetProductoStock(setProductoStock); 
+			
+		    vehiculo.setStock(stock);
+		}
+        
         Vehiculo newVehiculo = vehiculoService.addVehiculo(vehiculo);
 
         return new ResponseEntity<Vehiculo>(newVehiculo, HttpStatus.CREATED);
@@ -79,6 +109,33 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 		LOG.info("actualizando vehiculo: {}", vehiculo);
 		Vehiculo currentVehiculo = vehiculoService.getVehiculoById(id);
 
+		//****
+		Stock stock = vehiculo.getStock();
+		
+		if (stock != null){
+			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
+			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
+		    while(iteEnvStk.hasNext()) {
+		    	EnvaseStock envaseStock = iteEnvStk.next();
+		    	envaseStock.setStock(stock);
+		    	setEnvaseStock.add(envaseStock);
+		    }		
+		    stock.setSetEnvaseStock(setEnvaseStock);    
+		    
+		    
+		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
+			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
+		    while(iteProStk.hasNext()) {
+		    	ProductoStock productoStock = iteProStk.next();
+		    	productoStock.setStock(stock);
+		    	setProductoStock.add(productoStock);
+		    }		
+		    stock.setSetProductoStock(setProductoStock); 
+			
+		    vehiculo.setStock(stock);
+		}
+		//****
+		
         if (currentVehiculo == null){
             LOG.info("Vehiculo con id {} no encontrado", id);
             return new ResponseEntity<Vehiculo>(HttpStatus.NOT_FOUND);

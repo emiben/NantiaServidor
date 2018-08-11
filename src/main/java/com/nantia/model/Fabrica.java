@@ -29,7 +29,7 @@ public class Fabrica implements Serializable {
 	private Stock stock;
 	
 	
-	protected Fabrica() {
+	public Fabrica() {
 	}
 	
 	public Fabrica(String nombre, Stock stock) {

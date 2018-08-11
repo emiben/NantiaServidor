@@ -2,14 +2,20 @@ package com.nantia.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nantia.controller.FabricaController;
 import com.nantia.model.Fabrica;
 import com.nantia.repo.FabricaRepository;
 
 @Service
 public class FabricaService implements IFabricaService {
 	
+
 	@Autowired
 	private FabricaRepository fabricaRepository;
 	
@@ -27,7 +33,9 @@ public class FabricaService implements IFabricaService {
 
 	@Override
 	public Fabrica getFabricaById(long fabricaId) {
+		
 		Fabrica fab = fabricaRepository.findOne(fabricaId);
+		
 		return fab;
 	}
 

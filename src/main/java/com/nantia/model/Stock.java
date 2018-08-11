@@ -28,14 +28,14 @@ public class Stock implements Serializable {
 	@Column(name = "fecha")
 	private Date fecha;
 	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "stock")
+	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
 	private Set<EnvaseStock> setEnvaseStock = new HashSet<EnvaseStock>();
 	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "stock")
+	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
 	private Set<ProductoStock> setProductoStock = new HashSet<ProductoStock>();
 
 	
-	protected Stock() {
+	public Stock() {
 	}
 	
 	public Stock(Date fecha, Set<EnvaseStock> setEnvaseStock, Set<ProductoStock> setProductoStock) {

@@ -1,6 +1,9 @@
 package com.nantia.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nantia.model.EnvaseStock;
 import com.nantia.model.Fabrica;
+import com.nantia.model.ProductoStock;
+import com.nantia.model.Stock;
 import com.nantia.service.IFabricaService;;
 
 @CrossOrigin(origins = "*")
@@ -41,15 +48,15 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
 	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ResponseEntity<Fabrica> getFabricaById(@PathVariable("id") Integer id) {
+	public ResponseEntity<Fabrica> getFabricaById(@PathVariable("id") long id) {
 		LOG.info("trayendo fabrica por id: {}", id);
 		Fabrica fabrica = fabricaService.getFabricaById(id);
 
-        if (fabrica == null){
+		if (fabrica == null){
             LOG.info("fabrica por id {} no encontrada", id);
             return new ResponseEntity<Fabrica>(HttpStatus.NOT_FOUND);
         } 	
-
+        LOG.info("Fabrica encontrada, id: {}", fabrica.getId());
         return new ResponseEntity<Fabrica>(fabrica, HttpStatus.OK);
 	}
 	
@@ -63,6 +70,34 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
             return new ResponseEntity<Fabrica>(HttpStatus.CONFLICT);
         }
 
+        //**
+        
+        Stock stock = fabrica.getStock();
+		if (stock != null){
+			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
+			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
+		    while(iteEnvStk.hasNext()) {
+		    	EnvaseStock envaseStock = iteEnvStk.next();
+		    	envaseStock.setStock(stock);
+		    	setEnvaseStock.add(envaseStock);
+		    }		
+		    stock.setSetEnvaseStock(setEnvaseStock);    
+		    
+		    
+		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
+			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
+		    while(iteProStk.hasNext()) {
+		    	ProductoStock productoStock = iteProStk.next();
+		    	productoStock.setStock(stock);
+		    	setProductoStock.add(productoStock);
+		    }		
+		    stock.setSetProductoStock(setProductoStock); 
+			
+		    fabrica.setStock(stock);
+		}
+		
+        //**
+        
         Fabrica newFabrica = fabricaService.addFabrica(fabrica);
 
         return new ResponseEntity<Fabrica>(newFabrica, HttpStatus.CREATED);
@@ -71,10 +106,37 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
 	
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Fabrica> updateFabrica(@PathVariable int id, @RequestBody Fabrica fabrica) {
+	public ResponseEntity<Fabrica> updateFabrica(@PathVariable Long id, @RequestBody Fabrica fabrica) {
 		LOG.info("actualizando fabrica: {}", fabrica);
 		Fabrica currentFabrica = fabricaService.getFabricaById(id);
 
+		
+		//****
+		Stock stock = fabrica.getStock();
+		if (stock != null){
+			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
+			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
+		    while(iteEnvStk.hasNext()) {
+		    	EnvaseStock envaseStock = iteEnvStk.next();
+		    	envaseStock.setStock(stock);
+		    	setEnvaseStock.add(envaseStock);
+		    }		
+		    stock.setSetEnvaseStock(setEnvaseStock);    
+		    
+		    
+		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
+			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
+		    while(iteProStk.hasNext()) {
+		    	ProductoStock productoStock = iteProStk.next();
+		    	productoStock.setStock(stock);
+		    	setProductoStock.add(productoStock);
+		    }		
+		    stock.setSetProductoStock(setProductoStock); 
+			
+		    fabrica.setStock(stock);
+		}
+				//****
+			    
         if (currentFabrica == null){
             LOG.info("Fabrica con id {} no encontrado", id);
             return new ResponseEntity<Fabrica>(HttpStatus.NOT_FOUND);

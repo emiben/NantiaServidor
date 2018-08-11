@@ -42,7 +42,7 @@ public class Vehiculo implements Serializable {
 	private Boolean activo;
 	
 	@OneToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name = "stock_id")	
+	@JoinColumn(name = "stock_id", nullable = true)	
 	private Stock stock;
 	
 	
