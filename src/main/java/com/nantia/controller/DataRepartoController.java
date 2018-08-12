@@ -25,7 +25,7 @@ import com.nantia.service.IRepartoService;
 @RequestMapping("api/datareparto")
 public class DataRepartoController {
 	
-private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
+private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	
 	@Autowired
 	IRepartoService repartoService;
