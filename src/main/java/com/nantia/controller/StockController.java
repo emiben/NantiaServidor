@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.Stock;
+import com.nantia.service.EnvaseStockService;
+import com.nantia.service.IEnvaseStockService;
+import com.nantia.service.IProductoStockService;
 import com.nantia.service.IStockService;
 
 @CrossOrigin(origins = "*")
@@ -33,6 +36,10 @@ public class StockController {
 	
 	@Autowired
 	IStockService stockService;
+	@Autowired
+	IEnvaseStockService envaseStockService;
+	@Autowired
+	IProductoStockService productoStockService;
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -61,37 +68,56 @@ public class StockController {
         return new ResponseEntity<Stock>(listaStock, HttpStatus.OK);
 	}
 	
-	//@Transactional
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Stock> addStock(@RequestBody Stock stock) {
-		LOG.info("creando lista de precios: {}", stock);
+		LOG.info("creando stock: {}", stock);
 				
-		Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
+		 
+		if (stockService.existe(stock)){
+            LOG.info("El stock con id " + stock.getId() + " ya existe");
+            return new ResponseEntity<Stock>(HttpStatus.CONFLICT);
+        }
+			
+		Stock newStock = stockService.addStock(stock);  
+		
+		//****
+		Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();
 		Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
 	    while(iteEnvStk.hasNext()) {
 	    	EnvaseStock envaseStock = iteEnvStk.next();
-	    	envaseStock.setStock(stock);
-	    	setEnvaseStock.add(envaseStock);
+	    	if(envaseStock.getId()>0) {
+		    	envaseStock.setStock(newStock);
+		    	setEnvaseStock.add(envaseStock);
+	    	}else {
+	    		EnvaseStock newEnvaseStock = envaseStockService.addEnvaseStock(envaseStock);
+	    		newEnvaseStock.setStock(newStock);
+		    	setEnvaseStock.add(newEnvaseStock);
+	    	}
 	    }		
-	    stock.setSetEnvaseStock(setEnvaseStock);    
+	    newStock.setSetEnvaseStock(setEnvaseStock);    
 	    
 	    
 	    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
 		Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
 	    while(iteProStk.hasNext()) {
 	    	ProductoStock productoStock = iteProStk.next();
-	    	productoStock.setStock(stock);
-	    	setProductoStock.add(productoStock);
+	    	if(productoStock.getId()>0) {
+		    	productoStock.setStock(newStock);
+		    	setProductoStock.add(productoStock);
+	    	}else {
+	    		ProductoStock newProductoStock =  productoStockService.addProductoStock(productoStock);
+	    		newProductoStock.setStock(newStock);
+	    		setProductoStock.add(newProductoStock);
+	    	}
 	    }		
-	    stock.setSetProductoStock(setProductoStock);  	    
-	       
-		if (stockService.existe(stock)){
-            LOG.info("El stock con id " + stock.getId() + " ya existe");
-            return new ResponseEntity<Stock>(HttpStatus.CONFLICT);
-        }
-			
-		Stock newStock = stockService.addStock(stock);        
-        return new ResponseEntity<Stock>(newStock, HttpStatus.CREATED);
+	    newStock.setSetProductoStock(setProductoStock);  	    
+	      
+	    Stock stockUpd = stockService.updateStock(newStock); 
+		//****
+		
+		
+        return new ResponseEntity<Stock>(stockUpd, HttpStatus.CREATED);
 	}
 	
 	

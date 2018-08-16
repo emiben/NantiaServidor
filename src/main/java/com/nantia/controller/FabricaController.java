@@ -21,7 +21,8 @@ import com.nantia.model.EnvaseStock;
 import com.nantia.model.Fabrica;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.Stock;
-import com.nantia.service.IFabricaService;;
+import com.nantia.service.IFabricaService;
+import com.nantia.service.IStockService;;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,7 +33,8 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
 	
 	@Autowired
 	IFabricaService fabricaService;
-	
+	@Autowired
+	IStockService stockService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Fabrica>> getAllFabricas() {
@@ -69,38 +71,38 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
             LOG.info("la fabrica: " + fabrica.getNombre() + " ya existe");
             return new ResponseEntity<Fabrica>(HttpStatus.CONFLICT);
         }
-
-        //**
+        
+        Fabrica newFabrica = fabricaService.addFabrica(fabrica);
         
         Stock stock = fabrica.getStock();
+               
+        Stock newStock = stockService.addStock(stock);
+        
 		if (stock != null){
 			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
 			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
 		    while(iteEnvStk.hasNext()) {
 		    	EnvaseStock envaseStock = iteEnvStk.next();
-		    	envaseStock.setStock(stock);
+		    	envaseStock.setStock(newStock);
 		    	setEnvaseStock.add(envaseStock);
 		    }		
-		    stock.setSetEnvaseStock(setEnvaseStock);    
-		    
-		    
+		    newStock.setSetEnvaseStock(setEnvaseStock);    
+		    		    
 		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
 			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
 		    while(iteProStk.hasNext()) {
 		    	ProductoStock productoStock = iteProStk.next();
-		    	productoStock.setStock(stock);
+		    	productoStock.setStock(newStock);
 		    	setProductoStock.add(productoStock);
 		    }		
-		    stock.setSetProductoStock(setProductoStock); 
+		    newStock.setSetProductoStock(setProductoStock); 
 			
-		    fabrica.setStock(stock);
+		    Stock stockUpd = stockService.updateStock(newStock);
+		    newFabrica.setStock(stockUpd);
 		}
-		
-        //**
+		Fabrica fabricaUpd = fabricaService.updateFabrica(newFabrica);    
         
-        Fabrica newFabrica = fabricaService.addFabrica(fabrica);
-
-        return new ResponseEntity<Fabrica>(newFabrica, HttpStatus.CREATED);
+        return new ResponseEntity<Fabrica>(fabricaUpd, HttpStatus.CREATED);
 	}
 	
 	

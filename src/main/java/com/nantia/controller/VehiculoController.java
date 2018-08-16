@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.EnvaseStock;
+import com.nantia.model.Fabrica;
 import com.nantia.model.ProductoLista;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
 import com.nantia.service.IFabricaService;
+import com.nantia.service.IStockService;
 import com.nantia.service.IVehiculoService;
 
 @CrossOrigin(origins = "*")
@@ -35,6 +37,9 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 	
 	@Autowired
 	IVehiculoService vehiculoService;
+	
+	@Autowired
+	IStockService stockService;
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -72,34 +77,41 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
             LOG.info("la vehiculo: " + vehiculo.getMatricula() + " ya existe");
             return new ResponseEntity<Vehiculo>(HttpStatus.CONFLICT);
         }
-
+        
+        Vehiculo newVehiculo = vehiculoService.addVehiculo(vehiculo);
+        
         Stock stock = vehiculo.getStock();
+               
+        Stock newStock = stockService.addStock(stock);
+
         if (stock != null){
 			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
 			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
 		    while(iteEnvStk.hasNext()) {
 		    	EnvaseStock envaseStock = iteEnvStk.next();
-		    	envaseStock.setStock(stock);
+		    	envaseStock.setStock(newStock);
 		    	setEnvaseStock.add(envaseStock);
 		    }		
-		    stock.setSetEnvaseStock(setEnvaseStock);    
+		    newStock.setSetEnvaseStock(setEnvaseStock);    
 		    
 		    
 		    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
 			Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
 		    while(iteProStk.hasNext()) {
 		    	ProductoStock productoStock = iteProStk.next();
-		    	productoStock.setStock(stock);
+		    	productoStock.setStock(newStock);
 		    	setProductoStock.add(productoStock);
 		    }		
-		    stock.setSetProductoStock(setProductoStock); 
+		    newStock.setSetProductoStock(setProductoStock); 
+		    
+		    Stock stockUpd = stockService.updateStock(newStock);
+		    newVehiculo.setStock(stockUpd);	    		
 			
-		    vehiculo.setStock(stock);
 		}
         
-        Vehiculo newVehiculo = vehiculoService.addVehiculo(vehiculo);
+        Vehiculo vehiculoUpd = vehiculoService.addVehiculo(newVehiculo);
 
-        return new ResponseEntity<Vehiculo>(newVehiculo, HttpStatus.CREATED);
+        return new ResponseEntity<Vehiculo>(vehiculoUpd, HttpStatus.CREATED);
 	}
 	
 	

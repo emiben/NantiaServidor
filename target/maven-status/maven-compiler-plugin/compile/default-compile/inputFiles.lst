@@ -10,6 +10,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\En
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ListaPrecioService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvaseStock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\FabricaController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\RepartoController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\UsuarioRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IRutaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\RutaCliente.java
@@ -28,17 +29,21 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\Fa
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Cliente.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IClienteService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\ProductoController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\EnvaseStockService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\FabricaService.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IEnvaseStockService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\RutaController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvasesEnPrestamo.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ILoginService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Stock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\StockController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ProductoStockRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\EnvasesTipoRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ListaDePrecioRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvasesTipos.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DataRepartoController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\EnvasesTipoController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IProductoStockService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\RolService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ProductoRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\DireccionService.java
@@ -48,6 +53,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Login.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\VehiculoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\RolRepository.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ProductoStockService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\DireccionRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\RutaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\EnvasesTipoService.java
@@ -68,6 +74,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\R
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\ProductoStock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\NantiaServidorApplication.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Producto.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\EnvaseStockRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ClienteService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\DiaSemana.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IUsuarioService.java
