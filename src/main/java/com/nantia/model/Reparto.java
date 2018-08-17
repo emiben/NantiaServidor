@@ -45,16 +45,21 @@ public class Reparto implements Serializable {
 	@JoinColumn(name = "ruta_id")	
 	private Ruta ruta;
 	
+	@Column(name = "estado_id")
+	private EstadoReparto estado;
+	
 	protected Reparto() {
 	}
 	
-	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta) {
+	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado) {
 		this.descripcion = descripcion;
 		this.vendedor1 = vendedor1;
 		this.vendedor2 = vendedor2;
 		this.vehiculo = vehiculo;
 		this.fecha = fecha;
 		this.ruta = ruta;
+		this.estado = estado;
+		
 	}
 	
 	
@@ -113,6 +118,15 @@ public class Reparto implements Serializable {
 
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
+	}
+
+		
+	public EstadoReparto getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoReparto estado) {
+		this.estado = estado;
 	}
 
 	@Override
