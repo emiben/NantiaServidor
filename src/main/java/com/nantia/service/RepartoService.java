@@ -1,15 +1,24 @@
 package com.nantia.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nantia.controller.DataRepartoController;
+import com.nantia.model.EstadoReparto;
 import com.nantia.model.Reparto;
 import com.nantia.repo.RepartoRepository;
 
 @Service
 public class RepartoService implements IRepartoService {
+	
+	private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
+
 	
 	@Autowired
 	private RepartoRepository repartoRepository;
@@ -51,6 +60,25 @@ public class RepartoService implements IRepartoService {
 	@Override
 	public boolean existe(Reparto reparto) {
 		return findByDescripcion(reparto.getDescripcion()) != null;
+	}
+
+	@Override
+	public List<Reparto> getAllRepartoCreado() {
+		List<Reparto> list = new ArrayList<>();	
+		List<Reparto> listRepCreados = new ArrayList<>();
+		repartoRepository.findAll().forEach(e -> list.add(e));
+		
+		
+        Iterator<Reparto> itr = list.iterator();
+
+        while(itr.hasNext()) {   
+        	Reparto reparto = (Reparto) itr.next();
+            if(reparto.getEstado() == EstadoReparto.CREADO)
+            	listRepCreados.add(reparto);
+        }
+		
+		
+		return listRepCreados;
 	}
 
 }

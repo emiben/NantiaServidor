@@ -7,6 +7,7 @@ import com.nantia.model.Reparto;
 public interface IRepartoService {
 	
 	List<Reparto> getAllReparto();
+	List<Reparto> getAllRepartoCreado();
 	Reparto getRepartoById(long repartoId);
 	Reparto addReparto(Reparto reparto);
 	Reparto updateReparto(Reparto reparto);

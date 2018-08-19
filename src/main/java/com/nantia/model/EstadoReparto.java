@@ -7,7 +7,7 @@ public enum EstadoReparto {
     INICIADO,
     FINALIZADO;
 	
-    public static EstadoReparto getDiaSemana(String estadoReparto){  
+    public static EstadoReparto getEstadoReparto(String estadoReparto){  
 	  switch (estadoReparto){  
 	   case "BORRADOR" : return EstadoReparto.BORRADOR;  
 	   case "CREADO" : return EstadoReparto.CREADO; 

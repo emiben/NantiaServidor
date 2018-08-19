@@ -33,7 +33,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<DataReparto>> getAllDataReparto() {
 		LOG.info("trayendo todos los DataReparto");
-        List<Reparto> listReparto = repartoService.getAllReparto();
+        List<Reparto> listReparto = repartoService.getAllRepartoCreado();
         List<DataReparto> listDataReparto = new ArrayList<DataReparto>();
         
         DataReparto dataReparto;// = new DataReparto();
