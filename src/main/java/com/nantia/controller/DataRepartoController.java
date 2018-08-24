@@ -33,10 +33,11 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<DataReparto>> getAllDataReparto() {
 		LOG.info("trayendo todos los DataReparto");
-        List<Reparto> listReparto = repartoService.getAllRepartoCreado();
+
+		List<Reparto> listReparto = repartoService.getAllRepartoCreado();
         List<DataReparto> listDataReparto = new ArrayList<DataReparto>();
         
-        DataReparto dataReparto;// = new DataReparto();
+        DataReparto dataReparto;
         
         if (listReparto == null || listReparto.isEmpty()){
             LOG.info("no se encontraron repartos");
@@ -55,7 +56,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    	
 	    	listDataReparto.add(dataReparto);
 	    }		
-	    
+		
         return new ResponseEntity<List<DataReparto>>(listDataReparto, HttpStatus.OK);
 	}
 

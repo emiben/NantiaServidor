@@ -100,18 +100,20 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
             LOG.info("el reparto: " + reparto.getDescripcion() + " ya existe");
             return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);
         }
-        
-        //Vehiculo vehiculo = reparto.getVehiculo();
-        //Stock stockVehiculo = vehiculo.getStock();                
+                      
         Stock nuevoStockVehiculo = stockService.addStock(reparto.getVehiculo().getStock());
-		String resultado = actualizarStock(reparto.getVehiculo().getStock(), idFabrica);
         
+		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), idFabrica);
+		
+		Vehiculo nuevovehiculo = actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo());
+        
+		reparto.setVehiculo(nuevovehiculo);
+		
         if(resultado.substring(0, 2) != "OK"){
         	LOG.info("Resultado: {}", resultado);
         	return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);        	
         }
-
-        ////****
+        /*
         Set<EnvaseStock> setEnvaseStock =  reparto.getVehiculo().getStock().getSetEnvaseStock();						
 		Iterator<EnvaseStock> iteEnvStk = reparto.getVehiculo().getStock().getSetEnvaseStock().iterator();
 	    while(iteEnvStk.hasNext()) {
@@ -135,21 +137,21 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    reparto.getVehiculo().setStock(stockUpd);
 	    Vehiculo nuevovehiculo = vehiculoService.updateVehiculo(reparto.getVehiculo());
 	    reparto.setVehiculo(nuevovehiculo);
-	    
+	    */
         Reparto newReparto = repartoService.addReparto(reparto);
         return new ResponseEntity<Reparto>(newReparto, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "{id}/{idFabrica}", method = RequestMethod.PUT)
-	public ResponseEntity<Reparto> updateReparto(@PathVariable int id, @PathVariable int idFabrica,@RequestBody Reparto reparto) {
-		LOG.info("actualizando Reparto: {}", reparto);
-		Reparto currentReparto = repartoService.getRepartoById(id);
+	public ResponseEntity<Reparto> updateReparto(@PathVariable Long id, @RequestBody Reparto reparto, @PathVariable Long idFabrica) {
 
+		LOG.info("actualizando fabrica: {}", reparto);
+		Reparto currentReparto = repartoService.getRepartoById(id);
+		
         if (currentReparto == null){
             LOG.info("Reparto con id {} no encontrado", id);
             return new ResponseEntity<Reparto>(HttpStatus.NOT_FOUND);
-        }
-        
+        }        
         
         Stock stock;
         Vehiculo vehiculo = reparto.getVehiculo();
@@ -165,9 +167,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
             LOG.info("El stock del vehiculo NO era nulo");
         }
         
-        
-        //****//****
-        
+       
         Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
 		Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
 	    while(iteEnvStk.hasNext()) {
@@ -186,12 +186,12 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	setProductoStock.add(productoStock);
 	    }		
 	    stock.setSetProductoStock(setProductoStock); 
-	    Stock newStock = stockService.addStock(stock); 
+	    Stock newStock = stockService.updateStock(stock); 
 	    vehiculo.setStock(newStock);
 	    reparto.setVehiculo(vehiculo);
         
 	    //****//****
-	    String resultado = actualizarStock(reparto.getVehiculo().getStock(), idFabrica);
+	    String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), idFabrica);
         
         if(resultado.substring(0, 2) != "OK"){
         	LOG.info("Info: {}.", resultado);
@@ -218,7 +218,37 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 	
-	public String actualizarStock(Stock stock, long idFabrica) {
+	
+	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo) {
+		
+		
+		Set<EnvaseStock> setEnvaseStock =  vehiculo.getStock().getSetEnvaseStock();						
+		Iterator<EnvaseStock> iteEnvStk = vehiculo.getStock().getSetEnvaseStock().iterator();
+	    while(iteEnvStk.hasNext()) {
+	    	EnvaseStock envaseStock = iteEnvStk.next();
+	    	envaseStock.setStock(nuevoStockVehiculo);
+	    	setEnvaseStock.add(envaseStock);
+	    }		
+	    nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
+	    	    
+	    Set<ProductoStock> setProductoStock =  vehiculo.getStock().getSetProductoStock();						
+		Iterator<ProductoStock> iteProStk = vehiculo.getStock().getSetProductoStock().iterator();
+	    while(iteProStk.hasNext()) {
+	    	ProductoStock productoStock = iteProStk.next();
+	    	productoStock.setStock(nuevoStockVehiculo);
+	    	setProductoStock.add(productoStock);
+	    }		
+	    nuevoStockVehiculo.setSetProductoStock(setProductoStock);  	
+
+	    Stock stockUpd = stockService.updateStock(nuevoStockVehiculo); 
+	    
+	    vehiculo.setStock(stockUpd);
+	    Vehiculo nuevovehiculo = vehiculoService.updateVehiculo(vehiculo);
+	    //reparto.setVehiculo(nuevovehiculo);
+	    
+		return nuevovehiculo;
+	}
+	public String actualizarStockFabrica(Stock stock, long idFabrica) {
 		
 		LOG.info("Entro a actualizarStock");
 		LOG.info("stock.getId: {}, idFabrica: {}.", stock.getId(), idFabrica);

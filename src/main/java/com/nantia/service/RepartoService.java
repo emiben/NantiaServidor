@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nantia.controller.DataRepartoController;
+import com.nantia.model.DataReparto;
 import com.nantia.model.EstadoReparto;
 import com.nantia.model.Reparto;
 import com.nantia.repo.RepartoRepository;
@@ -65,20 +66,8 @@ public class RepartoService implements IRepartoService {
 	@Override
 	public List<Reparto> getAllRepartoCreado() {
 		List<Reparto> list = new ArrayList<>();	
-		List<Reparto> listRepCreados = new ArrayList<>();
-		repartoRepository.findAll().forEach(e -> list.add(e));
-		
-		
-        Iterator<Reparto> itr = list.iterator();
-
-        while(itr.hasNext()) {   
-        	Reparto reparto = (Reparto) itr.next();
-            if(reparto.getEstado() == EstadoReparto.CREADO)
-            	listRepCreados.add(reparto);
-        }
-		
-		
-		return listRepCreados;
+		repartoRepository.getAllRepartoCreado(EstadoReparto.CREADO).forEach(e -> list.add(e));
+		return list;
 	}
 
 }

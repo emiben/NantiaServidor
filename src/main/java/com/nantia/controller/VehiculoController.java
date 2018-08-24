@@ -82,9 +82,11 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
         
         Stock stock = vehiculo.getStock();
                
-        Stock newStock = stockService.addStock(stock);
+        
 
         if (stock != null){
+        	
+        	Stock newStock = stockService.addStock(stock);
 			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
 			Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
 		    while(iteEnvStk.hasNext()) {

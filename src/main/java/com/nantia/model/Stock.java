@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,8 +24,12 @@ public class Stock implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "fecha")
+	@Column(name = "fecha")	
 	private Date fecha;
+	//Timestamp fecha;
+	//private SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	
+	
 	
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
 	private Set<EnvaseStock> setEnvaseStock = new HashSet<EnvaseStock>();
@@ -68,7 +71,11 @@ public class Stock implements Serializable {
 	}
 
 	public void setSetEnvaseStock(Set<EnvaseStock> setEnvaseStock) {
-		this.setEnvaseStock = setEnvaseStock;
+		//this.setEnvaseStock = setEnvaseStock;
+		this.setEnvaseStock.clear();
+	    if (setEnvaseStock != null) {
+	        this.setEnvaseStock.addAll(setEnvaseStock);
+	    }
 	}
 
 	public Set<ProductoStock> getSetProductoStock() {
@@ -76,7 +83,11 @@ public class Stock implements Serializable {
 	}
 
 	public void setSetProductoStock(Set<ProductoStock> setProductoStock) {
-		this.setProductoStock = setProductoStock;
+		//this.setProductoStock = setProductoStock;
+		this.setProductoStock.clear();
+	    if (setProductoStock != null) {
+	        this.setProductoStock.addAll(setProductoStock);
+	    }
 	}
 
 	@Override
