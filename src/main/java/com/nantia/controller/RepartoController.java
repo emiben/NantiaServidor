@@ -113,31 +113,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         	LOG.info("Resultado: {}", resultado);
         	return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);        	
         }
-        /*
-        Set<EnvaseStock> setEnvaseStock =  reparto.getVehiculo().getStock().getSetEnvaseStock();						
-		Iterator<EnvaseStock> iteEnvStk = reparto.getVehiculo().getStock().getSetEnvaseStock().iterator();
-	    while(iteEnvStk.hasNext()) {
-	    	EnvaseStock envaseStock = iteEnvStk.next();
-	    	envaseStock.setStock(nuevoStockVehiculo);
-	    	setEnvaseStock.add(envaseStock);
-	    }		
-	    nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
-	    	    
-	    Set<ProductoStock> setProductoStock =  reparto.getVehiculo().getStock().getSetProductoStock();						
-		Iterator<ProductoStock> iteProStk = reparto.getVehiculo().getStock().getSetProductoStock().iterator();
-	    while(iteProStk.hasNext()) {
-	    	ProductoStock productoStock = iteProStk.next();
-	    	productoStock.setStock(nuevoStockVehiculo);
-	    	setProductoStock.add(productoStock);
-	    }		
-	    nuevoStockVehiculo.setSetProductoStock(setProductoStock);  	
-
-	    Stock stockUpd = stockService.updateStock(nuevoStockVehiculo); 
-	    
-	    reparto.getVehiculo().setStock(stockUpd);
-	    Vehiculo nuevovehiculo = vehiculoService.updateVehiculo(reparto.getVehiculo());
-	    reparto.setVehiculo(nuevovehiculo);
-	    */
+        
         Reparto newReparto = repartoService.addReparto(reparto);
         return new ResponseEntity<Reparto>(newReparto, HttpStatus.CREATED);
 	}
@@ -244,7 +220,6 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    
 	    vehiculo.setStock(stockUpd);
 	    Vehiculo nuevovehiculo = vehiculoService.updateVehiculo(vehiculo);
-	    //reparto.setVehiculo(nuevovehiculo);
 	    
 		return nuevovehiculo;
 	}
@@ -378,77 +353,21 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         }
 	    else {
 	    	LOG.info("Entro 12");
-		    //Fabrica fabricaUpd =  fabricaService.updateFabrica(fabrica);
-	    	
+    	
 	    	LOG.info("actualizando fabrica: {}", fabrica);
 			Fabrica currentFabrica = fabricaService.getFabricaById(fabrica.getId());
-
-			
-			//****
-					//Stock stock = fabrica.getStock();
-			/*		
-					Set<EnvaseStock> setEnvaseStock =  stockFabrica.getSetEnvaseStock();						
-					Iterator<EnvaseStock> iteEnvStk = stockFabrica.getSetEnvaseStock().iterator();
-				    while(iteEnvStk.hasNext()) {
-				    	EnvaseStock envaseStock = iteEnvStk.next();
-				    	envaseStock.setStock(stockFabrica);
-				    	setEnvaseStock.add(envaseStock);
-				    }		
-				    stockFabrica.setSetEnvaseStock(setEnvaseStock);    
-				    
-				    
-				    Set<ProductoStock> setProductoStock =  stockFabrica.getSetProductoStock();						
-					Iterator<ProductoStock> iteProStk = stockFabrica.getSetProductoStock().iterator();
-				    while(iteProStk.hasNext()) {
-				    	ProductoStock productoStock = iteProStk.next();
-				    	productoStock.setStock(stockFabrica);
-				    	setProductoStock.add(productoStock);
-				    }		
-				    stockFabrica.setSetProductoStock(setProductoStock); 
-				    fabrica.setStock(stock);
-				    ////****
-				    Stock stockNuevoVe = agregarStockAReparto(stock);
-				    ////****
-				    Stock stockNuevoVehiculo = stockService.addStock(stockNuevoVe);
-				*/    
-					//****
-				    
+			    
 	        if (currentFabrica == null){
 	            LOG.info("Fabrica con id {} no encontrado", fabrica.getId());
-	            //return new ResponseEntity<Fabrica>(HttpStatus.NOT_FOUND);
 	        }
 	        LOG.info("Id: ()", currentFabrica.getId());
 	        Fabrica fabricaUpd = fabricaService.updateFabrica(fabrica);
-	        //return new ResponseEntity<Fabrica>(fabricaUpd, HttpStatus.OK);
 	        
 	    }
 				
 		return result;
 	}
 	
-	public Stock agregarStockAReparto(Stock stock) {
-		
-		Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
-		Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
-	    while(iteEnvStk.hasNext()) {
-	    	EnvaseStock envaseStock = iteEnvStk.next();
-	    	envaseStock.setStock(stock);
-	    	setEnvaseStock.add(envaseStock);
-	    }		
-	    stock.setSetEnvaseStock(setEnvaseStock);    
-	    
-	    
-	    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
-		Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
-	    while(iteProStk.hasNext()) {
-	    	ProductoStock productoStock = iteProStk.next();
-	    	productoStock.setStock(stock);
-	    	setProductoStock.add(productoStock);
-	    }		
-	    stock.setSetProductoStock(setProductoStock);  
-	    Stock newStock = stockService.addStock(stock); 
-	    return newStock;
-		
-	}
+	
 
 }

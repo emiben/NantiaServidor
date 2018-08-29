@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -37,6 +39,31 @@ public class Producto implements Serializable {
 	
 	@Column(name = "retornable")
 	private boolean retornable;
+	
+	@OneToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name = "envasetipos_id")	
+	private EnvasesTipos envasesTipos;
+	
+	
+
+	public Producto() {
+		super();
+	}
+
+	
+	
+	public Producto(long productoId, String nombre, String presentacion, String descripcion, boolean retornable,
+			EnvasesTipos envasesTipos) {
+		super();
+		this.productoId = productoId;
+		this.nombre = nombre;
+		this.presentacion = presentacion;
+		this.descripcion = descripcion;
+		this.retornable = retornable;
+		this.envasesTipos = envasesTipos;
+	}
+
+
 
 	public long getProductoId() {
 		return productoId;
@@ -77,5 +104,15 @@ public class Producto implements Serializable {
 	public void setRetornable(boolean retornable) {
 		this.retornable = retornable;
 	}
+
+	public EnvasesTipos getEnvasesTipos() {
+		return envasesTipos;
+	}
+
+	public void setEnvasesTipos(EnvasesTipos envasesTipos) {
+		this.envasesTipos = envasesTipos;
+	}
+	
+	
 
 }

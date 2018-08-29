@@ -3,6 +3,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -30,10 +33,10 @@ public class ListaPrecio implements Serializable{
 	@Column(name = "nombreLista")	
 	private String nombreLista;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "fechaAlta")
-	private Date fechaAlta;
+	private Calendar fechaAlta;
 	
-
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "listaPrecio")
 	private Set<ProductoLista> setProductoLista = new HashSet<ProductoLista>();
 	
@@ -61,11 +64,11 @@ public class ListaPrecio implements Serializable{
 		this.nombreLista = nombreLista;
 	}
 
-	public Date getFechaAlta() {
+	public Calendar getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Date fechaAlta) {
+	public void setFechaAlta(Calendar fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 

@@ -58,66 +58,53 @@ public class StockController {
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Stock> getStockById(@PathVariable("id") Integer id) {
 		LOG.info("trayendo lista de stock por id: {}", id);
-		Stock listaStock = stockService .getStockById(id);
+		Stock stock = stockService .getStockById(id);
 
-		 if (listaStock == null){
+		 if (stock == null){
 	            LOG.info("linea de stock con id  {} no encontrado", id);
 	            return new ResponseEntity<Stock>(HttpStatus.NOT_FOUND);
 	        }
 	        
-        return new ResponseEntity<Stock>(listaStock, HttpStatus.OK);
+        return new ResponseEntity<Stock>(stock, HttpStatus.OK);
 	}
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Stock> addStock(@RequestBody Stock stock) {
-		LOG.info("creando stock: {}", stock);
-				
-		 
+
+		
+		LOG.info("creando Stock: {}", stock);
+		
+		Stock newStock = stockService.addStock(stock);
+		
+		Set<EnvaseStock> setEnvaseStock =  newStock.getSetEnvaseStock();						
+		Iterator<EnvaseStock> iteEnvStk = newStock.getSetEnvaseStock().iterator();
+	    while(iteEnvStk.hasNext()) {
+	    	EnvaseStock envaseStock = iteEnvStk.next();
+	    	envaseStock.setStock(newStock);
+	    	setEnvaseStock.add(envaseStockService.addEnvaseStock(envaseStock));	    	
+	    }		
+	    
+	    //stock.setSetEnvaseStock(setEnvaseStock);    
+	    newStock.setSetEnvaseStock(setEnvaseStock);
+	    
+	    Set<ProductoStock> setProductoStock =  newStock.getSetProductoStock();						
+		Iterator<ProductoStock> iteProStk = newStock.getSetProductoStock().iterator();
+	    while(iteProStk.hasNext()) {
+	    	ProductoStock productoStock = iteProStk.next();
+	    	productoStock.setStock(newStock);
+	    	setProductoStock.add(productoStock);
+	    }		
+	    newStock.setSetProductoStock(setProductoStock);  	    
+	    /*   
 		if (stockService.existe(stock)){
             LOG.info("El stock con id " + stock.getId() + " ya existe");
             return new ResponseEntity<Stock>(HttpStatus.CONFLICT);
-        }
+        }*/
 			
-		Stock newStock = stockService.addStock(stock);  
+		Stock newStockUpd = stockService.updateStock(newStock);        
+        return new ResponseEntity<Stock>(newStockUpd, HttpStatus.CREATED);
 		
-		//****
-		Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();
-		Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
-	    while(iteEnvStk.hasNext()) {
-	    	EnvaseStock envaseStock = iteEnvStk.next();
-	    	if(envaseStock.getId()>0) {
-		    	envaseStock.setStock(newStock);
-		    	setEnvaseStock.add(envaseStock);
-	    	}else {
-	    		EnvaseStock newEnvaseStock = envaseStockService.addEnvaseStock(envaseStock);
-	    		newEnvaseStock.setStock(newStock);
-		    	setEnvaseStock.add(newEnvaseStock);
-	    	}
-	    }		
-	    newStock.setSetEnvaseStock(setEnvaseStock);    
-	    
-	    
-	    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
-		Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
-	    while(iteProStk.hasNext()) {
-	    	ProductoStock productoStock = iteProStk.next();
-	    	if(productoStock.getId()>0) {
-		    	productoStock.setStock(newStock);
-		    	setProductoStock.add(productoStock);
-	    	}else {
-	    		ProductoStock newProductoStock =  productoStockService.addProductoStock(productoStock);
-	    		newProductoStock.setStock(newStock);
-	    		setProductoStock.add(newProductoStock);
-	    	}
-	    }		
-	    newStock.setSetProductoStock(setProductoStock);  	    
-	      
-	    Stock stockUpd = stockService.updateStock(newStock); 
-		//****
-		
-		
-        return new ResponseEntity<Stock>(stockUpd, HttpStatus.CREATED);
 	}
 	
 	

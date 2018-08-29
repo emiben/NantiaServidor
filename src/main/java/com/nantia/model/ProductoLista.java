@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,8 +47,9 @@ public class ProductoLista  implements Serializable{
 	@Column(name = "precio")
 	private float precio;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "actualizado")
-	private Date actualizado;
+	private Calendar actualizado;
 	
 	
 	protected ProductoLista() {
@@ -67,11 +71,11 @@ public class ProductoLista  implements Serializable{
 		this.precio = precio;
 	}
 
-	public Date getActualizado() {
+	public Calendar getActualizado() {
 		return actualizado;
 	}
 
-	public void setActualizado(Date actualizado) {
+	public void setActualizado(Calendar actualizado) {
 		this.actualizado = actualizado;
 	}
 

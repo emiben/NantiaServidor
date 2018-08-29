@@ -24,7 +24,7 @@ public class Fabrica implements Serializable {
 	@Column(name = "nombre")
 	private String nombre;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
 	@JoinColumn(name = "stock_id")	
 	private Stock stock;
 	

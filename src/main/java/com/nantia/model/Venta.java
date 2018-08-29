@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -28,8 +31,9 @@ public class Venta implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "fecha")	
-	private Date fecha;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	@Column(name = "fecha")
+	private Calendar fecha;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")  
@@ -64,7 +68,7 @@ public class Venta implements Serializable{
 	@JoinColumn(name = "reparto_id")  
 	private Reparto repartp;
 
-	public Venta(long id, Date fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
+	public Venta(long id, Calendar fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
 			float descuento, float totalventa, float ivatotal, float pagototal, Fabrica fabrica, Reparto repartp) {
 		super();
 		this.id = id;
@@ -92,11 +96,11 @@ public class Venta implements Serializable{
 		this.id = id;
 	}
 
-	public Date getFecha() {
+	public Calendar getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
 

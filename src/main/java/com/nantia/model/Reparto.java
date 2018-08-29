@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "reparto")
@@ -38,8 +41,9 @@ public class Reparto implements Serializable {
 	@JoinColumn(name = "vehiculo_id")	
 	private Vehiculo vehiculo;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "fecha")
-	private Date fecha;
+	private Calendar fecha;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "ruta_id")	
@@ -51,7 +55,7 @@ public class Reparto implements Serializable {
 	protected Reparto() {
 	}
 	
-	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado) {
+	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Calendar fecha, Ruta ruta, EstadoReparto estado) {
 		this.descripcion = descripcion;
 		this.vendedor1 = vendedor1;
 		this.vendedor2 = vendedor2;
@@ -104,11 +108,11 @@ public class Reparto implements Serializable {
 		this.vehiculo = vehiculo;
 	}
 
-	public Date getFecha() {
+	public Calendar getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
 

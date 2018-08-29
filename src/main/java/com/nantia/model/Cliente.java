@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -57,11 +60,17 @@ public class Cliente implements Serializable{
 	@Column(name = "saldo")
 	private float saldo;
 	
+	//@Column(name = "fechaNacimiento")
+	//private Date fechaNacimiento;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "fechaNacimiento")
-	private Date fechaNacimiento;
+	private Calendar fechaNacimiento;
 	
+	//@Column(name = "fechaAlta")
+	//private Date fechaAlta;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "fechaAlta")
-	private Date fechaAlta;	
+	private Calendar fechaAlta;
 	
 	@Column(name = "celular")
 	private String celular;
@@ -94,7 +103,7 @@ public class Cliente implements Serializable{
 	public Cliente() {
 	}
 	
-	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
+	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Calendar fechaNacimiento, Calendar fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
@@ -161,19 +170,19 @@ public class Cliente implements Serializable{
 		this.saldo = saldo;
 	}
 
-	public Date getFechaNacimiento() {
+	public Calendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(Calendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Date getFechaAlta() {
+	public Calendar getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Date fechaAlta) {
+	public void setFechaAlta(Calendar fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 

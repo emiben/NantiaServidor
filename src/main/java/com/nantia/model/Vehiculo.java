@@ -41,7 +41,7 @@ public class Vehiculo implements Serializable {
 	@Column(name = "activo")
 	private Boolean activo;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
 	@JoinColumn(name = "stock_id", nullable = true)	
 	private Stock stock;
 	

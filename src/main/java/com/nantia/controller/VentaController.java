@@ -68,6 +68,11 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
             LOG.info("el venta con documento " + venta.getId() + " ya existe");
             return new ResponseEntity<Venta>(HttpStatus.CONFLICT);
         }
+        
+        //if(venta.getFabrica() == null)
+        	//actualizarStockReparto();
+        //else
+        	//actualizarStockFabrica();
 
         Venta newVenta = ventaService.addVenta(venta);
 

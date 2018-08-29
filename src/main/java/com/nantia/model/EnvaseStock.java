@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,8 +38,9 @@ public class EnvaseStock implements Serializable {
 	@Column(name = "cantidad")
 	private float cantidad;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@Column(name = "fecha")
-	private Date fecha;
+	private Calendar fecha;
 	
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "envasetipos_id")//@MapsId	
@@ -45,7 +49,7 @@ public class EnvaseStock implements Serializable {
 	protected EnvaseStock() {
 	}
 	
-	public EnvaseStock(Stock stock, float cantidad, Date fecha, EnvasesTipos envasesTipos) {
+	public EnvaseStock(Stock stock, float cantidad, Calendar fecha, EnvasesTipos envasesTipos) {
 		this.stock = stock;
 		this.cantidad = cantidad;
 		this.fecha = fecha;
@@ -76,11 +80,11 @@ public class EnvaseStock implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public Date getFecha() {
+	public Calendar getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
 

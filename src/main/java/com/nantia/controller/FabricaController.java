@@ -154,6 +154,9 @@ private final Logger LOG = LoggerFactory.getLogger(FabricaController.class);
     public ResponseEntity<Void> deleteFabrica(@PathVariable("id") int id){
         LOG.info("Eliminando fabrica con id: {}", id);
         Fabrica fabrica = fabricaService.getFabricaById(id);
+        
+        //stockService.getStockById(fabrica.getStock().getId());
+        //stockService.deleteStock(fabrica.getStock().getId());
 
         if (fabrica == null){
             LOG.info("No se puede eliminar. Fabrica con id {} no encontrado", id);
