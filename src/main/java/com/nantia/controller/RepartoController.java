@@ -135,7 +135,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 
         if (vehiculo.getStock() == null){
         	stock = new Stock();
-        	stock.setFecha(fecha);
+        	//stock.setFecha(fecha);
         	LOG.info("El stock del vehiculo era nulo");
         }
         else {
