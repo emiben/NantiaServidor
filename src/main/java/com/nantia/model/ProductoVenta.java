@@ -25,44 +25,34 @@ public class ProductoVenta implements Serializable{
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "venta_id")  
-	@JsonIgnore
-	private Venta venta;
-	
-	@ManyToOne
-	@JoinColumn(name = "productostock_id")  
-	private ProductoStock productoStock;
+	@JoinColumn(name = "producto_id")  
+	private Producto producto;
 	
 	@Column(name = "cantidad")
 	private float cantidad;
 	
-	@Column(name = "treciounitario")
+	@Column(name = "preciounitario")
 	private float precioUnitario;
 	
 	@Column(name = "total")
 	private float total;
 	
-	@Column(name = "subtotal")
-	private float subTotal;
-
-	@Column(name = "iva")
-	private float iva;
-
-	public ProductoVenta(long id, Venta venta, ProductoStock productoStock, float cantidad, float precioUnitario,
-			float total, float subTotal, float iva) {
-		super();
-		this.id = id;
-		this.venta = venta;
-		this.productoStock = productoStock;
-		this.cantidad = cantidad;
-		this.precioUnitario = precioUnitario;
-		this.total = total;
-		this.subTotal = subTotal;
-		this.iva = iva;
-	}
+	@ManyToOne
+	@JoinColumn(name = "venta_id")
+	@JsonIgnore
+	private Venta venta;
 
 	public ProductoVenta() {
 		super();
+	}
+
+	public ProductoVenta(long id, Producto producto, float cantidad, float precioUnitario, float total) {
+		super();
+		this.id = id;
+		this.producto = producto;
+		this.cantidad = cantidad;
+		this.precioUnitario = precioUnitario;
+		this.total = total;
 	}
 
 	public long getId() {
@@ -73,20 +63,12 @@ public class ProductoVenta implements Serializable{
 		this.id = id;
 	}
 
-	public Venta getVenta() {
-		return venta;
+	public Producto getProducto() {
+		return producto;
 	}
 
-	public void setVenta(Venta venta) {
-		this.venta = venta;
-	}
-
-	public ProductoStock getProductoStock() {
-		return productoStock;
-	}
-
-	public void setProductoStock(ProductoStock productoStock) {
-		this.productoStock = productoStock;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 	public float getCantidad() {
@@ -113,24 +95,14 @@ public class ProductoVenta implements Serializable{
 		this.total = total;
 	}
 
-	public float getSubTotal() {
-		return subTotal;
+	public Venta getVenta() {
+		return venta;
 	}
 
-	public void setSubTotal(float subTotal) {
-		this.subTotal = subTotal;
+	public void setVenta(Venta venta) {
+		this.venta = venta;
 	}
-
-	public float getIva() {
-		return iva;
-	}
-
-	public void setIva(float iva) {
-		this.iva = iva;
-	}
-
 	
 	
-	
-	
+		
 }

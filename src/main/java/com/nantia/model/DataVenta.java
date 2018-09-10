@@ -1,11 +1,9 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,16 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name = "venta")
-public class Venta implements Serializable{
+@Table(name = "dataventa")
+public class DataVenta implements Serializable{
 	private static final long serialVersionUID = -7899617239584557918L;
 
 	@Id
@@ -60,19 +54,22 @@ public class Venta implements Serializable{
 	@Column(name = "pagototal")
 	private float pagototal;
 	
-	@ManyToOne
-	@JoinColumn(name = "fabrica_id")  
-	private Fabrica fabrica;
+	@Column(name = "fabricaid")  
+	private Long fabricaid;
 	
-	@ManyToOne
-	@JoinColumn(name = "reparto_id")  
-	private Reparto reparto;
+	@Column(name = "repartoid")  
+	private Long repartoid;
 	
 	@Column(name = "observaciones")
 	private String observaciones;
 
-	public Venta(long id, Calendar fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
-			float descuento, float totalventa, float ivatotal, float pagototal, Fabrica fabrica, Reparto reparto, String observaciones) {
+	public DataVenta() {
+		super();
+	}
+
+	public DataVenta(long id, Calendar fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
+			float descuento, float totalventa, float ivatotal, float pagototal, Long fabricaid, Long repartoid,
+			String observaciones) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -83,12 +80,9 @@ public class Venta implements Serializable{
 		this.totalventa = totalventa;
 		this.ivatotal = ivatotal;
 		this.pagototal = pagototal;
-		this.fabrica = fabrica;
-		this.reparto = reparto;
-	}
-
-	public Venta() {
-		super();
+		this.fabricaid = fabricaid;
+		this.repartoid = repartoid;
+		this.observaciones = observaciones;
 	}
 
 	public long getId() {
@@ -163,21 +157,30 @@ public class Venta implements Serializable{
 		this.pagototal = pagototal;
 	}
 
-	public Fabrica getFabrica() {
-		return fabrica;
+	public String getObservaciones() {
+		return observaciones;
 	}
 
-	public void setFabrica(Fabrica fabrica) {
-		this.fabrica = fabrica;
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
-	public Reparto getReparto() {
-		return reparto;
+	public Long getFabricaid() {
+		return fabricaid;
 	}
 
-	public void setReparto(Reparto reparto) {
-		this.reparto = reparto;
+	public void setFabricaid(Long fabricaid) {
+		this.fabricaid = fabricaid;
 	}
 
+	public Long getRepartoid() {
+		return repartoid;
+	}
+
+	public void setRepartoid(Long repartoid) {
+		this.repartoid = repartoid;
+	}
 	
+	
+
 }

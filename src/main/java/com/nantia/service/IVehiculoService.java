@@ -1,5 +1,6 @@
 package com.nantia.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.nantia.model.Vehiculo;
@@ -13,5 +14,6 @@ public interface IVehiculoService {
 	Vehiculo updateVehiculo(Vehiculo vehiculo);
 	void deleteVehiculo(long vehiculoId);
 	boolean existe(Vehiculo vehiculo);
+	List<Vehiculo> getAllVehiculosSinStock(Calendar fecha);
 
 }

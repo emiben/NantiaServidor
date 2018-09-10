@@ -1,12 +1,15 @@
 package com.nantia.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nantia.model.EstadoReparto;
 import com.nantia.model.Fabrica;
+import com.nantia.model.Reparto;
 import com.nantia.model.Vehiculo;
 import com.nantia.repo.FabricaRepository;
 import com.nantia.repo.VehiculoRepository;
@@ -54,6 +57,13 @@ public class VehiculoService implements IVehiculoService {
 	@Override
 	public boolean existe(Vehiculo vehiculo) {
 		return findByMatricula(vehiculo.getMatricula()) != null;
+	}
+
+	@Override
+	public List<Vehiculo> getAllVehiculosSinStock(Calendar fecha) {
+		List<Vehiculo> list = new ArrayList<>();	
+		vehiculoRepository.getAllVehiculosSinStock(fecha).forEach(e -> list.add(e));
+		return list;
 	}
 
 }

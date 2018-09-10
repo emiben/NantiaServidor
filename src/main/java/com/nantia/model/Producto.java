@@ -40,7 +40,7 @@ public class Producto implements Serializable {
 	@Column(name = "retornable")
 	private boolean retornable;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "envasetipos_id")	
 	private EnvasesTipos envasesTipos;
 	

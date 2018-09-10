@@ -62,6 +62,7 @@ public class EnvasesTipos implements Serializable{
 
 	@Override
 	public String toString() {
-		return String.format("tiposenvases[id=%d]",	id);
+		//return String.format("tiposenvases[id=%d]",	id);
+		return "";
 	}
 }

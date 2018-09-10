@@ -79,8 +79,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	}
 	
 	
-	@RequestMapping(value = "{idFabrica}", method = RequestMethod.POST)
-	public ResponseEntity<Reparto> addReparto(@RequestBody Reparto reparto, @PathVariable long idFabrica) {
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Reparto> addReparto(@RequestBody Reparto reparto) {
 		
 		LOG.info("creando un nuevo reparto: {}", reparto);
 			
@@ -103,7 +103,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
                       
         Stock nuevoStockVehiculo = stockService.addStock(reparto.getVehiculo().getStock());
         
-		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), idFabrica);
+		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica());
 		
 		Vehiculo nuevovehiculo = actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo());
         
@@ -118,8 +118,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         return new ResponseEntity<Reparto>(newReparto, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "{id}/{idFabrica}", method = RequestMethod.PUT)
-	public ResponseEntity<Reparto> updateReparto(@PathVariable Long id, @RequestBody Reparto reparto, @PathVariable Long idFabrica) {
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Reparto> updateReparto(@PathVariable Long id, @RequestBody Reparto reparto) {
 
 		LOG.info("actualizando fabrica: {}", reparto);
 		Reparto currentReparto = repartoService.getRepartoById(id);
@@ -167,7 +167,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    reparto.setVehiculo(vehiculo);
         
 	    //****//****
-	    String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), idFabrica);
+	    String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica());
         
         if(resultado.substring(0, 2) != "OK"){
         	LOG.info("Info: {}.", resultado);
@@ -223,15 +223,15 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    
 		return nuevovehiculo;
 	}
-	public String actualizarStockFabrica(Stock stock, long idFabrica) {
+	public String actualizarStockFabrica(Stock stock, Fabrica fabrica) {
 		
 		LOG.info("Entro a actualizarStock");
-		LOG.info("stock.getId: {}, idFabrica: {}.", stock.getId(), idFabrica);
+		LOG.info("stock.getId: {}, idFabrica: {}.", stock.getId(), fabrica.getId());
 		String result = "OK"; 
 		boolean parar = false;
 		boolean encontro = false;
 		
-		Fabrica fabrica = fabricaService.getFabricaById(idFabrica);		
+		//Fabrica fabrica = fabricaService.getFabricaById(idFabrica);		
 		Stock stockFabrica = fabrica.getStock();
 		
 		

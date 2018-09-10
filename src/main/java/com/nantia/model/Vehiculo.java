@@ -46,7 +46,7 @@ public class Vehiculo implements Serializable {
 	private Stock stock;
 	
 	
-	protected Vehiculo() {
+	public Vehiculo() {
 	}
 	
 	public Vehiculo(String matricula, String marca, String modelo, String descripcion, Boolean activo, Stock stock) {

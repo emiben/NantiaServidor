@@ -1,5 +1,11 @@
 package com.nantia.controller;
 
+import java.security.Timestamp;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -17,14 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nantia.model.EnvaseStock;
-import com.nantia.model.Fabrica;
-import com.nantia.model.ProductoLista;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
-import com.nantia.service.IFabricaService;
 import com.nantia.service.IStockService;
 import com.nantia.service.IVehiculoService;
 
@@ -173,5 +175,51 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
         LOG.info("Vehiculo con id: {} eliminanda con áxito", id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "/vehiculossinstock/{fecha}", method = RequestMethod.GET)
+	public ResponseEntity<List<Vehiculo>> getAllVehiculosSinStock(@PathVariable String fecha) {
+		
+		LOG.info("trayendo todos los vehiculos sin stock para la fecha indicada"); 
+		LOG.info("fecha: {}", fecha); 
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		List<Vehiculo> vehiculos;
+		Date date;
+	
+			
+			java.sql.Date javaSqlDate = java.sql.Date.valueOf(fecha);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(javaSqlDate);
+			//System.out.println(calendar.get(Calendar.YEAR));
+			
+			 vehiculos = vehiculoService.getAllVehiculosSinStock(calendar);
+		        
+			//date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(fecha);
+			
+			//Calendar fechaCal = Calendar.getInstance();		
+			//fechaCal.set(Calendar.YEAR, (Integer)date.getYear());
+			
+
+		
+		
+		
+		/*
+		LOG.info("fecha: {}", fecha);
+		try {
+			
+			fechaCal.setTime(sdf.parse(fecha));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		*/
+		
+       
+        if (vehiculos == null || vehiculos.isEmpty()){
+            LOG.info("no se encontraron vehiculos sin stock para la fecha indicada");
+            return new ResponseEntity<List<Vehiculo>>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<List<Vehiculo>>(vehiculos, HttpStatus.OK);		
+	}
 
 }

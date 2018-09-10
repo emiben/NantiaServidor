@@ -52,10 +52,14 @@ public class Reparto implements Serializable {
 	@Column(name = "estado_id")
 	private EstadoReparto estado;
 	
-	protected Reparto() {
+	@OneToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name = "fabrica_id")	
+	private Fabrica fabrica;
+	
+	public Reparto() {
 	}
 	
-	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Calendar fecha, Ruta ruta, EstadoReparto estado) {
+	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Calendar fecha, Ruta ruta, EstadoReparto estado, Fabrica fabrica) {
 		this.descripcion = descripcion;
 		this.vendedor1 = vendedor1;
 		this.vendedor2 = vendedor2;
@@ -63,6 +67,7 @@ public class Reparto implements Serializable {
 		this.fecha = fecha;
 		this.ruta = ruta;
 		this.estado = estado;
+		this.fabrica = fabrica;
 		
 	}
 	
@@ -131,6 +136,14 @@ public class Reparto implements Serializable {
 
 	public void setEstado(EstadoReparto estado) {
 		this.estado = estado;
+	}
+	
+	public Fabrica getFabrica() {
+		return fabrica;
+	}
+
+	public void setFabrica(Fabrica fabrica) {
+		this.fabrica = fabrica;
 	}
 
 	@Override

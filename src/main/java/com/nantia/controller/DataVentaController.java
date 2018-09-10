@@ -1,31 +1,25 @@
 package com.nantia.controller;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-
 import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.nantia.model.DataVenta;
 import com.nantia.model.EnvaseStock;
-import com.nantia.model.EnvasesTipos;
 import com.nantia.model.Fabrica;
 import com.nantia.model.Producto;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.ProductoVenta;
 import com.nantia.model.Reparto;
-import com.nantia.model.RutaCliente;
 import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
 import com.nantia.model.Venta;
@@ -38,10 +32,10 @@ import com.nantia.service.IVentaService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/ventas")
-public class VentaController {
+@RequestMapping("api/dataventas")
+public class DataVentaController {
 	
-private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
+private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	
 	@Autowired
 	IVentaService ventaService;
@@ -56,55 +50,50 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
 	@Autowired
 	IRepartoService repartoService;
 	
-	
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Venta>> getAllVentas() {
-		LOG.info("trayendo todos los ventas"); 
-        List<Venta> ventas = ventaService.getAllVentas();
-        
-        if (ventas == null || ventas.isEmpty()){
-            LOG.info("no se encontraron ventas");
-            return new ResponseEntity<List<Venta>>(HttpStatus.NO_CONTENT);
-        }
 
-        return new ResponseEntity<List<Venta>>(ventas, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ResponseEntity<Venta> getVentaById(@PathVariable("id") Integer id) {
-		LOG.info("trayendo venta por id: {}", id);
-		Venta venta = ventaService.getVentaById(id);
-
-        if (venta == null){
-            LOG.info("venta por id {} no encontrado", id);
-            return new ResponseEntity<Venta>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Venta>(venta, HttpStatus.OK);
-	}
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Venta> addVenta(@RequestBody Venta venta) {
+	public ResponseEntity<Venta> addVenta(@RequestBody DataVenta dataVenta) {
 		
 		String result = "";
-		LOG.info("creando un nuevo venta: {}", venta.getId());
+		
+		Venta venta = new Venta();
+		
+		venta.setFecha(dataVenta.getFecha());
+		venta.setUsuario(dataVenta.getUsuario());
+		venta.setCliente(dataVenta.getCliente());
+		venta.setDescuento(dataVenta.getDescuento());
+		venta.setTotalventa(dataVenta.getTotalventa());
+		venta.setIvatotal(dataVenta.getIvatotal());
+		venta.setPagototal(dataVenta.getPagototal());
+		
+		
+	
+		Set<ProductoVenta> setProdDataVenta =  dataVenta.getSetProductoVenta();						
+		Iterator<ProductoVenta> itePVenta = dataVenta.getSetProductoVenta().iterator();
+	    while(itePVenta.hasNext()) {
+	    	ProductoVenta prodVenta = itePVenta.next();
+	    	prodVenta.setVenta(venta);
+	    	setProdDataVenta.add(prodVenta);	    	
+	    }		
+	    venta.setSetProductoVenta(setProdDataVenta);
+		
 		
 		Venta newVenta = ventaService.addVenta(venta);
 
-        Set<ProductoVenta> setProdVenta =  newVenta.getSetProductoVenta();						
-		Iterator<ProductoVenta> itePVenta = newVenta.getSetProductoVenta().iterator();
-	    while(itePVenta.hasNext()) {
-	    	ProductoVenta prodVenta = itePVenta.next();
-	    	prodVenta.setVenta(newVenta);
-	    	setProdVenta.add(prodVenta);	    	
-	    }		
-	    newVenta.setSetProductoVenta(setProdVenta);
-	    
-        if(newVenta.getFabrica() == null)
+		LOG.info("dataVenta.getFabricaId: {}", dataVenta.getFabricaid()); 
+		
+        if(dataVenta.getFabricaid() <= 0)
+        {
+        	venta.setReparto(repartoService.getRepartoById(dataVenta.getRepartoid()));
         	result = actualizarStockRepartoPorVenta(newVenta.getSetProductoVenta(), newVenta.getReparto(), -1);
+        }
         else
+        {
+        	venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
         	result = actualizarStockFabricaPorVenta(newVenta.getSetProductoVenta(), newVenta.getFabrica(), -1);
+        }
 
         LOG.info("Resultado de actualizar el stock: {}", result);        
         
@@ -112,36 +101,6 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
         return new ResponseEntity<Venta>(newVentaUpd, HttpStatus.CREATED);
 	}
 	
-	
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Venta> updateVenta(@PathVariable int id, @RequestBody Venta venta) {
-		LOG.info("actualizando venta: {}", venta);
-		Venta currentVenta = ventaService.getVentaById(id);
-
-        if (currentVenta == null){
-            LOG.info("Venta con id {} no encontrado", id);
-            return new ResponseEntity<Venta>(HttpStatus.NOT_FOUND);
-        }
-       
-        Venta ventaUpd = ventaService.updateVenta(venta);
-        return new ResponseEntity<Venta>(ventaUpd, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteVenta(@PathVariable("id") int id){
-        LOG.info("Eliminando venta con id: {}", id);
-        Venta venta = ventaService.getVentaById(id);
-
-        if (venta == null){
-            LOG.info("No se puede eliminar. Venta con id {} no encontrado", id);
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        }
-
-        ventaService.deleteVenta(id);
-        LOG.info("Venta con id: {} eliminando con áxito", id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
 	
 	public String actualizarStockFabricaPorVenta(Set<ProductoVenta> setProductoVenta, Fabrica fabrica, int coeficiente) {
 		
