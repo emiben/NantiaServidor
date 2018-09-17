@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,4 +61,14 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
         return new ResponseEntity<List<DataReparto>>(listDataReparto, HttpStatus.OK);
 	}
 
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Reparto> updateReparto(@PathVariable Long id, @RequestBody Reparto reparto) {
+
+		Reparto repartoUpd = repartoService.updateReparto(reparto);
+		return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
+    
+	}
+	
+	
 }

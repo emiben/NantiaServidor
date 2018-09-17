@@ -1,15 +1,11 @@
 package com.nantia.controller;
-
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.nantia.model.Cliente;
-import com.nantia.model.EnvaseStock;
-import com.nantia.model.ProductoStock;
-import com.nantia.model.Stock;
 import com.nantia.model.VehiculoUbicacion;
 import com.nantia.service.IVehiculoUbicacionService;
 
@@ -63,21 +54,7 @@ public class VehiculoUbicacionController {
 	            LOG.info("Ubicacion con id  {} no encontrado", id);
 	            return new ResponseEntity<VehiculoUbicacion>(HttpStatus.NOT_FOUND);
 	        }
-		 
-		 Calendar fecha = vehiculoUbicacion.getFecha();
-		 
-		 vehiculoUbicacion.setFecha(fecha);
-		 
-		 //****
-		 /*
-		 Date date = fecha.getTime();
-		 SimpleDateFormat dfDate = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
-		 String CurrentDate = dfDate.format(date);
-		 LOG.info("Fecha: CurrentDate  {} ", CurrentDate);
-		*/
-		//****
-		   
-		 
+
         return new ResponseEntity<VehiculoUbicacion>(vehiculoUbicacion, HttpStatus.OK);
 	}
 	

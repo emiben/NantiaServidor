@@ -19,6 +19,9 @@ import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 @Entity
 @Table(name = "listasdeprecios", uniqueConstraints = {@UniqueConstraint(columnNames = {"nombreLista"})})
@@ -32,10 +35,10 @@ public class ListaPrecio implements Serializable{
 		
 	@Column(name = "nombreLista")	
 	private String nombreLista;
-	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fechaAlta")
-	private Calendar fechaAlta;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fechaAlta", nullable=false, length=13)
+	private Date fechaAlta;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "listaPrecio")
 	private Set<ProductoLista> setProductoLista = new HashSet<ProductoLista>();
@@ -64,11 +67,12 @@ public class ListaPrecio implements Serializable{
 		this.nombreLista = nombreLista;
 	}
 
-	public Calendar getFechaAlta() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Calendar fechaAlta) {
+	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 

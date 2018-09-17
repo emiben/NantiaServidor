@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name = "reparto")
 public class Reparto implements Serializable {
@@ -41,9 +44,9 @@ public class Reparto implements Serializable {
 	@JoinColumn(name = "vehiculo_id")	
 	private Vehiculo vehiculo;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "ruta_id")	
@@ -59,7 +62,7 @@ public class Reparto implements Serializable {
 	public Reparto() {
 	}
 	
-	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Calendar fecha, Ruta ruta, EstadoReparto estado, Fabrica fabrica) {
+	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado, Fabrica fabrica) {
 		this.descripcion = descripcion;
 		this.vendedor1 = vendedor1;
 		this.vendedor2 = vendedor2;
@@ -113,11 +116,12 @@ public class Reparto implements Serializable {
 		this.vehiculo = vehiculo;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

@@ -1,6 +1,8 @@
 package com.nantia.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "vehiculoubicacion")
@@ -34,16 +43,16 @@ public class VehiculoUbicacion implements Serializable{
 	@Column(name = "coordLat")
 	private String coordLat; 
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 	
 	
 	public VehiculoUbicacion() {
 		super();
 	}
 
-	public VehiculoUbicacion(long id, Vehiculo vehiculo, String coordLon, String coordLat, Calendar fecha) {
+	public VehiculoUbicacion(long id, Vehiculo vehiculo, String coordLon, String coordLat, Date fecha) {
 		super();
 		this.id = id;
 		this.vehiculo = vehiculo;
@@ -86,12 +95,14 @@ public class VehiculoUbicacion implements Serializable{
 		this.vehiculo = vehiculo;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	
+
+
 }

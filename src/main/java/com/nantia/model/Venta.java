@@ -20,7 +20,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "venta")
@@ -31,9 +33,9 @@ public class Venta implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")  
@@ -71,7 +73,7 @@ public class Venta implements Serializable{
 	@Column(name = "observaciones")
 	private String observaciones;
 
-	public Venta(long id, Calendar fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
+	public Venta(long id, Date fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
 			float descuento, float totalventa, float ivatotal, float pagototal, Fabrica fabrica, Reparto reparto, String observaciones) {
 		super();
 		this.id = id;
@@ -99,11 +101,12 @@ public class Venta implements Serializable{
 		this.id = id;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

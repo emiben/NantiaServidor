@@ -103,9 +103,9 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
                       
         Stock nuevoStockVehiculo = stockService.addStock(reparto.getVehiculo().getStock());
         
-		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica());
+		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica(), -1);
 		
-		Vehiculo nuevovehiculo = actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo());
+		Vehiculo nuevovehiculo = actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo(), 1);
         
 		reparto.setVehiculo(nuevovehiculo);
 		
@@ -122,53 +122,37 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	public ResponseEntity<Reparto> updateReparto(@PathVariable Long id, @RequestBody Reparto reparto) {
 
 		LOG.info("actualizando fabrica: {}", reparto);
-		Reparto currentReparto = repartoService.getRepartoById(id);
+		Reparto repartoOld = repartoService.getRepartoById(id);
 		
-        if (currentReparto == null){
+        if (repartoOld == null){
             LOG.info("Reparto con id {} no encontrado", id);
             return new ResponseEntity<Reparto>(HttpStatus.NOT_FOUND);
         }        
         
-        Stock stock;
-        Vehiculo vehiculo = reparto.getVehiculo();
-        java.sql.Date fecha = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-        if (vehiculo.getStock() == null){
-        	stock = new Stock();
-        	//stock.setFecha(fecha);
-        	LOG.info("El stock del vehiculo era nulo");
-        }
-        else {
-            stock = reparto.getVehiculo().getStock();
-            LOG.info("El stock del vehiculo NO era nulo");
-        }
+        //************************************
+        
+        Fabrica fabrica = repartoOld.getFabrica();
+        
+    	String resultado = actualizarStockFabrica(repartoOld.getVehiculo().getStock(), fabrica, 1);		
+		Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getVehiculo().getStock(), reparto.getVehiculo(), -1);
+        		
+		Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
+		Set<ProductoStock> setProductoStockFabrica = fabrica.getStock().getSetProductoStock();
+		LOG.info("tamaño de setEnvaseStockFabrica: w--> {}", setEnvaseStockFabrica.size());
+		LOG.info("tamaño de setProductoStockFabrica: w--> {}", setProductoStockFabrica.size());
+		
+		
+		resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), fabrica, -1);		
+		vehiculo = actualizarStockVehiculo(reparto.getVehiculo().getStock(), reparto.getVehiculo(), 1);
+        		
+		reparto.setVehiculo(vehiculo);
+		
+        
+        //**************************************
         
        
-        Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
-		Iterator<EnvaseStock> iteEnvStk = stock.getSetEnvaseStock().iterator();
-	    while(iteEnvStk.hasNext()) {
-	    	EnvaseStock envaseStock = iteEnvStk.next();
-	    	envaseStock.setStock(stock);
-	    	setEnvaseStock.add(envaseStock);
-	    }		
-	    stock.setSetEnvaseStock(setEnvaseStock);    
+      
 	    
-	    
-	    Set<ProductoStock> setProductoStock =  stock.getSetProductoStock();						
-		Iterator<ProductoStock> iteProStk = stock.getSetProductoStock().iterator();
-	    while(iteProStk.hasNext()) {
-	    	ProductoStock productoStock = iteProStk.next();
-	    	productoStock.setStock(stock);
-	    	setProductoStock.add(productoStock);
-	    }		
-	    stock.setSetProductoStock(setProductoStock); 
-	    Stock newStock = stockService.updateStock(stock); 
-	    vehiculo.setStock(newStock);
-	    reparto.setVehiculo(vehiculo);
-        
-	    //****//****
-	    String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica());
-        
         if(resultado.substring(0, 2) != "OK"){
         	LOG.info("Info: {}.", resultado);
             return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);        	
@@ -195,7 +179,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
     }
 	
 	
-	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo) {
+	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo, int coeficiente) {
 		
 		
 		Set<EnvaseStock> setEnvaseStock =  vehiculo.getStock().getSetEnvaseStock();						
@@ -211,6 +195,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 		Iterator<ProductoStock> iteProStk = vehiculo.getStock().getSetProductoStock().iterator();
 	    while(iteProStk.hasNext()) {
 	    	ProductoStock productoStock = iteProStk.next();
+	    	productoStock.setCantidad(productoStock.getCantidad() * coeficiente);
 	    	productoStock.setStock(nuevoStockVehiculo);
 	    	setProductoStock.add(productoStock);
 	    }		
@@ -223,13 +208,20 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    
 		return nuevovehiculo;
 	}
-	public String actualizarStockFabrica(Stock stock, Fabrica fabrica) {
+	
+	public String actualizarStockFabrica(Stock stock, Fabrica fabrica, int coeficiente) {
 		
 		LOG.info("Entro a actualizarStock");
-		LOG.info("stock.getId: {}, idFabrica: {}.", stock.getId(), fabrica.getId());
+		LOG.info("stock.getId: {}, idFabrica: {}, fabrica-stock-id: {}.", stock.getId(), fabrica.getId(), fabrica.getStock().getId());
 		String result = "OK"; 
 		boolean parar = false;
 		boolean encontro = false;
+		/*
+		Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
+		Set<ProductoStock> setProductoStockFabrica = fabrica.getStock().getSetProductoStock();
+		LOG.info("tamaño de setEnvaseStockFabrica: --> {}", setEnvaseStockFabrica.size());
+		LOG.info("tamaño de setProductoStockFabrica: --> {}", setProductoStockFabrica.size());
+		*/
 		
 		//Fabrica fabrica = fabricaService.getFabricaById(idFabrica);		
 		Stock stockFabrica = fabrica.getStock();
@@ -276,8 +268,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 			    		if(envaseStockFab.getCantidad() >= envaseStockRep.getCantidad())
 			    		{
 			    			LOG.info("Entro al if2");
-			    			LOG.info("setCantidad: {}.", envaseStockFab.getCantidad() - envaseStockRep.getCantidad());
-			    			envaseStockFab.setCantidad(envaseStockFab.getCantidad() - envaseStockRep.getCantidad());
+			    			LOG.info("setCantidad: {}.", envaseStockFab.getCantidad() + (envaseStockRep.getCantidad() * coeficiente));
+			    			envaseStockFab.setCantidad(envaseStockFab.getCantidad() + (envaseStockRep.getCantidad() * coeficiente));
 			    			envaseStockFab.setStock(stockFabrica);
 			    			setEnvaseStockFabrica.add(envaseStockFab);
 			    		}

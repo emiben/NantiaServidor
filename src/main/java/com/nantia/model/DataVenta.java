@@ -1,6 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name = "dataventa")
 public class DataVenta implements Serializable{
@@ -25,9 +29,9 @@ public class DataVenta implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")  
@@ -67,7 +71,7 @@ public class DataVenta implements Serializable{
 		super();
 	}
 
-	public DataVenta(long id, Calendar fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
+	public DataVenta(long id, Date fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
 			float descuento, float totalventa, float ivatotal, float pagototal, Long fabricaid, Long repartoid,
 			String observaciones) {
 		super();
@@ -93,11 +97,12 @@ public class DataVenta implements Serializable{
 		this.id = id;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

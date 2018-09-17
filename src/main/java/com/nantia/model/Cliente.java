@@ -26,7 +26,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 
@@ -60,17 +62,13 @@ public class Cliente implements Serializable{
 	@Column(name = "saldo")
 	private float saldo;
 	
-	//@Column(name = "fechaNacimiento")
-	//private Date fechaNacimiento;
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fechaNacimiento")
-	private Calendar fechaNacimiento;
-	
-	//@Column(name = "fechaAlta")
-	//private Date fechaAlta;
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fechaAlta")
-	private Calendar fechaAlta;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fechaNacimiento", nullable=false, length=13)
+	private Date fechaNacimiento;
+		
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fechaAlta", nullable=false, length=13)
+	private Date fechaAlta;
 	
 	@Column(name = "celular")
 	private String celular;
@@ -103,7 +101,7 @@ public class Cliente implements Serializable{
 	public Cliente() {
 	}
 	
-	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Calendar fechaNacimiento, Calendar fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
+	public Cliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
@@ -170,19 +168,21 @@ public class Cliente implements Serializable{
 		this.saldo = saldo;
 	}
 
-	public Calendar getFechaNacimiento() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Calendar fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Calendar getFechaAlta() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFechaAlta() {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Calendar fechaAlta) {
+	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 

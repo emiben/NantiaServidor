@@ -2,6 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name = "pago")
 public class Pago implements Serializable{
@@ -29,10 +33,10 @@ public class Pago implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")  
 	private Cliente cliente;
-	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fechapago")
-	private Calendar fechapago;
+		
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fechapago", nullable=false, length=13)
+	private Date fechapago;
 	
 	@Column(name = "monto")
 	private float monto;
@@ -45,7 +49,7 @@ public class Pago implements Serializable{
 		super();
 	}
 
-	public Pago(long id, Cliente cliente, Calendar fechapago, float monto, Venta venta) {
+	public Pago(long id, Cliente cliente, Date fechapago, float monto, Venta venta) {
 		super();
 		this.id = id;
 		this.cliente = cliente;
@@ -70,11 +74,12 @@ public class Pago implements Serializable{
 		this.cliente = cliente;
 	}
 
-	public Calendar getFechapago() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFechapago() {
 		return fechapago;
 	}
 
-	public void setFechapago(Calendar fechapago) {
+	public void setFechapago(Date fechapago) {
 		this.fechapago = fechapago;
 	}
 

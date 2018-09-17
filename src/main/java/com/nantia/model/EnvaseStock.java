@@ -18,7 +18,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "envasestock")//, uniqueConstraints = {@UniqueConstraint(columnNames = {"stock_id"})}
@@ -38,9 +40,9 @@ public class EnvaseStock implements Serializable {
 	@Column(name = "cantidad")
 	private float cantidad;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 	
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "envasetipos_id")//@MapsId	
@@ -49,7 +51,7 @@ public class EnvaseStock implements Serializable {
 	protected EnvaseStock() {
 	}
 	
-	public EnvaseStock(Stock stock, float cantidad, Calendar fecha, EnvasesTipos envasesTipos) {
+	public EnvaseStock(Stock stock, float cantidad, Date fecha, EnvasesTipos envasesTipos) {
 		this.stock = stock;
 		this.cantidad = cantidad;
 		this.fecha = fecha;
@@ -80,11 +82,12 @@ public class EnvaseStock implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

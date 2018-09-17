@@ -19,7 +19,9 @@ import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "productolista", uniqueConstraints = {@UniqueConstraint(columnNames = {"listas_id", "productos_id"})})
@@ -47,9 +49,9 @@ public class ProductoLista  implements Serializable{
 	@Column(name = "precio")
 	private float precio;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "actualizado")
-	private Calendar actualizado;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="actualizado", nullable=false, length=13)
+	private Date actualizado;
 	
 	
 	protected ProductoLista() {
@@ -71,11 +73,12 @@ public class ProductoLista  implements Serializable{
 		this.precio = precio;
 	}
 
-	public Calendar getActualizado() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getActualizado() {
 		return actualizado;
 	}
 
-	public void setActualizado(Calendar actualizado) {
+	public void setActualizado(Date actualizado) {
 		this.actualizado = actualizado;
 	}
 

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.nantia.controller.StockController;
 
 
@@ -33,9 +34,9 @@ public class Stock implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Column(name = "fecha")
-	private Calendar fecha;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(name="fecha", nullable=false, length=13)
+	private Date fecha;
 
 	
 	
@@ -49,7 +50,7 @@ public class Stock implements Serializable {
 	public Stock() {
 	}
 	
-	public Stock(Calendar fecha, Set<EnvaseStock> setEnvaseStock, Set<ProductoStock> setProductoStock) {
+	public Stock(Date fecha, Set<EnvaseStock> setEnvaseStock, Set<ProductoStock> setProductoStock) {
 		this.fecha = fecha;
 		this.setEnvaseStock = setEnvaseStock;
 		this.setProductoStock = setProductoStock;
@@ -66,11 +67,13 @@ public class Stock implements Serializable {
 		this.id = id;
 	}
 
-	public Calendar getFecha() {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 
@@ -80,7 +83,10 @@ public class Stock implements Serializable {
 
 	public void setSetEnvaseStock(Set<EnvaseStock> setEnvaseStock) {
 		this.setEnvaseStock = setEnvaseStock;
-
+		/*this.setEnvaseStock.clear();
+	    if (setEnvaseStock != null) {
+	        this.setEnvaseStock.addAll(setEnvaseStock);
+	    }*/
 	}
 
 	public Set<ProductoStock> getSetProductoStock() {
@@ -89,7 +95,10 @@ public class Stock implements Serializable {
 
 	public void setSetProductoStock(Set<ProductoStock> setProductoStock) {
 		this.setProductoStock = setProductoStock;
-
+		/*this.setProductoStock.clear();
+	    if (setProductoStock != null) {
+	        this.setProductoStock.addAll(setProductoStock);
+	    }*/
 	}
 
 	@Override
