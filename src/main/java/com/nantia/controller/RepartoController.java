@@ -86,16 +86,18 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 			
 		Ruta ruta = reparto.getRuta();
 		
-		Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						
-		Iterator<RutaCliente> iteRuCli = ruta.getSetRutaCliente().iterator();
-	    while(iteRuCli.hasNext()) {
-	    	RutaCliente rutaCliente = iteRuCli.next();
-	    	rutaCliente.setRuta(ruta);
-	    	setRutaCliente.add(rutaCliente);
-	    }		
-	    ruta.setSetRutaCliente(setRutaCliente);
-		reparto.setRuta(ruta);
-		
+		if(ruta.getSetRutaCliente() != null)
+		{
+			Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						
+			Iterator<RutaCliente> iteRuCli = ruta.getSetRutaCliente().iterator();
+		    while(iteRuCli.hasNext()) {
+		    	RutaCliente rutaCliente = iteRuCli.next();
+		    	rutaCliente.setRuta(ruta);
+		    	setRutaCliente.add(rutaCliente);
+		    }		
+		    ruta.setSetRutaCliente(setRutaCliente);
+			reparto.setRuta(ruta);
+		}
         if (repartoService.existe(reparto)){
             LOG.info("el reparto: " + reparto.getDescripcion() + " ya existe");
             return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);
@@ -123,44 +125,49 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 
 		LOG.info("actualizando fabrica: {}", reparto);
 		Reparto repartoOld = repartoService.getRepartoById(id);
-		
+		LOG.info("repartoOld.getDescripcion {}", repartoOld.getDescripcion());
+		/*
         if (repartoOld == null){
             LOG.info("Reparto con id {} no encontrado", id);
             return new ResponseEntity<Reparto>(HttpStatus.NOT_FOUND);
         }        
-        
-        //************************************
-        
+        */
         Fabrica fabrica = repartoOld.getFabrica();
         
     	String resultado = actualizarStockFabrica(repartoOld.getVehiculo().getStock(), fabrica, 1);		
 		Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getVehiculo().getStock(), reparto.getVehiculo(), -1);
         		
-		Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
+		/*Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
 		Set<ProductoStock> setProductoStockFabrica = fabrica.getStock().getSetProductoStock();
 		LOG.info("tamaño de setEnvaseStockFabrica: w--> {}", setEnvaseStockFabrica.size());
-		LOG.info("tamaño de setProductoStockFabrica: w--> {}", setProductoStockFabrica.size());
+		LOG.info("tamaño de setProductoStockFabrica: w--> {}", setProductoStockFabrica.size());*/
+		Reparto repartoUpd = new Reparto();
+		if(resultado.equals("OK"))
+		{
+			reparto.setVehiculo(vehiculo);
+			repartoUpd = repartoService.updateReparto(reparto);
+	        //return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
 		
 		
-		resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), fabrica, -1);		
-		vehiculo = actualizarStockVehiculo(reparto.getVehiculo().getStock(), reparto.getVehiculo(), 1);
+		resultado = actualizarStockFabrica(repartoUpd.getVehiculo().getStock(), fabrica, -1);		
+		vehiculo = actualizarStockVehiculo(repartoUpd.getVehiculo().getStock(), repartoUpd.getVehiculo(), 1);
         		
-		reparto.setVehiculo(vehiculo);
 		
-        
+		repartoUpd.setVehiculo(vehiculo);
+		
         //**************************************
         
-       
-      
-	    
+		}
+		Reparto repartoUpd2 = repartoService.updateReparto(repartoUpd);
+        return new ResponseEntity<Reparto>(repartoUpd2, HttpStatus.OK);
+	    /*
         if(resultado.substring(0, 2) != "OK"){
         	LOG.info("Info: {}.", resultado);
             return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);        	
         }
-	    //**
+	    */
 
-        Reparto repartoUpd = repartoService.updateReparto(reparto);
-        return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
+        
 	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -188,8 +195,10 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	EnvaseStock envaseStock = iteEnvStk.next();
 	    	envaseStock.setStock(nuevoStockVehiculo);
 	    	setEnvaseStock.add(envaseStock);
-	    }		
-	    nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
+	    }
+	    nuevoStockVehiculo.getSetEnvaseStock().clear();
+	    nuevoStockVehiculo.getSetEnvaseStock().addAll(setEnvaseStock);
+	    //nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
 	    	    
 	    Set<ProductoStock> setProductoStock =  vehiculo.getStock().getSetProductoStock();						
 		Iterator<ProductoStock> iteProStk = vehiculo.getStock().getSetProductoStock().iterator();
@@ -198,8 +207,10 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	productoStock.setCantidad(productoStock.getCantidad() * coeficiente);
 	    	productoStock.setStock(nuevoStockVehiculo);
 	    	setProductoStock.add(productoStock);
-	    }		
-	    nuevoStockVehiculo.setSetProductoStock(setProductoStock);  	
+	    }	
+	    nuevoStockVehiculo.getSetProductoStock().clear();
+	    nuevoStockVehiculo.getSetProductoStock().addAll(setProductoStock);
+		//nuevoStockVehiculo.setSetProductoStock(setProductoStock);  	
 
 	    Stock stockUpd = stockService.updateStock(nuevoStockVehiculo); 
 	    
@@ -212,7 +223,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	public String actualizarStockFabrica(Stock stock, Fabrica fabrica, int coeficiente) {
 		
 		LOG.info("Entro a actualizarStock");
-		LOG.info("stock.getId: {}, idFabrica: {}, fabrica-stock-id: {}.", stock.getId(), fabrica.getId(), fabrica.getStock().getId());
+		//LOG.info("stock.getId: {}, idFabrica: {}, fabrica-stock-id: {}.", stock.getId(), fabrica.getId(), fabrica.getStock().getId());
 		String result = "OK"; 
 		boolean parar = false;
 		boolean encontro = false;
@@ -285,8 +296,11 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    		result = String.format("La fabrica no tiene envases de ningun tipo");
 	    	}
 	    		
-	    	if(encontro)
-	    		stockFabrica.setSetEnvaseStock(setEnvaseStockFabrica);  
+	    	if(encontro) {
+	    		stockFabrica.getSetEnvaseStock().clear();
+	    		stockFabrica.getSetEnvaseStock().addAll(setEnvaseStockFabrica);
+	    		//stockFabrica.setSetEnvaseStock(setEnvaseStockFabrica);
+	    	}
 	    	else
 	    		if(result.substring(0, 2) == "OK"){
 	    			result = String.format("No se encontro el envases [envase=%s] en fabrica.", envaseStockRep.getEnvasesTipos().getDescripcion());
@@ -330,8 +344,11 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	else {
 	    		result = String.format("La fabrica no tiene productos de ningun tipo");
 	    	}
-	    	if(encontro)
-	    		stockFabrica.setSetProductoStock(setProductoStockFabrica);  
+	    	if(encontro) {
+	    		stockFabrica.getSetProductoStock().clear();
+	    		stockFabrica.getSetProductoStock().addAll(setProductoStockFabrica);
+	    		//stockFabrica.setSetProductoStock(setProductoStockFabrica);  
+	    	}
 	    	else
 	    		if(result.substring(0, 2) == "OK"){
 	    			result = String.format("No se encontro el producto [%s] en fabrica.", productoStockRep.getProducto().getNombre());

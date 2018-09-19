@@ -86,15 +86,17 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 	public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente) {
 		LOG.info("creando un nuevo cliente: {}", cliente.getNombre1());
 	
-		Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();						
-		Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
-	    while(iteEnvases.hasNext()) {
-	    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
-	    	envaseEnPrestamo.setClientes(cliente);
-	    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
-	    }		
-		cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
-	
+		if(cliente.getSetEnvasesEnPrestamo() != null)
+		{	
+			Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();						
+			Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
+		    while(iteEnvases.hasNext()) {
+		    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
+		    	envaseEnPrestamo.setClientes(cliente);
+		    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
+		    }		
+			cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
+		}
         if (clienteService.existe(cliente)){
             LOG.info("el cliente con documento " + cliente.getNroDocumento() + " ya existe");
             return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);

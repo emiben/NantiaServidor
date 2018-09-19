@@ -152,7 +152,8 @@ public class Reparto implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Reparto[id=%d, descripcion=%s, vendedor1=%s, vendedor2=%s, descripcion=%s, fecha=%tF, ruta=%s]", id, descripcion, vendedor1.getNombre(), vendedor2.getNombre(), vehiculo.getMatricula(), fecha, ruta.getNombre());
+		//return String.format("Reparto[id=%d, descripcion=%s, vendedor1=%s, vendedor2=%s, descripcion=%s, ruta=%s]", id, descripcion, vendedor1.getNombre(), vendedor2.getNombre(), vehiculo.getMatricula(),  ruta.getNombre());
+		return String.format("Reparto[id=%d, descripcion=%s]", id, descripcion);
 	}
 	
 }
