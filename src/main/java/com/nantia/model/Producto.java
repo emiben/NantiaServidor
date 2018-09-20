@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -40,7 +41,8 @@ public class Producto implements Serializable {
 	@Column(name = "retornable")
 	private boolean retornable;
 	
-	@OneToOne(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
+	//@OneToOne(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne
 	@JoinColumn(name = "envasetipos_id")	
 	private EnvasesTipos envasesTipos;
 	

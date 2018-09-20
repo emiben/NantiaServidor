@@ -44,7 +44,7 @@ public class ProductoStock implements Serializable{
 	@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "productos_id")	
 	private Producto producto;
 	

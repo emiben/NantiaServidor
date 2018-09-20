@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,15 +33,15 @@ public class Reparto implements Serializable {
 	@Column(name = "descripcion")
 	private String descripcion;	
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "vendedor1_id")	
 	private Usuario vendedor1;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "vendedor2_id")	
 	private Usuario vendedor2;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "vehiculo_id")	
 	private Vehiculo vehiculo;
 	
@@ -55,7 +56,7 @@ public class Reparto implements Serializable {
 	@Column(name = "estado_id")
 	private EstadoReparto estado;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "fabrica_id")	
 	private Fabrica fabrica;
 	

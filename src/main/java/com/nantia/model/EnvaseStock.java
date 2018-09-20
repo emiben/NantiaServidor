@@ -44,7 +44,7 @@ public class EnvaseStock implements Serializable {
 	@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "envasetipos_id")//@MapsId	
 	private EnvasesTipos envasesTipos;
 	

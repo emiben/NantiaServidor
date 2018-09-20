@@ -126,48 +126,26 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 		LOG.info("actualizando fabrica: {}", reparto);
 		Reparto repartoOld = repartoService.getRepartoById(id);
 		LOG.info("repartoOld.getDescripcion {}", repartoOld.getDescripcion());
-		/*
-        if (repartoOld == null){
-            LOG.info("Reparto con id {} no encontrado", id);
-            return new ResponseEntity<Reparto>(HttpStatus.NOT_FOUND);
-        }        
-        */
+
         Fabrica fabrica = repartoOld.getFabrica();
         
     	String resultado = actualizarStockFabrica(repartoOld.getVehiculo().getStock(), fabrica, 1);		
-		Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getVehiculo().getStock(), reparto.getVehiculo(), -1);
-        		
-		/*Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
-		Set<ProductoStock> setProductoStockFabrica = fabrica.getStock().getSetProductoStock();
-		LOG.info("tamaño de setEnvaseStockFabrica: w--> {}", setEnvaseStockFabrica.size());
-		LOG.info("tamaño de setProductoStockFabrica: w--> {}", setProductoStockFabrica.size());*/
+		Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getVehiculo().getStock(), reparto.getVehiculo(), 1);
+  		
 		Reparto repartoUpd = new Reparto();
 		if(resultado.equals("OK"))
 		{
 			reparto.setVehiculo(vehiculo);
+			reparto.setFabrica(fabricaService.getFabricaById(fabrica.getId()));
 			repartoUpd = repartoService.updateReparto(reparto);
-	        //return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
-		
-		
+
 		resultado = actualizarStockFabrica(repartoUpd.getVehiculo().getStock(), fabrica, -1);		
-		vehiculo = actualizarStockVehiculo(repartoUpd.getVehiculo().getStock(), repartoUpd.getVehiculo(), 1);
-        		
-		
-		repartoUpd.setVehiculo(vehiculo);
-		
-        //**************************************
-        
+       
 		}
+		repartoUpd.setFabrica(fabricaService.getFabricaById(fabrica.getId()));
 		Reparto repartoUpd2 = repartoService.updateReparto(repartoUpd);
         return new ResponseEntity<Reparto>(repartoUpd2, HttpStatus.OK);
-	    /*
-        if(resultado.substring(0, 2) != "OK"){
-        	LOG.info("Info: {}.", resultado);
-            return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);        	
-        }
-	    */
-
-        
+       
 	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -186,6 +164,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
     }
 	
 	
+	
 	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo, int coeficiente) {
 		
 		
@@ -196,7 +175,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	envaseStock.setStock(nuevoStockVehiculo);
 	    	setEnvaseStock.add(envaseStock);
 	    }
-	    nuevoStockVehiculo.getSetEnvaseStock().clear();
+	    nuevoStockVehiculo.getSetEnvaseStock().retainAll(setEnvaseStock);
 	    nuevoStockVehiculo.getSetEnvaseStock().addAll(setEnvaseStock);
 	    //nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
 	    	    
@@ -208,8 +187,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	productoStock.setStock(nuevoStockVehiculo);
 	    	setProductoStock.add(productoStock);
 	    }	
-	    nuevoStockVehiculo.getSetProductoStock().clear();
-	    nuevoStockVehiculo.getSetProductoStock().addAll(setProductoStock);
+	    nuevoStockVehiculo.getSetProductoStock().retainAll(setProductoStock);
+        nuevoStockVehiculo.getSetProductoStock().addAll(setProductoStock);
 		//nuevoStockVehiculo.setSetProductoStock(setProductoStock);  	
 
 	    Stock stockUpd = stockService.updateStock(nuevoStockVehiculo); 
@@ -220,21 +199,16 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 		return nuevovehiculo;
 	}
 	
-	public String actualizarStockFabrica(Stock stock, Fabrica fabrica, int coeficiente) {
+	public String actualizarStockFabrica(Stock stock, Fabrica fabricaR, int coeficiente) {
 		
 		LOG.info("Entro a actualizarStock");
-		//LOG.info("stock.getId: {}, idFabrica: {}, fabrica-stock-id: {}.", stock.getId(), fabrica.getId(), fabrica.getStock().getId());
 		String result = "OK"; 
 		boolean parar = false;
 		boolean encontro = false;
-		/*
-		Set<EnvaseStock> setEnvaseStockFabrica = fabrica.getStock().getSetEnvaseStock();
-		Set<ProductoStock> setProductoStockFabrica = fabrica.getStock().getSetProductoStock();
-		LOG.info("tamaño de setEnvaseStockFabrica: --> {}", setEnvaseStockFabrica.size());
-		LOG.info("tamaño de setProductoStockFabrica: --> {}", setProductoStockFabrica.size());
-		*/
 		
-		//Fabrica fabrica = fabricaService.getFabricaById(idFabrica);		
+		
+		Fabrica fabrica = fabricaService.getFabricaById(fabricaR.getId());
+		
 		Stock stockFabrica = fabrica.getStock();
 		
 		
@@ -297,9 +271,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	}
 	    		
 	    	if(encontro) {
-	    		stockFabrica.getSetEnvaseStock().clear();
+	    		stockFabrica.getSetEnvaseStock().retainAll(setEnvaseStockFabrica);
 	    		stockFabrica.getSetEnvaseStock().addAll(setEnvaseStockFabrica);
-	    		//stockFabrica.setSetEnvaseStock(setEnvaseStockFabrica);
 	    	}
 	    	else
 	    		if(result.substring(0, 2) == "OK"){
@@ -329,7 +302,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 			    		encontro = true;
 			    		if(productoStockFab.getCantidad() >= productoStockRep.getCantidad())
 			    		{
-			    			productoStockFab.setCantidad(productoStockFab.getCantidad() - productoStockRep.getCantidad());
+			    			productoStockFab.setCantidad(productoStockFab.getCantidad() + productoStockRep.getCantidad() * coeficiente);
 			    			productoStockFab.setStock(stockFabrica);
 			    			setProductoStockFabrica.add(productoStockFab);
 			    		}
@@ -345,9 +318,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    		result = String.format("La fabrica no tiene productos de ningun tipo");
 	    	}
 	    	if(encontro) {
-	    		stockFabrica.getSetProductoStock().clear();
+	    		stockFabrica.getSetProductoStock().retainAll(setProductoStockFabrica);
 	    		stockFabrica.getSetProductoStock().addAll(setProductoStockFabrica);
-	    		//stockFabrica.setSetProductoStock(setProductoStockFabrica);  
 	    	}
 	    	else
 	    		if(result.substring(0, 2) == "OK"){
