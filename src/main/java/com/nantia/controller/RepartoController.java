@@ -1,11 +1,9 @@
 package com.nantia.controller;
 
 
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.EnvasesTipos;
 import com.nantia.model.Fabrica;
@@ -162,9 +159,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         LOG.info("Reparto con id: {} eliminando con áxito", id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
-	
-	
-	
+		
 	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo, int coeficiente) {
 		
 		
