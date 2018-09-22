@@ -30,6 +30,7 @@ import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
 import com.nantia.service.IFabricaService;
 import com.nantia.service.IRepartoService;
+import com.nantia.service.IRutaService;
 import com.nantia.service.IStockService;
 import com.nantia.service.IVehiculoService;
 
@@ -48,6 +49,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	IStockService stockService;
 	@Autowired
 	IVehiculoService vehiculoService;
+	@Autowired
+	IRutaService rutaService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<DataReparto>> getAllDataReparto() {
@@ -95,8 +98,11 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		reparto.setVendedor1(dataReparto.getVendedor1());
 		reparto.setVendedor2(dataReparto.getVendedor2());
 		
-		Ruta ruta = reparto.getRuta();		
-		
+		Ruta ruta  = new Ruta();
+		if(dataReparto.getRuta().getId() > 0)
+			ruta = rutaService.getRutaById(dataReparto.getRuta().getId());// dataReparto.getRuta();		
+		else
+			ruta = dataReparto.getRuta();
 		if(ruta.getSetRutaCliente() != null)
 		{
 			Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						

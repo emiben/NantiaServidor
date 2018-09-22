@@ -38,7 +38,7 @@ public class Ruta implements Serializable {
 	private Set<RutaCliente> setRutaCliente = new HashSet<RutaCliente>();
 	
 	
-	protected Ruta() {
+	public Ruta() {
 	}
 	
 	public Ruta(String nombre, DiaSemana dias, Set<RutaCliente> setRutaCliente) {
@@ -72,6 +72,16 @@ public class Ruta implements Serializable {
 
 	public void setSetRutaCliente(Set<RutaCliente> setRutaCliente) {
 		this.setRutaCliente = setRutaCliente;
+	}
+
+	
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	@Override
