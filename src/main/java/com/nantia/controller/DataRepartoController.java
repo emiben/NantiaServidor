@@ -201,7 +201,6 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    }
 	    nuevoStockVehiculo.getSetEnvaseStock().retainAll(setEnvaseStock);
 	    nuevoStockVehiculo.getSetEnvaseStock().addAll(setEnvaseStock);
-	    //nuevoStockVehiculo.setSetEnvaseStock(setEnvaseStock);    
 	    	    
 	    Set<ProductoStock> setProductoStock =  vehiculo.getStock().getSetProductoStock();						
 		Iterator<ProductoStock> iteProStk = vehiculo.getStock().getSetProductoStock().iterator();
@@ -246,7 +245,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		
 								
 		Iterator<EnvaseStock> iteEnvStkRep = stock.getSetEnvaseStock().iterator();
-		Iterator<EnvaseStock> iteEnvStkFab = stockFabrica.getSetEnvaseStock().iterator();
+		Iterator<EnvaseStock> iteEnvStkFab = null;//stockFabrica.getSetEnvaseStock().iterator();
 		
 		
 		LOG.info("tamaño de setEnvaseStockReparto: {}", setEnvaseStockReparto.size());
@@ -262,12 +261,19 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    	parar = false;
 	    	EnvaseStock envaseStockRep = iteEnvStkRep.next();
 	    	EnvasesTipos envasesTiposRep = envaseStockRep.getEnvasesTipos();
+	    	
+	    	LOG.info("envasesTiposRep.getDescripcion: {}", envasesTiposRep.getDescripcion());
+	    	
 	    	idEnvaseStock = envasesTiposRep.getId();
 	    	
-	    	if(setEnvaseStockFabrica.size() > 0) {	    		
+	    	
+	    	if(setEnvaseStockFabrica.size() > 0) {
+	    		iteEnvStkFab = stockFabrica.getSetEnvaseStock().iterator();
 		    	while(iteEnvStkFab.hasNext() && !parar && !encontro) {
 			    	EnvaseStock envaseStockFab = iteEnvStkFab.next();
 			    	EnvasesTipos envasesTiposFab = envaseStockFab.getEnvasesTipos();
+			    	LOG.info("envasesTiposFab.getDescripcion: {}", envasesTiposFab.getDescripcion());
+			    	
 			    	LOG.info("envasesTiposFab.getId(): {}, idEnvaseStock: {}", envasesTiposFab.getId(), idEnvaseStock);
 			    	if(envasesTiposFab.getId() == idEnvaseStock)
 			    	{
@@ -307,7 +313,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    
 	  //Proceso el Set de productosStock
 	    Iterator<ProductoStock> iteProStkRep = setProductoStockReparto.iterator();
-		Iterator<ProductoStock> iteProStkFab = setProductoStockFabrica.iterator();
+		Iterator<ProductoStock> iteProStkFab = null;
 	    Long idProductoStock;
 	    while(iteProStkRep.hasNext() && !parar && result.substring(0, 2) == "OK") {
 	    	encontro = false;
@@ -317,6 +323,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    	idProductoStock = productoRep.getProductoId();
 	    	
 	    	if(setProductoStockFabrica.size() > 0) {	 
+	    		iteProStkFab = setProductoStockFabrica.iterator();
 		    	while(iteProStkFab.hasNext() && !parar && !encontro) {
 		    		ProductoStock productoStockFab = iteProStkFab.next();
 		    		Producto productoFab = productoStockFab.getProducto();

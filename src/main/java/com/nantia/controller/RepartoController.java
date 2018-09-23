@@ -217,7 +217,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 		
 								
 		Iterator<EnvaseStock> iteEnvStkRep = stock.getSetEnvaseStock().iterator();
-		Iterator<EnvaseStock> iteEnvStkFab = stockFabrica.getSetEnvaseStock().iterator();
+		Iterator<EnvaseStock> iteEnvStkFab = null;//stockFabrica.getSetEnvaseStock().iterator();
 		
 		
 		LOG.info("tamaño de setEnvaseStockReparto: {}", setEnvaseStockReparto.size());
@@ -235,7 +235,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	EnvasesTipos envasesTiposRep = envaseStockRep.getEnvasesTipos();
 	    	idEnvaseStock = envasesTiposRep.getId();
 	    	
-	    	if(setEnvaseStockFabrica.size() > 0) {	    		
+	    	if(setEnvaseStockFabrica.size() > 0) {	    	
+	    		iteEnvStkFab = stockFabrica.getSetEnvaseStock().iterator();
 		    	while(iteEnvStkFab.hasNext() && !parar && !encontro) {
 			    	EnvaseStock envaseStockFab = iteEnvStkFab.next();
 			    	EnvasesTipos envasesTiposFab = envaseStockFab.getEnvasesTipos();
@@ -278,7 +279,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    
 	  //Proceso el Set de productosStock
 	    Iterator<ProductoStock> iteProStkRep = setProductoStockReparto.iterator();
-		Iterator<ProductoStock> iteProStkFab = setProductoStockFabrica.iterator();
+		Iterator<ProductoStock> iteProStkFab = null;//setProductoStockFabrica.iterator();
 	    Long idProductoStock;
 	    while(iteProStkRep.hasNext() && !parar && result.substring(0, 2) == "OK") {
 	    	encontro = false;
@@ -287,7 +288,8 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    	Producto productoRep = productoStockRep.getProducto();
 	    	idProductoStock = productoRep.getProductoId();
 	    	
-	    	if(setProductoStockFabrica.size() > 0) {	 
+	    	if(setProductoStockFabrica.size() > 0) {	
+	    		iteProStkFab = setProductoStockFabrica.iterator();
 		    	while(iteProStkFab.hasNext() && !parar && !encontro) {
 		    		ProductoStock productoStockFab = iteProStkFab.next();
 		    		Producto productoFab = productoStockFab.getProducto();

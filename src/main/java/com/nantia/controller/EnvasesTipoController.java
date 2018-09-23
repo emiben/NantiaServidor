@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class EnvasesTipoController {
 
 	@Autowired
 	IEnvasesTipoService envasesTiposService;
+	
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -53,7 +55,7 @@ public class EnvasesTipoController {
         return new ResponseEntity<EnvasesTipos>(envasesTipos, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<EnvasesTipos> addEnvasesTipos(@RequestBody EnvasesTipos envasesTipos) {
 		LOG.info("creando un nuevo tipo de envase: {}", envasesTipos);
 
