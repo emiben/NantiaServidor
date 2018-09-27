@@ -43,7 +43,7 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "direcciones_id")	
 	private Direccion direccion;
 	
@@ -93,7 +93,7 @@ public class Cliente implements Serializable{
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
 
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "clientes")
+	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "clientes")
 	private Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
 
 	
