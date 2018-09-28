@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-@Table(name = "dataventa")
+//@Table(name = "dataventa")
 public class DataVenta implements Serializable{
 	private static final long serialVersionUID = -7899617239584557918L;
 
@@ -46,26 +46,29 @@ public class DataVenta implements Serializable{
 	private Set<ProductoVenta> setProductoVenta = new HashSet<ProductoVenta>();
 	
 	
-	@Column(name = "descuento")
+	//@Column(name = "descuento")
 	private float descuento;
 	
-	@Column(name = "totalventa")
+	//@Column(name = "totalventa")
 	private float totalventa;
 	
-	@Column(name = "ivatotal")
+	//@Column(name = "ivatotal")
 	private float ivatotal;
 	
-	@Column(name = "pagototal")
+	//@Column(name = "pagototal")
 	private float pagototal;
 	
-	@Column(name = "fabricaid")  
+	//@Column(name = "fabricaid")  
 	private Long fabricaid;
 	
-	@Column(name = "repartoid")  
+	//@Column(name = "repartoid")  
 	private Long repartoid;
 	
-	@Column(name = "observaciones")
+	//@Column(name = "observaciones")
 	private String observaciones;
+	
+	private Pago pago;
+	
 
 	public DataVenta() {
 		super();
@@ -73,7 +76,7 @@ public class DataVenta implements Serializable{
 
 	public DataVenta(long id, Date fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
 			float descuento, float totalventa, float ivatotal, float pagototal, Long fabricaid, Long repartoid,
-			String observaciones) {
+			String observaciones, Pago pago) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -87,6 +90,7 @@ public class DataVenta implements Serializable{
 		this.fabricaid = fabricaid;
 		this.repartoid = repartoid;
 		this.observaciones = observaciones;
+		this.pago = pago;
 	}
 
 	public long getId() {
@@ -184,6 +188,14 @@ public class DataVenta implements Serializable{
 
 	public void setRepartoid(Long repartoid) {
 		this.repartoid = repartoid;
+	}
+
+	public Pago getPago() {
+		return pago;
+	}
+
+	public void setPago(Pago pago) {
+		this.pago = pago;
 	}
 	
 	

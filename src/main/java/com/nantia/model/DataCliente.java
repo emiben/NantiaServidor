@@ -2,7 +2,6 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,21 +12,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -42,12 +33,12 @@ public class DataCliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "direcciones_id")	
 	private Direccion direccion;
 	
 	@Column(name = "tipoDocumento")
-	private TipoDocumento tipoDocumento;
+	private Cliente.TipoDocumento tipoDocumento;
 	
 	@Column(name = "nroDocumento")
 	private String nroDocumento;
@@ -83,6 +74,9 @@ public class DataCliente implements Serializable{
 
 	@Column(name = "activo")
 	private Boolean activo;
+	
+	@Column(name = "difSaldo")
+	private float difSaldo;
 
 
 	@ElementCollection(targetClass = DiaSemana.class)
@@ -100,7 +94,7 @@ public class DataCliente implements Serializable{
 	public DataCliente() {
 	}
 	
-	public DataCliente(TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo) {
+	public DataCliente(Cliente.TipoDocumento tipoDocumento, String nroDocumento, String nombre1, String nombre2, float saldo, Date fechaNacimiento, Date fechaAlta, String celular, String mail, int idLista, String observaciones, Boolean activo, Set<DiaSemana> dias, Set<EnvasesEnPrestamo> envasesEnPrestamo, float difSaldo) {
 		this.tipoDocumento = tipoDocumento;
 		this.nroDocumento = nroDocumento;
 		this.nombre1 = nombre1;
@@ -115,6 +109,7 @@ public class DataCliente implements Serializable{
 		this.activo = activo;
 		this.dias = dias;
 		this.setEnvasesEnPrestamo = envasesEnPrestamo;
+		this.difSaldo = difSaldo;
 	}
 	
 	
@@ -127,11 +122,11 @@ public class DataCliente implements Serializable{
 		this.id = clienteId;
 	}
 
-	public TipoDocumento getTipoDocumento() {
+	public Cliente.TipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+	public void setTipoDocumento(Cliente.TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 
@@ -265,10 +260,15 @@ public class DataCliente implements Serializable{
 		return String.format("clientes[id=%d]",	id);
 	}	
 	
-	public enum TipoDocumento {
-	    CI,
-	    RUT,
-	    NA,	   
+	
+	
+	
+	public float getDifSaldo() {
+		return difSaldo;
+	}
+
+	public void setDifSaldo(float difSaldo) {
+		this.difSaldo = difSaldo;
 	}
 
 

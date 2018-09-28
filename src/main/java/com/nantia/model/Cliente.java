@@ -43,7 +43,7 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "direcciones_id")	
 	private Direccion direccion;
 	

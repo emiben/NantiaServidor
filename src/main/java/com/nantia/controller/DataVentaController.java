@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.DataVenta;
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.Fabrica;
+import com.nantia.model.Pago;
 import com.nantia.model.Producto;
 import com.nantia.model.ProductoStock;
 import com.nantia.model.ProductoVenta;
@@ -25,6 +26,7 @@ import com.nantia.model.Vehiculo;
 import com.nantia.model.Venta;
 import com.nantia.service.IEnvaseStockService;
 import com.nantia.service.IFabricaService;
+import com.nantia.service.IPagoService;
 import com.nantia.service.IRepartoService;
 import com.nantia.service.IStockService;
 import com.nantia.service.IVehiculoService;
@@ -49,6 +51,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	IEnvaseStockService envaseStockService;
 	@Autowired
 	IRepartoService repartoService;
+	@Autowired
+	IPagoService pagoService;
 	
 
 	
@@ -67,9 +71,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		venta.setTotalventa(dataVenta.getTotalventa());
 		venta.setIvatotal(dataVenta.getIvatotal());
 		venta.setPagototal(dataVenta.getPagototal());
+		venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
 		
-		
-	
 		Set<ProductoVenta> setProdDataVenta =  dataVenta.getSetProductoVenta();						
 		Iterator<ProductoVenta> itePVenta = dataVenta.getSetProductoVenta().iterator();
 	    while(itePVenta.hasNext()) {
@@ -97,7 +100,19 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 
         LOG.info("Resultado de actualizar el stock: {}", result);        
         
-        Venta newVentaUpd = ventaService.updateVenta(newVenta);        
+        Venta newVentaUpd = ventaService.updateVenta(newVenta);   
+        
+
+		if(dataVenta.getPago() != null)
+		{
+			Pago pago = dataVenta.getPago();
+			pago.setCliente(dataVenta.getPago().getCliente());
+			pago.setFechapago(dataVenta.getPago().getFechapago());
+			pago.setMonto(dataVenta.getPago().getMonto());
+			pago.setVenta(newVentaUpd);
+			Pago pagoUpd = pagoService.addPago(pago);
+		}
+        
         return new ResponseEntity<Venta>(newVentaUpd, HttpStatus.CREATED);
 	}
 	
