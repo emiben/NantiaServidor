@@ -64,7 +64,7 @@ public class VehiculoUbicacionController {
 
 		
 		LOG.info("creando VehiculoUbicacion: {}", vehiculoUbicacion);
-		
+		LOG.info("VehiculoUbicacion fecha: {}", vehiculoUbicacion.getFecha());
 				
 		if (vehiculoUbicacionService.existe(vehiculoUbicacion)){
             LOG.info("la ubicacion con long {} y lat {} ya existe", vehiculoUbicacion.getCoordLon(), vehiculoUbicacion.getCoordLat());

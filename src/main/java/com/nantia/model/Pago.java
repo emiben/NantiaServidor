@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
@@ -79,6 +80,7 @@ public class Pago implements Serializable{
 		return fechapago;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechapago(Date fechapago) {
 		this.fechapago = fechapago;
 	}

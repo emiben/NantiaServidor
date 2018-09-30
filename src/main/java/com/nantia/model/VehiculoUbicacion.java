@@ -2,7 +2,6 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class VehiculoUbicacion implements Serializable{
 	private String coordLat; 
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@Column(name="fecha", nullable=false, length=13)
+	@Column(name="fecha", nullable=false, length=19)
 	private Date fecha;
 	
 	
@@ -99,7 +98,8 @@ public class VehiculoUbicacion implements Serializable{
 	public Date getFecha() {
 		return fecha;
 	}
-
+	
+    @JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}

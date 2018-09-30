@@ -1,7 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -167,6 +168,7 @@ public class DataCliente implements Serializable{
 		return fechaNacimiento;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -176,6 +178,7 @@ public class DataCliente implements Serializable{
 		return fechaAlta;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}

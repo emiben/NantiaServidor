@@ -1,9 +1,11 @@
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\JsonDateDeserializer.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\ListaPrecio.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\EnvasesEnPrestamoControler.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\VentaRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IVehiculoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvaseStock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\RepartoController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DataClientePorDiaController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EstadoReparto.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\StockRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\VehiculoController.java
@@ -26,7 +28,6 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IEnvaseStockService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\StockController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ProductoStockRepository.java
-C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Fechas.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvasesTipos.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\EnvasesTipoController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\RolService.java

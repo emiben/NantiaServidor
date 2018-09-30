@@ -1,11 +1,9 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -13,21 +11,18 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -89,11 +84,12 @@ public class Cliente implements Serializable{
 	@ElementCollection(targetClass = DiaSemana.class)
 	@CollectionTable(name = "cliente_dias", joinColumns = @JoinColumn(name = "cliente_id"))
 	@Enumerated(EnumType.STRING)
-	@Column(name = "dias_id")
+	@Column(name = "dias_id")//, nullable = true)
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
 
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "clientes")
+	@OrderBy(clause = "id")
 	private Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
 
 	
@@ -173,6 +169,7 @@ public class Cliente implements Serializable{
 		return fechaNacimiento;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -182,6 +179,7 @@ public class Cliente implements Serializable{
 		return fechaAlta;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}

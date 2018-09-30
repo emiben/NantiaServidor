@@ -1,9 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
-
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +16,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
@@ -122,6 +121,7 @@ public class Reparto implements Serializable {
 		return fecha;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}

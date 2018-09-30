@@ -2,8 +2,7 @@ package com.nantia.model;
 
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,9 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.OrderBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -41,6 +42,7 @@ public class ListaPrecio implements Serializable{
 	private Date fechaAlta;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "listaPrecio")
+	@OrderBy(clause = "id")
 	private Set<ProductoLista> setProductoLista = new HashSet<ProductoLista>();
 	
 	
@@ -72,6 +74,7 @@ public class ListaPrecio implements Serializable{
 		return fechaAlta;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}

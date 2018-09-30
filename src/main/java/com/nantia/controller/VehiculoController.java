@@ -1,17 +1,14 @@
 package com.nantia.controller;
 
-import java.security.Timestamp;
-import java.sql.Date;
+
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,37 +180,20 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 		LOG.info("fecha: {}", fecha); 
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		
 		List<Vehiculo> vehiculos;
-		Date date;
-	
-			
-			java.sql.Date javaSqlDate = java.sql.Date.valueOf(fecha);
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(javaSqlDate);
-			//System.out.println(calendar.get(Calendar.YEAR));
-			
-			 vehiculos = vehiculoService.getAllVehiculosSinStock(calendar);
-		        
-			//date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(fecha);
-			
-			//Calendar fechaCal = Calendar.getInstance();		
-			//fechaCal.set(Calendar.YEAR, (Integer)date.getYear());
-			
-
+		Date date = new Date();
 		
-		
-		
-		/*
-		LOG.info("fecha: {}", fecha);
 		try {
-			
-			fechaCal.setTime(sdf.parse(fecha));
+			date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
 		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		*/
-		
-       
+		}	
+
+		vehiculos = vehiculoService.getAllVehiculosSinStock(date);
+				       				
+		       
         if (vehiculos == null || vehiculos.isEmpty()){
             LOG.info("no se encontraron vehiculos sin stock para la fecha indicada");
             return new ResponseEntity<List<Vehiculo>>(HttpStatus.NO_CONTENT);

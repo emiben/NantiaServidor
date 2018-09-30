@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OrderBy;
+
 @Entity
 @Table(name = "ruta")
 public class Ruta implements Serializable {
@@ -27,14 +29,11 @@ public class Ruta implements Serializable {
 	@Column(name = "nombre")
 	private String nombre;
 
-	
-	//@ElementCollection(targetClass = DiaSemana.class)
-	//@CollectionTable(name = "cliente_dias", joinColumns = @JoinColumn(name = "cliente_id"))
-	//@Enumerated(EnumType.STRING)
 	@Column(name = "dias_id")
 	private DiaSemana dias;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "ruta")
+	@OrderBy(clause = "id")
 	private Set<RutaCliente> setRutaCliente = new HashSet<RutaCliente>();
 	
 	

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nantia.model.Cliente;
 import com.nantia.model.DataVenta;
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.Fabrica;
@@ -66,12 +68,16 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		
 		venta.setFecha(dataVenta.getFecha());
 		venta.setUsuario(dataVenta.getUsuario());
-		venta.setCliente(dataVenta.getCliente());
+		//venta.setCliente(dataVenta.getCliente());
 		venta.setDescuento(dataVenta.getDescuento());
 		venta.setTotalventa(dataVenta.getTotalventa());
 		venta.setIvatotal(dataVenta.getIvatotal());
 		venta.setPagototal(dataVenta.getPagototal());
-		venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
+		//venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
+		
+		Cliente cliente = dataVenta.getCliente();
+		
+		venta.setCliente(dataVenta.getCliente());
 		
 		Set<ProductoVenta> setProdDataVenta =  dataVenta.getSetProductoVenta();						
 		Iterator<ProductoVenta> itePVenta = dataVenta.getSetProductoVenta().iterator();
@@ -87,10 +93,10 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 
 		LOG.info("dataVenta.getFabricaId: {}", dataVenta.getFabricaid()); 
 		
-        if(dataVenta.getFabricaid() <= 0)
+        if(dataVenta.getFabricaid() == null)
         {
-        	venta.setReparto(repartoService.getRepartoById(dataVenta.getRepartoid()));
-        	result = actualizarStockRepartoPorVenta(newVenta.getSetProductoVenta(), newVenta.getReparto(), -1);
+        	//venta.setReparto(repartoService.getRepartoById(dataVenta.getRepartoid()));
+        	//result = actualizarStockRepartoPorVenta(newVenta.getSetProductoVenta(), newVenta.getReparto(), -1);
         }
         else
         {

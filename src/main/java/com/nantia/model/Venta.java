@@ -1,11 +1,9 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,10 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OrderBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
@@ -47,6 +47,7 @@ public class Venta implements Serializable{
 	
 
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "venta")
+	@OrderBy(clause = "id")
 	private Set<ProductoVenta> setProductoVenta = new HashSet<ProductoVenta>();
 	
 	
@@ -106,6 +107,7 @@ public class Venta implements Serializable{
 		return fecha;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}

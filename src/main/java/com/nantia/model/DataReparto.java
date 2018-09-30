@@ -1,7 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "datareparto")
@@ -160,10 +162,12 @@ public class DataReparto implements Serializable {
 		this.vehiculo = vehiculo;
 	}
 
+	@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getFecha() {
 		return fecha;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}

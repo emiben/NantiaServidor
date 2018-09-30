@@ -2,6 +2,7 @@ package com.nantia.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class VehiculoService implements IVehiculoService {
 	}
 
 	@Override
-	public List<Vehiculo> getAllVehiculosSinStock(Calendar fecha) {
+	public List<Vehiculo> getAllVehiculosSinStock(Date fecha) {
 		List<Vehiculo> list = new ArrayList<>();	
 		vehiculoRepository.getAllVehiculosSinStock(fecha).forEach(e -> list.add(e));
 		return list;

@@ -1,8 +1,7 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -13,14 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import org.hibernate.annotations.OrderBy;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.nantia.controller.StockController;
 
 
 @Entity
@@ -41,9 +36,11 @@ public class Stock implements Serializable {
 	
 	
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
+	@OrderBy(clause = "id")
 	private Set<EnvaseStock> setEnvaseStock = new HashSet<EnvaseStock>();
 	
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
+	@OrderBy(clause = "id")
 	private Set<ProductoStock> setProductoStock = new HashSet<ProductoStock>();
 
 	
@@ -72,7 +69,7 @@ public class Stock implements Serializable {
 		return fecha;
 	}
 
-	@JsonSerialize(using=JsonDateSerializer.class)
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -83,10 +80,6 @@ public class Stock implements Serializable {
 
 	public void setSetEnvaseStock(Set<EnvaseStock> setEnvaseStock) {
 		this.setEnvaseStock = setEnvaseStock;
-		/*this.setEnvaseStock.clear();
-	    if (setEnvaseStock != null) {
-	        this.setEnvaseStock.addAll(setEnvaseStock);
-	    }*/
 	}
 
 	public Set<ProductoStock> getSetProductoStock() {
@@ -95,15 +88,10 @@ public class Stock implements Serializable {
 
 	public void setSetProductoStock(Set<ProductoStock> setProductoStock) {
 		this.setProductoStock = setProductoStock;
-		/*this.setProductoStock.clear();
-	    if (setProductoStock != null) {
-	        this.setProductoStock.addAll(setProductoStock);
-	    }*/
 	}
 
 	@Override
 	public String toString() {
-		//return String.format("Stock[id=%d, fecha=%tF]", id, fecha);
 		return String.format("Stock[id=%d]", id);
 	}
 }

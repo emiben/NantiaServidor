@@ -1,13 +1,9 @@
 package com.nantia.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
-
-import javax.persistence.CascadeType;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
@@ -78,6 +75,7 @@ public class ProductoLista  implements Serializable{
 		return actualizado;
 	}
 
+	@JsonDeserialize(using=JsonDateDeserializer.class)
 	public void setActualizado(Date actualizado) {
 		this.actualizado = actualizado;
 	}
