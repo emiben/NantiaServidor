@@ -10,7 +10,7 @@ public enum DiaSemana {
     VIERNES,
     SABADO;
 	
-    public static DiaSemana getDiaSemana(String diaSemana){  
+    public DiaSemana getDiaSemana(String diaSemana){  
 	  switch (diaSemana){  
 	   case "DOMINGO" : return DiaSemana.DOMINGO;  
 	   case "LUNES" : return DiaSemana.LUNES; 

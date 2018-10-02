@@ -18,7 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+//import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,6 +39,8 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
+	
+	//@Cascade({CascadeType.SAVE_UPDATE})
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "direcciones_id")	
 	private Direccion direccion;

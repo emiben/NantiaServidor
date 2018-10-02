@@ -1,8 +1,12 @@
 package com.nantia.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.Cliente;
 import com.nantia.model.DataCliente;
+import com.nantia.model.DiaSemana;
 import com.nantia.model.EnvasesEnPrestamo;
 import com.nantia.service.IClienteService;
 
@@ -75,4 +80,24 @@ public class DataClienteController {
         return new ResponseEntity<Cliente>(clienteUpd, HttpStatus.OK);
 	}
 
+	
+	@RequestMapping(value = "/clientespordia/{fecha}", method = RequestMethod.GET)
+	public ResponseEntity<List<Cliente>> getAllClientesPorDia(@PathVariable String fecha) {
+		
+		LOG.info("trayendo todos los clientes para la fecha indicada"); 
+		LOG.info("fecha: {}", fecha); 
+		
+		List<Cliente> clientes;
+		
+		clientes = clienteService.getAllClientesPorDia(fecha);
+
+        if (clientes == null || clientes.isEmpty()){
+            LOG.info("no se encontraron clientes para la fecha indicada");
+            return new ResponseEntity<List<Cliente>>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<List<Cliente>>(clientes, HttpStatus.OK);		
+	}
+
+	
 }

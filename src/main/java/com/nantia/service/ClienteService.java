@@ -1,8 +1,7 @@
 package com.nantia.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -10,13 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.nantia.controller.ClienteController;
 import com.nantia.controller.EnvasesEnPrestamoControler;
 import com.nantia.model.Cliente;
-import com.nantia.model.EnvasesEnPrestamo;
+import com.nantia.model.DiaSemana;
+import com.nantia.model.Vehiculo;
 import com.nantia.repo.ClienteRepository;
-import com.nantia.repo.EnvasesEnPrestamoRepository;
 
 @Service
 public class ClienteService implements IClienteService{
@@ -65,6 +62,13 @@ public class ClienteService implements IClienteService{
 	@Override
 	public boolean existe(Cliente cliente) {
 		return findByNroDocumento(cliente.getNroDocumento()) != null;
+	}
+
+	@Override
+	public List<Cliente> getAllClientesPorDia(String fecha) {
+		List<Cliente> list = new ArrayList<>();	
+		clienteRepository.getAllClientesPorDia(fecha).forEach(e -> list.add(e));
+		return list;
 	}
 
 }
