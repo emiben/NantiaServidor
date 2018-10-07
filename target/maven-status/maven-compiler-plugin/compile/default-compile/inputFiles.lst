@@ -5,6 +5,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\Ve
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IVehiculoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EnvaseStock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\RepartoController.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\ProductoVentaRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DataClientePorDiaController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\EstadoReparto.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\StockRepository.java
@@ -70,6 +71,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\DataClienteController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\EnvasesEnPrestamoRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ListaPrecioService.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IProductoVentaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\FabricaController.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\UsuarioRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IRutaService.java
@@ -93,6 +95,7 @@ C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\L
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\controller\ABMStock.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\repo\DireccionRepository.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\RutaService.java
+C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\ProductoVentaService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\service\IRepartoService.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Fabrica.java
 C:\Users\pablo\eclipse-workspace\NantiaServidor\src\main\java\com\nantia\model\Vehiculo.java

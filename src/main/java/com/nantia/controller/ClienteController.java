@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.Cliente;
+import com.nantia.model.Direccion;
 import com.nantia.model.EnvasesEnPrestamo;
 import com.nantia.model.EnvasesTipos;
 import com.nantia.service.IClienteService;
@@ -96,6 +97,9 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 		    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
 		    }		
 			cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
+			//Direccion direccion = cliente.getDireccion();
+			//cliente.setDireccion(direccion);
+			
 		}
         if (clienteService.existe(cliente)){
             LOG.info("el cliente con documento " + cliente.getNroDocumento() + " ya existe");

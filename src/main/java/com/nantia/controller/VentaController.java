@@ -238,8 +238,8 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
 			
 
 		Vehiculo vehiculoRep = reparto.getVehiculo();
-		Stock stockReparto = vehiculoRep.getStock();
-		Set<ProductoStock> setProductoStockReparto =  vehiculoRep.getStock().getSetProductoStock();		
+		Stock stockReparto = reparto.getStock();
+		Set<ProductoStock> setProductoStockReparto =  stockReparto.getSetProductoStock();		
 		Iterator<ProductoStock> iteProStkRep2 = setProductoStockReparto.iterator();
 		
 	    	    
@@ -292,8 +292,8 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
 	    
 	    
 		//******************************
-	    Set<ProductoStock> setProductoStock =  vehiculoRep.getStock().getSetProductoStock();						
-		Iterator<ProductoStock> iteProStk = vehiculoRep.getStock().getSetProductoStock().iterator();
+	    Set<ProductoStock> setProductoStock =  stockReparto.getSetProductoStock();						
+		Iterator<ProductoStock> iteProStk = stockReparto.getSetProductoStock().iterator();
 	    while(iteProStk.hasNext()) {
 	    	ProductoStock productoStock = iteProStk.next();
 	    	productoStock.setStock(stockReparto);
@@ -301,8 +301,8 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
 	    }		
 		stockReparto.setSetProductoStock(setProductoStockReparto); 
 		//******************************
-		Set<EnvaseStock> setEnvaseStock =  vehiculoRep.getStock().getSetEnvaseStock();						
-		Iterator<EnvaseStock> iteEnvStk = vehiculoRep.getStock().getSetEnvaseStock().iterator();
+		Set<EnvaseStock> setEnvaseStock =  stockReparto.getSetEnvaseStock();						
+		Iterator<EnvaseStock> iteEnvStk = stockReparto.getSetEnvaseStock().iterator();
 	    while(iteEnvStk.hasNext()) {
 	    	EnvaseStock envaseStock = iteEnvStk.next();
 	    	envaseStock.setStock(stockReparto);
@@ -313,7 +313,7 @@ private final Logger LOG = LoggerFactory.getLogger(VentaController.class);
 	    
 	    Stock newStock = stockService.updateStock(stockReparto); 
 	    
-	    vehiculoRep.setStock(newStock);
+	    reparto.setStock(newStock);
 	    reparto.setVehiculo(vehiculoRep);
 	    
 	    Vehiculo vehiculoUpd = vehiculoService.updateVehiculo(vehiculoRep);

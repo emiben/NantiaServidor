@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
+//import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -17,8 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-//import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OrderBy;
 
@@ -39,11 +40,15 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
-	
-	//@Cascade({CascadeType.SAVE_UPDATE})
-	@OneToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name = "direcciones_id")	
+	//@OneToOne
+	//
+	//@OneToOne(mappedBy="clientes")
+	@OneToOne
+	@Cascade({CascadeType.ALL})
+	@JoinColumn(name = "direcciones_id")
 	private Direccion direccion;
+	//	
+	
 	
 	@Column(name = "tipoDocumento")
 	private TipoDocumento tipoDocumento;
@@ -90,8 +95,8 @@ public class Cliente implements Serializable{
 	@Column(name = "dias_id")//, nullable = true)
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
-
-	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "clientes")
+	@Cascade(CascadeType.MERGE)
+	@OneToMany(orphanRemoval = true, mappedBy = "clientes")//cascade=CascadeType.MERGE, 
 	@OrderBy(clause = "id")
 	private Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = new HashSet<EnvasesEnPrestamo>();
 

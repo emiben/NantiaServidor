@@ -41,21 +41,15 @@ public class Vehiculo implements Serializable {
 	@Column(name = "activo")
 	private Boolean activo;
 	
-	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
-	@JoinColumn(name = "stock_id", nullable = true)	
-	private Stock stock;
-	
-	
 	public Vehiculo() {
 	}
 	
-	public Vehiculo(String matricula, String marca, String modelo, String descripcion, Boolean activo, Stock stock) {
+	public Vehiculo(String matricula, String marca, String modelo, String descripcion, Boolean activo) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.descripcion = descripcion;
 		this.activo = activo;
-		this.stock = stock;
 	}
 
 	public long getId() {
@@ -106,14 +100,7 @@ public class Vehiculo implements Serializable {
 		this.activo = activo;
 	}
 
-	public Stock getStock() {
-		return stock;
-	}
-
-	public void setStock(Stock stock) {
-		this.stock = stock;
-	}
-		
+			
 	@Override
 	public String toString() {
 		return String.format("Vehiculo[id=%d, matricula=%s, marca=%s, modelo=%s, descripcion=%s]", id, matricula, marca, modelo, descripcion);

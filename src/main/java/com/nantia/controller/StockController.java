@@ -84,9 +84,7 @@ public class StockController {
 	    	envaseStock.setStock(newStock);
 	    	setEnvaseStock.add(envaseStockService.addEnvaseStock(envaseStock));	    	
 	    }		
-	    
-	    //stock.setSetEnvaseStock(setEnvaseStock);    
-	    newStock.setSetEnvaseStock(setEnvaseStock);
+        newStock.setSetEnvaseStock(setEnvaseStock);
 	    
 	    Set<ProductoStock> setProductoStock =  newStock.getSetProductoStock();						
 		Iterator<ProductoStock> iteProStk = newStock.getSetProductoStock().iterator();

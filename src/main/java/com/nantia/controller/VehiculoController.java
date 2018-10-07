@@ -78,7 +78,7 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
         }
         
         Vehiculo newVehiculo = vehiculoService.addVehiculo(vehiculo);
-        
+        /*
         Stock stock = vehiculo.getStock();
                
         
@@ -108,7 +108,7 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 		    Stock stockUpd = stockService.updateStock(newStock);
 		    newVehiculo.setStock(stockUpd);	    		
 			
-		}
+		}*/
         
         Vehiculo vehiculoUpd = vehiculoService.addVehiculo(newVehiculo);
 
@@ -123,7 +123,7 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 		Vehiculo currentVehiculo = vehiculoService.getVehiculoById(id);
 
 		//****
-		Stock stock = vehiculo.getStock();
+		/*Stock stock = vehiculo.getStock();
 		
 		if (stock != null){
 			Set<EnvaseStock> setEnvaseStock =  stock.getSetEnvaseStock();						
@@ -146,7 +146,7 @@ private final Logger LOG = LoggerFactory.getLogger(VehiculoController.class);
 		    stock.setSetProductoStock(setProductoStock); 
 			
 		    vehiculo.setStock(stock);
-		}
+		}*/
 		//****
 		
         if (currentVehiculo == null){

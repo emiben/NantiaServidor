@@ -48,21 +48,25 @@ public class Reparto implements Serializable {
 	@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "ruta_id")	
 	private Ruta ruta;
 	
 	@Column(name = "estado_id")
 	private EstadoReparto estado;
 	
-	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
+	@ManyToOne//(cascade=CascadeType.MERGE)//@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "fabrica_id")	
 	private Fabrica fabrica;
+	
+	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
+	@JoinColumn(name = "stock_id", nullable = true)	
+	private Stock stock;
 	
 	public Reparto() {
 	}
 	
-	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado, Fabrica fabrica) {
+	public Reparto(String descripcion, Usuario vendedor1, Usuario vendedor2, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado, Fabrica fabrica, Stock stock) {
 		this.descripcion = descripcion;
 		this.vendedor1 = vendedor1;
 		this.vendedor2 = vendedor2;
@@ -71,7 +75,7 @@ public class Reparto implements Serializable {
 		this.ruta = ruta;
 		this.estado = estado;
 		this.fabrica = fabrica;
-		
+		this.stock = stock;
 	}
 	
 	
@@ -151,10 +155,19 @@ public class Reparto implements Serializable {
 		this.fabrica = fabrica;
 	}
 
+		
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
 	@Override
 	public String toString() {
 		//return String.format("Reparto[id=%d, descripcion=%s, vendedor1=%s, vendedor2=%s, descripcion=%s, ruta=%s]", id, descripcion, vendedor1.getNombre(), vendedor2.getNombre(), vehiculo.getMatricula(),  ruta.getNombre());
-		return String.format("Reparto[id=%d, descripcion=%s]", id, descripcion);
+		return "";//String.format("Reparto[id=%d, descripcion=%s]", id, descripcion);
 	}
 	
 }

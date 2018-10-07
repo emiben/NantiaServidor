@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-@Table(name = "datareparto")
+//@Table(name = "datareparto")
 public class DataReparto implements Serializable {
 
 	private static final long serialVersionUID = -4931085613752819291L;
@@ -28,10 +28,10 @@ public class DataReparto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "idReparto")
+	//@Column(name = "idReparto")
 	private long idReparto;
 	
-	@Column(name = "descripcion")
+	//@Column(name = "descripcion")
 	private String descripcion;	
 	
 	@ManyToOne
@@ -42,10 +42,10 @@ public class DataReparto implements Serializable {
 	@JoinColumn(name = "vendedor2_id")	
 	private Usuario vendedor2;
 	
-	@Column(name = "descripcionVehiculo")
+	//@Column(name = "descripcionVehiculo")
 	private String descripcionVehiculo;
 	
-	@Column(name = "dias_id")
+	//@Column(name = "dias_id")
 	private DiaSemana dias;
 	
 	@ManyToOne//@OneToOne(cascade=CascadeType.MERGE)
@@ -53,18 +53,22 @@ public class DataReparto implements Serializable {
 	private Vehiculo vehiculo;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@Column(name="fecha", nullable=false, length=13)
+	//@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "ruta_id")	
 	private Ruta ruta;
 	
-	@Column(name = "estado_id")
+	//@Column(name = "estado_id")
 	private EstadoReparto estado;
 	
 	@JoinColumn(name = "fabricaid")	
 	private Long fabricaid;
+	
+	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
+	@JoinColumn(name = "stock_id", nullable = true)	
+	private Stock stock;
 	
 	
 	public DataReparto() {
@@ -81,7 +85,7 @@ public class DataReparto implements Serializable {
 	
 	public DataReparto(long id, long idReparto, String descripcion, Usuario vendedor1, Usuario vendedor2,
 			String descripcionVehiculo, DiaSemana dias, Vehiculo vehiculo, Date fecha, Ruta ruta, EstadoReparto estado,
-			Long fabricaid) {
+			Long fabricaid, Stock stock) {
 		super();
 		this.id = id;
 		this.idReparto = idReparto;
@@ -198,9 +202,20 @@ public class DataReparto implements Serializable {
 		this.fabricaid = fabricaid;
 	}
 
+	
+	
+	
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("DataReparto[id=%d, idReparto=%d, descripcion=%s, descripcionVehiculo=%s");
+		return "";//String.format("DataReparto[id=%d, idReparto=%d, descripcion=%s, descripcionVehiculo=%s");
 	}
 	
 	

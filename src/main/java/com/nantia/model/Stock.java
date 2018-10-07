@@ -32,8 +32,6 @@ public class Stock implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
-
-	
 	
 	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true, mappedBy = "stock")
 	@OrderBy(clause = "id")

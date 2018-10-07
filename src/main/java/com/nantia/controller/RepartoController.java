@@ -100,11 +100,11 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
             return new ResponseEntity<Reparto>(HttpStatus.CONFLICT);
         }
                       
-        Stock nuevoStockVehiculo = stockService.addStock(reparto.getVehiculo().getStock());
+        Stock nuevoStockVehiculo = stockService.addStock(reparto.getStock());
         
-		String resultado = actualizarStockFabrica(reparto.getVehiculo().getStock(), reparto.getFabrica(), -1);
+		String resultado = actualizarStockFabrica(reparto.getStock(), reparto.getFabrica(), -1);
 		
-		Vehiculo nuevovehiculo = actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo(), 1);
+		Vehiculo nuevovehiculo = new Vehiculo();//actualizarStockVehiculo(nuevoStockVehiculo, reparto.getVehiculo(), 1);
         
 		reparto.setVehiculo(nuevovehiculo);
 		
@@ -126,9 +126,10 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 
         Fabrica fabrica = repartoOld.getFabrica();
         
-    	String resultado = actualizarStockFabrica(repartoOld.getVehiculo().getStock(), fabrica, 1);		
-		Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getVehiculo().getStock(), reparto.getVehiculo(), 1);
-  		
+    	String resultado = actualizarStockFabrica(repartoOld.getStock(), fabrica, 1);		
+		//Vehiculo vehiculo = actualizarStockVehiculo(repartoOld.getStock(), reparto.getVehiculo(), 1);
+    	Vehiculo vehiculo = new Vehiculo();
+    	
 		Reparto repartoUpd = new Reparto();
 		if(resultado.equals("OK"))
 		{
@@ -136,7 +137,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 			reparto.setFabrica(fabricaService.getFabricaById(fabrica.getId()));
 			repartoUpd = repartoService.updateReparto(reparto);
 
-		resultado = actualizarStockFabrica(repartoUpd.getVehiculo().getStock(), fabrica, -1);		
+		resultado = actualizarStockFabrica(repartoUpd.getStock(), fabrica, -1);		
        
 		}
 		repartoUpd.setFabrica(fabricaService.getFabricaById(fabrica.getId()));
@@ -160,7 +161,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 		
-	public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo, int coeficiente) {
+	/*public Vehiculo actualizarStockVehiculo(Stock nuevoStockVehiculo, Vehiculo vehiculo, int coeficiente) {
 		
 		
 		Set<EnvaseStock> setEnvaseStock =  vehiculo.getStock().getSetEnvaseStock();						
@@ -192,7 +193,7 @@ private final Logger LOG = LoggerFactory.getLogger(RepartoController.class);
 	    Vehiculo nuevovehiculo = vehiculoService.updateVehiculo(vehiculo);
 	    
 		return nuevovehiculo;
-	}
+	}*/
 	
 	public String actualizarStockFabrica(Stock stock, Fabrica fabricaR, int coeficiente) {
 		
