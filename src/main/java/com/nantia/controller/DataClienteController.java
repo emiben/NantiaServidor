@@ -47,7 +47,6 @@ public class DataClienteController {
 
 		float saldoOld = cliente.getSaldo();
 		
-		//Cliente cliente = new Cliente();
 		
 		cliente.setNombre1(dataCliente.getNombre1());
 		cliente.setNombre2(dataCliente.getNombre2());
@@ -63,6 +62,7 @@ public class DataClienteController {
 		cliente.setIdLista(dataCliente.getIdLista());
 		cliente.setObservaciones(dataCliente.getObservaciones());
 		
+		cliente.getSetEnvasesEnPrestamo().clear();
 		
         Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = dataCliente.getSetEnvasesEnPrestamo();						
 		Iterator<EnvasesEnPrestamo> iteEnvases = dataCliente.getSetEnvasesEnPrestamo().iterator();
@@ -71,6 +71,7 @@ public class DataClienteController {
 	    	envaseEnPrestamo.setClientes(cliente);
 	    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
 	    }		
+	    //dataCliente.getSetEnvasesEnPrestamo().clear();
 	    cliente.getSetEnvasesEnPrestamo().retainAll(setEnvasesEnPrestamo);
 		cliente.getSetEnvasesEnPrestamo().addAll(setEnvasesEnPrestamo);
 		

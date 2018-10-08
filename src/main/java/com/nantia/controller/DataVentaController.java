@@ -82,8 +82,6 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		venta.setPagototal(dataVenta.getPagototal());
 		venta.setObservaciones(dataVenta.getObservaciones());
 
-
-		
 		
 		Set<ProductoVenta> setProdDataVenta =  dataVenta.getSetProductoVenta();						
 		Iterator<ProductoVenta> itePVenta = dataVenta.getSetProductoVenta().iterator();
