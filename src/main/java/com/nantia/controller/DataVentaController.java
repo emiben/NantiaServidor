@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Cliente;
+import com.nantia.model.DataPago;
 import com.nantia.model.DataVenta;
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.EnvasesTipos;
@@ -27,6 +28,7 @@ import com.nantia.model.Reparto;
 import com.nantia.model.Stock;
 import com.nantia.model.Vehiculo;
 import com.nantia.model.Venta;
+import com.nantia.service.IClienteService;
 import com.nantia.service.IEnvaseStockService;
 import com.nantia.service.IFabricaService;
 import com.nantia.service.IPagoService;
@@ -59,7 +61,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	IPagoService pagoService;
 	@Autowired
 	IProductoVentaService productoVentaService;
-	
+	@Autowired
+	IClienteService clienteService;
 
 	
 	@Transactional
@@ -105,12 +108,13 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
         
         
         
-		if(dataVenta.getPago() != null)
+		if(dataVenta.getDatapago() != null)
 		{
-			Pago pago = dataVenta.getPago();
-			pago.setCliente(dataVenta.getPago().getCliente());
-			pago.setFechapago(dataVenta.getPago().getFechapago());
-			pago.setMonto(dataVenta.getPago().getMonto());
+			DataPago datapago = dataVenta.getDatapago();
+			Pago pago = new Pago();
+			pago.setCliente(clienteService.getClienteById(datapago.getClienteid()));
+			pago.setFechapago(datapago.getFechapago());
+			pago.setMonto(datapago.getMonto());
 			pago.setVenta(venta);
 			Pago pagoUpd = pagoService.addPago(pago);
 		}

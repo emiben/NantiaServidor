@@ -64,7 +64,7 @@ public class DataVenta implements Serializable{
 	//@Column(name = "observaciones")
 	private String observaciones;
 	
-	private Pago pago;
+	private DataPago datapago;
 	
 
 	public DataVenta() {
@@ -73,7 +73,7 @@ public class DataVenta implements Serializable{
 
 	public DataVenta(long id, Date fecha, Usuario usuario, Cliente cliente, Set<ProductoVenta> setProductoVenta,
 			float descuento, float totalventa, float ivatotal, float pagototal, Long fabricaid, Long repartoid,
-			String observaciones, Pago pago) {
+			String observaciones, DataPago datapago) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -87,7 +87,7 @@ public class DataVenta implements Serializable{
 		this.fabricaid = fabricaid;
 		this.repartoid = repartoid;
 		this.observaciones = observaciones;
-		this.pago = pago;
+		this.datapago = datapago;
 	}
 
 	public long getId() {
@@ -188,14 +188,14 @@ public class DataVenta implements Serializable{
 		this.repartoid = repartoid;
 	}
 
-	public Pago getPago() {
-		return pago;
+	public DataPago getDatapago() {
+		return datapago;
 	}
 
-	public void setPago(Pago pago) {
-		this.pago = pago;
+	public void setDatapago(DataPago datapago) {
+		this.datapago = datapago;
 	}
-	
+
 	
 
 }
