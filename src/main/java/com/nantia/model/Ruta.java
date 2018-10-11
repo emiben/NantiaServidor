@@ -32,7 +32,7 @@ public class Ruta implements Serializable {
 	@Column(name = "dias_id")
 	private DiaSemana dias;
 	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true, mappedBy = "ruta")
+	@OneToMany(cascade=CascadeType.MERGE, mappedBy = "ruta")//, orphanRemoval = true
 	@OrderBy(clause = "id")
 	private Set<RutaCliente> setRutaCliente = new HashSet<RutaCliente>();
 	

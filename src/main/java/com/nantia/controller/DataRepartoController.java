@@ -122,6 +122,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		Stock stockOld = repartoOld.getStock();
 		Stock stockNew = dataReparto.getStock();
 		
+		
+		
 		Fabrica fabricaTmp = actualizarStockFabrica(stockOld, fabrica, 1);
 		Stock stockTmp = actualizarStockReparto(stockOld, repartoOld, -1);
 		
@@ -135,6 +137,24 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		repartoUpd.setFabrica(fabricaAct);
 		repartoUpd.setStock(stockAct);
 		
+		//**********************
+		
+		Ruta rutaUpd = repartoUpd.getRuta();  
+		rutaUpd.getSetRutaCliente().clear();
+		
+		Ruta ruta = dataReparto.getRuta();
+		
+		Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						
+		Iterator<RutaCliente> iteRutaCli = ruta.getSetRutaCliente().iterator();
+	    while(iteRutaCli.hasNext()) {
+	    	RutaCliente rutaCliente = iteRutaCli.next();
+	    	rutaCliente.setRuta(rutaUpd);
+	    	setRutaCliente.add(rutaCliente);	    	
+	    }			      
+	    rutaUpd.setSetRutaCliente(setRutaCliente);
+	    //**********************
+	    repartoUpd.setRuta(rutaUpd); 
+	    
 		repartoUpd = repartoService.updateReparto(repartoUpd);
         return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
        

@@ -1,6 +1,7 @@
 package com.nantia.controller;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -203,6 +205,24 @@ public Fabrica actualizarStockFabricaPorVenta(Set<ProductoVenta> setProductoVent
 	    
 		return fabrica;
 	}
+
+	@RequestMapping(value = "/ventasporperiodo/{fechaIni}/{fechaFin}", method = RequestMethod.GET)
+	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable String fechaIni, @PathVariable String fechaFin) {
+		
+		LOG.info("trayendo todas las ventas para las fechas indicadas"); 
+		LOG.info("fechaIni:{}, fechaFin:{}", fechaIni, fechaFin); 
+		
+		List<Venta> ventas;
+		
+		ventas = ventaService.getVentasPorPeriodo(fechaIni, fechaFin);
 	
+	    if (ventas == null || ventas.isEmpty()){
+	        LOG.info("no se encontraron ventas para las fechas indicadas");
+	        return new ResponseEntity<List<Venta>>(HttpStatus.NO_CONTENT);
+	    }
+	
+	    return new ResponseEntity<List<Venta>>(ventas, HttpStatus.OK);		
+	}
+		
 
 }

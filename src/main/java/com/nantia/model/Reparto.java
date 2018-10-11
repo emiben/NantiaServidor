@@ -2,7 +2,7 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
+//import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -48,7 +50,9 @@ public class Reparto implements Serializable {
 	@Column(name="fecha", nullable=false, length=13)
 	private Date fecha;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
+	//@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(name = "ruta_id")	
 	private Ruta ruta;
 	
@@ -59,7 +63,9 @@ public class Reparto implements Serializable {
 	@JoinColumn(name = "fabrica_id")	
 	private Fabrica fabrica;
 	
-	@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
+	//@OneToOne(cascade=CascadeType.MERGE, orphanRemoval=true)
+	@OneToOne
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(name = "stock_id", nullable = true)	
 	private Stock stock;
 	

@@ -1,9 +1,12 @@
 package com.nantia.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nantia.model.Cliente;
 import com.nantia.model.Venta;
 import com.nantia.repo.VentaRepository;
 
@@ -50,6 +53,13 @@ public class VentaService implements IVentaService {
 	@Override
 	public boolean existe(Venta venta) {
 		return findById(venta.getId()) != null;
+	}
+
+	@Override
+	public List<Venta> getVentasPorPeriodo(String fechaIni, String fechaFin) {
+		List<Venta> list = new ArrayList<>();	
+		ventaRepository.getVentasPorPeriodo(fechaIni, fechaFin).forEach(e -> list.add(e));
+		return list;
 	}
 
 }
