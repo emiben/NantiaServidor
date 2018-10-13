@@ -123,7 +123,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
         return new ResponseEntity<Venta>(newVentaUpd, HttpStatus.CREATED);
 	}
 	
-public Fabrica actualizarStockFabricaPorVenta(Set<ProductoVenta> setProductoVenta, Fabrica fabrica, int coeficiente) {
+    public Fabrica actualizarStockFabricaPorVenta(Set<ProductoVenta> setProductoVenta, Fabrica fabrica, int coeficiente) {
 		
 		
 		String result = "OK"; 
@@ -206,11 +206,14 @@ public Fabrica actualizarStockFabricaPorVenta(Set<ProductoVenta> setProductoVent
 		return fabrica;
 	}
 
-	@RequestMapping(value = "/ventasporperiodo/{fechaIni}/{fechaFin}", method = RequestMethod.GET)
-	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable String fechaIni, @PathVariable String fechaFin) {
+	@RequestMapping(value = "ventasporperiodo/{fechaIni}/{fechaFin}", method = RequestMethod.GET)
+	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable("fechaIni") String fechaIni, @PathVariable("fechaFin") String fechaFin) {
 		
 		LOG.info("trayendo todas las ventas para las fechas indicadas"); 
 		LOG.info("fechaIni:{}, fechaFin:{}", fechaIni, fechaFin); 
+		
+		//fechaIni = fechaIni + " 00:00:00";
+		//fechaFin = fechaFin + " 00:00:00";
 		
 		List<Venta> ventas;
 		

@@ -89,6 +89,8 @@ public class DataVenta implements Serializable{
 		this.observaciones = observaciones;
 		this.datapago = datapago;
 	}
+	
+	
 
 	public long getId() {
 		return id;
