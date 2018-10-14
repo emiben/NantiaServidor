@@ -37,14 +37,10 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 		
-	//@OneToOne
-	//
-	//@OneToOne(mappedBy="clientes")
 	@OneToOne
 	@Cascade({CascadeType.ALL})
 	@JoinColumn(name = "direcciones_id")
 	private Direccion direccion;
-	//	
 	
 	
 	@Column(name = "tipoDocumento")
@@ -89,7 +85,7 @@ public class Cliente implements Serializable{
 	@ElementCollection(targetClass = DiaSemana.class)
 	@CollectionTable(name = "cliente_dias", joinColumns = @JoinColumn(name = "cliente_id"))
 	@Enumerated(EnumType.STRING)
-	@Column(name = "dias_id")//, nullable = true)
+	@Column(name = "dias_id")
 	private Set<DiaSemana> dias = new HashSet<DiaSemana>();
 	
 	@Cascade(CascadeType.MERGE)

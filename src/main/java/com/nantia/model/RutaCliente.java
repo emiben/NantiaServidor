@@ -25,9 +25,14 @@ public class RutaCliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
+	/*
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "cliente_id")	
+	private Cliente cliente;
+	*/
+	
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")  
 	private Cliente cliente;
 	
 	@Column(name = "ordenVisita")

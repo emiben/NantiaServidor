@@ -28,6 +28,7 @@ import com.nantia.model.ProductoStock;
 import com.nantia.model.ProductoVenta;
 import com.nantia.model.Reparto;
 import com.nantia.model.Stock;
+import com.nantia.model.Usuario;
 import com.nantia.model.Vehiculo;
 import com.nantia.model.Venta;
 import com.nantia.service.IClienteService;
@@ -37,6 +38,7 @@ import com.nantia.service.IPagoService;
 import com.nantia.service.IProductoVentaService;
 import com.nantia.service.IRepartoService;
 import com.nantia.service.IStockService;
+import com.nantia.service.IUsuarioService;
 import com.nantia.service.IVehiculoService;
 import com.nantia.service.IVentaService;
 
@@ -65,6 +67,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	IProductoVentaService productoVentaService;
 	@Autowired
 	IClienteService clienteService;
+	@Autowired
+	IUsuarioService usuarioService;
 
 	
 	@Transactional
@@ -76,8 +80,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		Venta venta = new Venta();
 				
 		venta.setFecha(dataVenta.getFecha());
-		venta.setUsuario(dataVenta.getUsuario());
-		venta.setCliente(dataVenta.getCliente());
+				
 		venta.setDescuento(dataVenta.getDescuento());
 		venta.setTotalventa(dataVenta.getTotalventa());
 		venta.setIvatotal(dataVenta.getIvatotal());
@@ -117,13 +120,29 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		{
 			DataPago datapago = dataVenta.getDatapago();
 			Pago pago = new Pago();
-			pago.setCliente(clienteService.getClienteById(datapago.getClienteid()));
+			
+			Cliente cliente = clienteService.getClienteById(datapago.getClienteid());
+			cliente.setSaldo(cliente.getSaldo() - datapago.getMonto());
+			Cliente clienteUpd = clienteService.updateCliente(cliente);
+			
+			Usuario usuario = dataVenta.getUsuario();
+			usuario.setSaldoCaja(usuario.getSaldoCaja() + datapago.getMonto());
+			Usuario usuarioUpd = usuarioService.updateUsuario(usuario);
+			
+			pago.setCliente(cliente);
 			pago.setFechapago(datapago.getFechapago());
 			pago.setMonto(datapago.getMonto());
 			pago.setVenta(venta);
 			Pago pagoUpd = pagoService.addPago(pago);
+			venta.setCliente(cliente);
+			venta.setUsuario(usuario);
 		}
- 
+		else {
+			venta.setCliente(dataVenta.getCliente());
+			venta.setUsuario(dataVenta.getUsuario());
+		}
+		
+		
 		Venta newVentaUpd = ventaService.updateVenta(venta); 
         return new ResponseEntity<Venta>(newVentaUpd, HttpStatus.CREATED);
 	}

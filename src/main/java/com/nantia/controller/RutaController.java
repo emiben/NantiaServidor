@@ -67,8 +67,11 @@ private final Logger LOG = LoggerFactory.getLogger(RutaController.class);
 	    	RutaCliente rutaCliente = iteRutCli.next();
 	    	rutaCliente.setRuta(ruta);
 	    	setRutaCliente.add(rutaCliente);
+	    	//LOG.info("getOrdenVisita {}", rutaCliente.getOrdenVisita());
 	    }		
-	    ruta.setSetRutaCliente(setRutaCliente);    
+	    ruta.getSetRutaCliente().retainAll(setRutaCliente);
+	    ruta.getSetRutaCliente().addAll(setRutaCliente);
+	    //ruta.setSetRutaCliente(setRutaCliente);    
 	    
 		if (rutaService.existe(ruta)){
             LOG.info("La ruta con nombre " + ruta.getNombre() + " ya existe");
