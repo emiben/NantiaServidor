@@ -2,6 +2,8 @@ package com.nantia.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,9 @@ public class DataPago implements Serializable{
 	private Date fechapago;
 	
 	private float monto;
+	
+	@Column(name = "difSaldo")
+	private float difSaldo;
 
 	public DataPago() {
 		super();
@@ -69,6 +74,14 @@ public class DataPago implements Serializable{
 
 	public void setMonto(float monto) {
 		this.monto = monto;
+	}
+
+	public float getDifSaldo() {
+		return difSaldo;
+	}
+
+	public void setDifSaldo(float difSaldo) {
+		this.difSaldo = difSaldo;
 	}
 	
 	

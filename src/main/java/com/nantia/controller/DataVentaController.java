@@ -80,7 +80,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		Venta venta = new Venta();
 				
 		venta.setFecha(dataVenta.getFecha());
-				
+		venta.setUsuario(dataVenta.getUsuario());
 		venta.setDescuento(dataVenta.getDescuento());
 		venta.setTotalventa(dataVenta.getTotalventa());
 		venta.setIvatotal(dataVenta.getIvatotal());
@@ -122,24 +122,20 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 			Pago pago = new Pago();
 			
 			Cliente cliente = clienteService.getClienteById(datapago.getClienteid());
-			cliente.setSaldo(cliente.getSaldo() - datapago.getMonto());
+			cliente.setSaldo(cliente.getSaldo() - datapago.getDifSaldo());
 			Cliente clienteUpd = clienteService.updateCliente(cliente);
-			
-			Usuario usuario = dataVenta.getUsuario();
-			usuario.setSaldoCaja(usuario.getSaldoCaja() + datapago.getMonto());
-			Usuario usuarioUpd = usuarioService.updateUsuario(usuario);
-			
+						
 			pago.setCliente(cliente);
 			pago.setFechapago(datapago.getFechapago());
 			pago.setMonto(datapago.getMonto());
 			pago.setVenta(venta);
+			
 			Pago pagoUpd = pagoService.addPago(pago);
 			venta.setCliente(cliente);
-			venta.setUsuario(usuario);
+
 		}
 		else {
-			venta.setCliente(dataVenta.getCliente());
-			venta.setUsuario(dataVenta.getUsuario());
+			venta.setCliente(dataVenta.getCliente());			
 		}
 		
 		
