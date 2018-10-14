@@ -97,10 +97,11 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    
 		 
 		
-		Fabrica fabricaUpd = fabricaService.getFabricaById(dataVenta.getFabricaid());
 		
         if(dataVenta.getFabricaid() != null)
         {
+        	Fabrica fabricaUpd = fabricaService.getFabricaById(dataVenta.getFabricaid());
+    		
         	//venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
         	Fabrica fabricaNew = actualizarStockFabricaPorVenta(venta.getSetProductoVenta(), fabricaUpd, -1); 
         	venta.setFabrica(fabricaUpd);
