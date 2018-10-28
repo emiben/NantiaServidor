@@ -84,29 +84,57 @@ private final Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente) {
-		LOG.info("creando un nuevo cliente: {}", cliente.getNombre1());
+	public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente2) {
+		LOG.info("creando un nuevo cliente: {}", cliente2.getNombre1());
 	
-		if(cliente.getSetEnvasesEnPrestamo() != null)
+		if (clienteService.existe(cliente2)){
+            LOG.info("el cliente con documento " + cliente2.getNroDocumento() + " ya existe");
+            return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);
+        }
+		
+		Cliente cliente = new Cliente();
+		cliente.setActivo(cliente2.getActivo());
+		cliente.setCelular(cliente2.getCelular());
+		cliente.setDireccion(cliente2.getDireccion());
+		cliente.setFechaAlta(cliente2.getFechaAlta());
+		cliente.setFechaNacimiento(cliente2.getFechaNacimiento());
+		cliente.setIdLista(cliente2.getIdLista());
+		cliente.setMail(cliente2.getMail());
+		cliente.setNombre1(cliente2.getNombre1());
+		cliente.setNombre2(cliente2.getNombre2());
+		cliente.setNroDocumento(cliente2.getNroDocumento());
+		cliente.setObservaciones(cliente2.getObservaciones());
+		cliente.setSaldo(cliente2.getSaldo());
+		cliente.setTipoDocumento(cliente2.getTipoDocumento());
+		cliente.setDias(cliente2.getDias());
+		
+		
+		
+		Cliente clienteUpd = clienteService.addCliente(cliente);
+		
+		if(cliente2.getSetEnvasesEnPrestamo() != null)
 		{	
-			Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente.getSetEnvasesEnPrestamo();						
-			Iterator<EnvasesEnPrestamo> iteEnvases = cliente.getSetEnvasesEnPrestamo().iterator();
+			Set<EnvasesEnPrestamo> setEnvasesEnPrestamo = cliente2.getSetEnvasesEnPrestamo();						
+			Iterator<EnvasesEnPrestamo> iteEnvases = cliente2.getSetEnvasesEnPrestamo().iterator();
 		    while(iteEnvases.hasNext()) {
 		    	EnvasesEnPrestamo envaseEnPrestamo = iteEnvases.next();
 		    	envaseEnPrestamo.setClientes(cliente);
-		    	setEnvasesEnPrestamo.add(envaseEnPrestamo);
-		    }		
-			cliente.setSetEnvasesEnPrestamo(setEnvasesEnPrestamo);
-			//Direccion direccion = cliente.getDireccion();
-			//cliente.setDireccion(direccion);
-			
+		    	setEnvasesEnPrestamo.add(envasesEnPrestamoService.addEnvasesEnPrestamo(envaseEnPrestamo));
+		    }
+		    	    
+		    cliente.getSetEnvasesEnPrestamo().retainAll(setEnvasesEnPrestamo);
+		    cliente.getSetEnvasesEnPrestamo().addAll(setEnvasesEnPrestamo);
+		    
+		
 		}
-        if (clienteService.existe(cliente)){
+		
+        /*if (clienteService.existe(cliente)){
             LOG.info("el cliente con documento " + cliente.getNroDocumento() + " ya existe");
             return new ResponseEntity<Cliente>(HttpStatus.CONFLICT);
-        }
+        }*/
 
-        Cliente newCliente = clienteService.addCliente(cliente);
+        //Cliente newCliente = clienteService.addCliente(cliente);
+		Cliente newCliente = clienteService.updateCliente(cliente);
 
         return new ResponseEntity<Cliente>(newCliente, HttpStatus.CREATED);
 	}
