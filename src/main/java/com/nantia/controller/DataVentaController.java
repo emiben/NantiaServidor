@@ -98,8 +98,10 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    venta.getSetProductoVenta().retainAll(setProdDataVenta);
 	    venta.getSetProductoVenta().addAll(setProdDataVenta);
 	    
-		 
-		
+	    Usuario usuario = usuarioService.getUsuarioById(dataVenta.getUsuario().getId()); 
+		usuario.setSaldoCaja(dataVenta.getUsuario().getSaldoCaja());
+		Usuario usuarioUpd = usuarioService.updateUsuario(usuario);
+		venta.setUsuario(usuarioUpd);		
 		
         if(dataVenta.getFabricaid() != null)
         {

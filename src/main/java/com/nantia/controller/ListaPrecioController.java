@@ -65,15 +65,17 @@ private final Logger LOG = LoggerFactory.getLogger(ListaPrecioController.class);
 	public ResponseEntity<ListaPrecio> addListaPrecio(@RequestBody ListaPrecio listaPrecio) {
 		LOG.info("creando lista de precios: {}", listaPrecio);
 				
-		Set<ProductoLista> setProductoLista =  listaPrecio.getSetProductoLista();						
-		Iterator<ProductoLista> iteProLis = listaPrecio.getSetProductoLista().iterator();
-	    while(iteProLis.hasNext()) {
-	    	ProductoLista productoLista = iteProLis.next();
-	    	productoLista.setListaPrecio(listaPrecio);
-	    	setProductoLista.add(productoLista);
-	    }		
-	    listaPrecio.setProductoLista(setProductoLista);    
-	    
+		if(listaPrecio.getSetProductoLista() != null)
+		{
+			Set<ProductoLista> setProductoLista =  listaPrecio.getSetProductoLista();						
+			Iterator<ProductoLista> iteProLis = listaPrecio.getSetProductoLista().iterator();
+		    while(iteProLis.hasNext()) {
+		    	ProductoLista productoLista = iteProLis.next();
+		    	productoLista.setListaPrecio(listaPrecio);
+		    	setProductoLista.add(productoLista);
+		    }		
+		    listaPrecio.setProductoLista(setProductoLista);    
+		}
 		if (listaPrecioService.existe(listaPrecio)){
             LOG.info("La lista de precios con nombre " + listaPrecio.getNombreLista() + " ya existe");
             return new ResponseEntity<ListaPrecio>(HttpStatus.CONFLICT);
