@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Rol;
 import com.nantia.model.Usuario;
+import com.nantia.service.IRolService;
 import com.nantia.service.IUsuarioService;
 
 @CrossOrigin(origins = "*")
@@ -29,6 +30,8 @@ public class UsuarioController {
 	
 	@Autowired
 	IUsuarioService usuarioService;
+	@Autowired
+	IRolService rolService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Usuario>> getAllUsuarios() {
@@ -104,6 +107,7 @@ public class UsuarioController {
         usuarioService.deleteUsuario(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+		
 	
 }
 

@@ -41,15 +41,23 @@ public class Vehiculo implements Serializable {
 	@Column(name = "activo")
 	private Boolean activo;
 	
+	@Column(name = "coordLon")
+	private String coordLon;
+
+	@Column(name = "coordLat")
+	private String coordLat;
+	
 	public Vehiculo() {
 	}
 	
-	public Vehiculo(String matricula, String marca, String modelo, String descripcion, Boolean activo) {
+	public Vehiculo(String matricula, String marca, String modelo, String descripcion, Boolean activo, String coordLon, String coordLat) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.descripcion = descripcion;
 		this.activo = activo;
+		this.coordLon = coordLon;
+		this.coordLat = coordLat;
 	}
 
 	public long getId() {
@@ -100,10 +108,27 @@ public class Vehiculo implements Serializable {
 		this.activo = activo;
 	}
 
+	
 			
+	public String getCoordLon() {
+		return coordLon;
+	}
+
+	public void setCoordLon(String coordLon) {
+		this.coordLon = coordLon;
+	}
+
+	public String getCoordLat() {
+		return coordLat;
+	}
+
+	public void setCoordLat(String coordLat) {
+		this.coordLat = coordLat;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Vehiculo[id=%d, matricula=%s, marca=%s, modelo=%s, descripcion=%s]", id, matricula, marca, modelo, descripcion);
+		return String.format("Vehiculo[id=%d, matricula=%s, marca=%s, modelo=%s, descripcion=%s, coordLon=%s, coordLat=%s]", id, matricula, marca, modelo, descripcion, coordLon, coordLat);
 	}
 	
 
