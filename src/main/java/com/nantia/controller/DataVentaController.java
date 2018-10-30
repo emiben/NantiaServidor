@@ -75,8 +75,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Venta> addVenta(@RequestBody DataVenta dataVenta) {
 		
-		String result = "";
-		
+
 		Venta venta = new Venta();
 				
 		venta.setFecha(dataVenta.getFecha());
@@ -249,5 +248,88 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    return new ResponseEntity<List<Venta>>(ventas, HttpStatus.OK);		
 	}
 		
+	
+	@Transactional
+	@RequestMapping(value = "addListVentas",method = RequestMethod.POST)
+	public void addListVentas(@RequestBody List<DataVenta> listDataVenta) {
+		
+		Iterator<DataVenta> iteDataVenta = listDataVenta.iterator();
+	    while(iteDataVenta.hasNext()) {
+	    	DataVenta dataVenta = iteDataVenta.next();
+	    	procesarListaVentas(dataVenta);
+	    }		
+	  	
+	}
+	
+	public String procesarListaVentas(DataVenta dataVenta) {
+		
+		Venta venta = new Venta();
+		
+		venta.setFecha(dataVenta.getFecha());
+		venta.setUsuario(dataVenta.getUsuario());
+		venta.setDescuento(dataVenta.getDescuento());
+		venta.setTotalventa(dataVenta.getTotalventa());
+		venta.setIvatotal(dataVenta.getIvatotal());
+		venta.setPagototal(dataVenta.getPagototal());
+		venta.setObservaciones(dataVenta.getObservaciones());
+
+		
+		Set<ProductoVenta> setProdDataVenta =  dataVenta.getSetProductoVenta();						
+		Iterator<ProductoVenta> itePVenta = dataVenta.getSetProductoVenta().iterator();
+	    while(itePVenta.hasNext()) {
+	    	ProductoVenta prodVenta = itePVenta.next();
+	    	prodVenta.setVenta(venta);
+	    	setProdDataVenta.add(productoVentaService.addProductoVenta(prodVenta));	    	
+	    }		
+	    venta.getSetProductoVenta().retainAll(setProdDataVenta);
+	    venta.getSetProductoVenta().addAll(setProdDataVenta);
+	    
+	    Usuario usuario = usuarioService.getUsuarioById(dataVenta.getUsuario().getId()); 
+		usuario.setSaldoCaja(dataVenta.getUsuario().getSaldoCaja());
+		Usuario usuarioUpd = usuarioService.updateUsuario(usuario);
+		venta.setUsuario(usuarioUpd);		
+		
+        if(dataVenta.getFabricaid() != null)
+        {
+        	Fabrica fabricaUpd = fabricaService.getFabricaById(dataVenta.getFabricaid());
+    		
+        	//venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
+        	Fabrica fabricaNew = actualizarStockFabricaPorVenta(venta.getSetProductoVenta(), fabricaUpd, -1); 
+        	venta.setFabrica(fabricaUpd);
+        }
+        else
+        {
+        	venta.setReparto(repartoService.getRepartoById(dataVenta.getRepartoid()));
+        }
+        
+        
+        
+		if(dataVenta.getDatapago() != null)
+		{
+			DataPago datapago = dataVenta.getDatapago();
+			Pago pago = new Pago();
+			
+			Cliente cliente = clienteService.getClienteById(datapago.getClienteid());
+			cliente.setSaldo(cliente.getSaldo() - datapago.getDifSaldo());
+			Cliente clienteUpd = clienteService.updateCliente(cliente);
+						
+			pago.setCliente(cliente);
+			pago.setFechapago(datapago.getFechapago());
+			pago.setMonto(datapago.getMonto());
+			pago.setVenta(venta);
+			
+			Pago pagoUpd = pagoService.addPago(pago);
+			venta.setCliente(cliente);
+
+		}
+		else {
+			venta.setCliente(dataVenta.getCliente());			
+		}
+		
+		
+		Venta newVentaUpd = ventaService.updateVenta(venta); 
+		
+		return "";
+	}
 
 }
