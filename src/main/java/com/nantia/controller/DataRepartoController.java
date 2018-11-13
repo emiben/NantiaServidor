@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.DataReparto;
 import com.nantia.model.EnvaseStock;
 import com.nantia.model.EnvasesTipos;
+import com.nantia.model.EstadoReparto;
 import com.nantia.model.Fabrica;
 import com.nantia.model.Producto;
 import com.nantia.model.ProductoStock;
@@ -427,6 +428,39 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		return fabrica;
 	}
 	
+	@RequestMapping(value = "updateEstadoReparto/{id}/{estado}", method = RequestMethod.PUT)
+	public ResponseEntity<Reparto> updateEstadoReparto(@PathVariable Long id, @PathVariable String estado){
+		
+		Reparto reparto = repartoService.getRepartoById(id);
+		
+		//Ruta rutaUpd = reparto.getRuta();  
+		//rutaUpd.getSetRutaCliente().clear();
+		
+		Ruta ruta = reparto.getRuta();
+		
+		Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						
+		Iterator<RutaCliente> iteRutaCli = ruta.getSetRutaCliente().iterator();
+	    while(iteRutaCli.hasNext()) {
+	    	RutaCliente rutaCliente = iteRutaCli.next();
+	    	rutaCliente.setRuta(ruta);
+	    	setRutaCliente.add(rutaCliente);	    	
+	    }			      
+	    ruta.setSetRutaCliente(setRutaCliente);
+	    
+	    reparto.setRuta(ruta); 
+	    LOG.info("estado: {}", estado);
+	    switch (estado){  
+		   case "BORRADOR" : reparto.setEstado(EstadoReparto.BORRADOR);  break;
+		   case "CREADO" : reparto.setEstado(EstadoReparto.CREADO); break; 
+		   case "INICIADO" : reparto.setEstado(EstadoReparto.INICIADO); break;
+		   case "FINALIZADO" : reparto.setEstado(EstadoReparto.FINALIZADO); break;
+		   default : reparto.setEstado(null); break;
+		   
+	    }
+		Reparto repartoUpd = repartoService.updateReparto(reparto);
+        return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
+	    
+	}
 	
 	
 }

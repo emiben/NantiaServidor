@@ -8,6 +8,7 @@ public enum EstadoReparto {
     FINALIZADO;
 	
     public static EstadoReparto getEstadoReparto(String estadoReparto){  
+    	
 	  switch (estadoReparto){  
 	   case "BORRADOR" : return EstadoReparto.BORRADOR;  
 	   case "CREADO" : return EstadoReparto.CREADO; 
