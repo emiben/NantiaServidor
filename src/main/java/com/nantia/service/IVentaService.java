@@ -15,5 +15,5 @@ public interface IVentaService {
 	Venta updateVenta(Venta venta);
 	void deleteVenta(long ventaId);
 	boolean existe(Venta venta);
-	List<Venta> getVentasPorPeriodo(String fechaIni, String fechaFin);
+	List<Venta> getVentasPorPeriodo(String fechaIni, String fechaFin, long cliente);
 }

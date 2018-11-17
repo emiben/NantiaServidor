@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.nantia.model.Cliente;
+import com.nantia.model.DataEnvasesEnPrestamo;
 import com.nantia.model.DiaSemana;
 import com.nantia.model.Vehiculo;
 
@@ -16,4 +17,6 @@ public interface IClienteService {
 	void deleteCliente(long clienteId);
 	boolean existe(Cliente cliente);
 	List<Cliente> getAllClientesPorDia(String fecha);
+	List<Cliente> getCuentasACobrar(long cliente);
+	List<Object> getEnvasesEnPrestamo(long cliente);
 }

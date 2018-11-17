@@ -227,8 +227,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		return fabrica;
 	}
 
-	@RequestMapping(value = "ventasporperiodo/{fechaIni}/{fechaFin}", method = RequestMethod.GET)
-	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable("fechaIni") String fechaIni, @PathVariable("fechaFin") String fechaFin) {
+	@RequestMapping(value = "ventasporperiodo/{fechaIni}/{fechaFin}/{cliente}", method = RequestMethod.GET)
+	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable("fechaIni") String fechaIni, @PathVariable("fechaFin") String fechaFin, @PathVariable("cliente") long cliente) {
 		
 		LOG.info("trayendo todas las ventas para las fechas indicadas"); 
 		LOG.info("fechaIni:{}, fechaFin:{}", fechaIni, fechaFin); 
@@ -238,7 +238,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		
 		List<Venta> ventas;
 		
-		ventas = ventaService.getVentasPorPeriodo(fechaIni, fechaFin);
+		ventas = ventaService.getVentasPorPeriodo(fechaIni, fechaFin, cliente);
 	
 	    if (ventas == null || ventas.isEmpty()){
 	        LOG.info("no se encontraron ventas para las fechas indicadas");

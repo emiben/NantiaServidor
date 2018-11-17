@@ -12,5 +12,6 @@ public interface IFabricaService {
 	Fabrica updateFabrica(Fabrica fabrica);
 	void deleteFabrica(long fabricaId);
 	boolean existe(Fabrica fabrica);
+	List<Object> getEnvasesEnPrestamo(long cliente);
 
 }

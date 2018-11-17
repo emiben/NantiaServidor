@@ -2,6 +2,7 @@ package com.nantia.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nantia.model.Cliente;
 import com.nantia.model.DataCliente;
+import com.nantia.model.DataEnvasesEnPrestamo;
 import com.nantia.model.DiaSemana;
 import com.nantia.model.EnvasesEnPrestamo;
+import com.nantia.model.Venta;
 import com.nantia.service.IClienteService;
 
 @CrossOrigin(origins = "*")
@@ -100,5 +103,52 @@ public class DataClienteController {
         return new ResponseEntity<List<Cliente>>(clientes, HttpStatus.OK);		
 	}
 
+	@RequestMapping(value = "cuentasacobrar/{cliente}", method = RequestMethod.GET)
+	public ResponseEntity<List<Cliente>> getCuentasACobrar(@PathVariable("cliente") long cliente) {
+		
+		LOG.info("trayendo todas los clientes con saldo"); 
+		
+		List<Cliente> listCliente;
+		
+		listCliente = clienteService.getCuentasACobrar(cliente);
 	
+	    if (listCliente == null || listCliente.isEmpty()){
+	        LOG.info("no se encontraron clientes con saldo");
+	        return new ResponseEntity<List<Cliente>>(HttpStatus.NO_CONTENT);
+	    }
+	
+	    return new ResponseEntity<List<Cliente>>(listCliente, HttpStatus.OK);		
+	}
+	
+	@RequestMapping(value = "envasesenprestamo/{cliente}", method = RequestMethod.GET)
+	public ResponseEntity<List<DataEnvasesEnPrestamo>> getEnvasesEnPrestamo(@PathVariable("cliente") long cliente) {
+		
+		LOG.info("trayendo todas los envases en prestamo"); 
+		
+		List<Object> listObject;
+		listObject = clienteService.getEnvasesEnPrestamo(cliente);
+		
+		List<DataEnvasesEnPrestamo> listEnvases = new ArrayList<>();		
+	
+	    if (listObject == null || listObject.isEmpty()){
+	        LOG.info("no se encontraron envases en prestamo");
+	        return new ResponseEntity<List<DataEnvasesEnPrestamo>>(HttpStatus.NO_CONTENT);
+	    }
+	    else {
+	    	
+	    	Iterator<Object> iteEnvases = listObject.iterator();
+		    while(iteEnvases.hasNext()) {
+		    	
+		    	Object[] result= (Object[]) iteEnvases.next();
+		    	DataEnvasesEnPrestamo envaseEnPrestamo = new DataEnvasesEnPrestamo();
+		    	envaseEnPrestamo.setNombre1(result[0].toString());
+		    	envaseEnPrestamo.setNombre2(result[1].toString());
+		    	envaseEnPrestamo.setDescripcion(result[2].toString());
+		    	envaseEnPrestamo.setCantidad(Integer.parseInt(result[3].toString()));
+		    	listEnvases.add(envaseEnPrestamo);
+		    }	
+	    }
+	
+	    return new ResponseEntity<List<DataEnvasesEnPrestamo>>(listEnvases, HttpStatus.OK);		
+	}
 }

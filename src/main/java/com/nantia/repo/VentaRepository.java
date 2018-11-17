@@ -17,9 +17,12 @@ public interface VentaRepository extends CrudRepository<Venta, Long>{
 	Venta findById(long id);
 	
 	//@Query(value = "SELECT ve.* FROM venta ve where ve.fecha > :fechaIni AND ve.fecha < :fechaFin", nativeQuery = true)
+	@Query(value = "SELECT ve.* FROM venta ve where (ve.fecha BETWEEN to_timestamp(:fechaIni, 'yyyy-MM-dd')\r\n" + 
+			"AND to_timestamp(:fechaFin, 'yyyy-MM-dd')) AND ve.cliente_id = :cliente ", nativeQuery = true)
+    List<Venta> getVentasPorPeriodoYCliente(@Param("fechaIni") String fechaIni, @Param("fechaFin") String fechaFin, @Param("cliente") long cliente);
+	
 	@Query(value = "SELECT ve.* FROM venta ve where ve.fecha BETWEEN to_timestamp(:fechaIni, 'yyyy-MM-dd')\r\n" + 
 			"AND to_timestamp(:fechaFin, 'yyyy-MM-dd')", nativeQuery = true)
-
     List<Venta> getVentasPorPeriodo(@Param("fechaIni") String fechaIni, @Param("fechaFin") String fechaFin);
 
 }

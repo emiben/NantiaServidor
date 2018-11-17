@@ -60,4 +60,21 @@ public class FabricaService implements IFabricaService {
 		return findByNombre(fabrica.getNombre()) != null;
 	}
 
+	@Override
+	public List<Object> getEnvasesEnPrestamo(long cliente) {
+		
+List<Object> list = new ArrayList<>();			
+		
+		if(cliente == 0)
+		{
+			fabricaRepository.getEnvasesEnPrestamo().forEach(e -> list.add(e));
+		}
+		else 
+		{
+			fabricaRepository.getEnvasesEnPrestamoYCliente(cliente).forEach(e -> list.add(e));
+		}
+						
+		return list;
+	}
+
 }

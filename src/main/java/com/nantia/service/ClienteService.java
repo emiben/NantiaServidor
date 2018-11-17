@@ -2,6 +2,8 @@ package com.nantia.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -11,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nantia.controller.EnvasesEnPrestamoControler;
 import com.nantia.model.Cliente;
+import com.nantia.model.DataEnvasesEnPrestamo;
 import com.nantia.model.DiaSemana;
+import com.nantia.model.EnvasesEnPrestamo;
 import com.nantia.model.Vehiculo;
+import com.nantia.model.Venta;
 import com.nantia.repo.ClienteRepository;
 
 @Service
@@ -68,6 +73,40 @@ public class ClienteService implements IClienteService{
 	public List<Cliente> getAllClientesPorDia(String fecha) {
 		List<Cliente> list = new ArrayList<>();	
 		clienteRepository.getAllClientesPorDia(fecha).forEach(e -> list.add(e));
+		return list;
+	}
+	
+	@Override
+	public	List<Cliente> getCuentasACobrar(long cliente){
+		
+		List<Cliente> list = new ArrayList<>();	
+		
+		if(cliente == 0)
+		{
+			clienteRepository.getCuentasACobrar().forEach(e -> list.add(e));
+		}
+		else 
+		{
+			clienteRepository.getCuentasACobrarYCliente(cliente).forEach(e -> list.add(e));
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<Object> getEnvasesEnPrestamo(long cliente) {
+		
+		List<Object> list = new ArrayList<>();			
+		
+		if(cliente == 0)
+		{
+			clienteRepository.getEnvasesEnPrestamo().forEach(e -> list.add(e));
+		}
+		else 
+		{
+			clienteRepository.getEnvasesEnPrestamoYCliente(cliente).forEach(e -> list.add(e));
+		}
+						
 		return list;
 	}
 

@@ -433,9 +433,6 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		
 		Reparto reparto = repartoService.getRepartoById(id);
 		
-		//Ruta rutaUpd = reparto.getRuta();  
-		//rutaUpd.getSetRutaCliente().clear();
-		
 		Ruta ruta = reparto.getRuta();
 		
 		Set<RutaCliente> setRutaCliente =  ruta.getSetRutaCliente();						

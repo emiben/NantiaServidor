@@ -56,9 +56,18 @@ public class VentaService implements IVentaService {
 	}
 
 	@Override
-	public List<Venta> getVentasPorPeriodo(String fechaIni, String fechaFin) {
+	public List<Venta> getVentasPorPeriodo(String fechaIni, String fechaFin, long cliente) {
 		List<Venta> list = new ArrayList<>();	
-		ventaRepository.getVentasPorPeriodo(fechaIni, fechaFin).forEach(e -> list.add(e));
+		
+		if(cliente == 0)
+		{
+			ventaRepository.getVentasPorPeriodo(fechaIni, fechaFin).forEach(e -> list.add(e));
+		}
+		else 
+		{
+			ventaRepository.getVentasPorPeriodoYCliente(fechaIni, fechaFin, cliente).forEach(e -> list.add(e));
+		}
+		
 		return list;
 	}
 
