@@ -39,7 +39,7 @@ public class NantiaServidorApplication implements CommandLineRunner{
         if (usuarios == null || usuarios.isEmpty()){
         	
         	Rol rolAdm = new Rol();        	
-        	rolAdm.setNombreRol("Administarador");
+        	rolAdm.setNombreRol("Administrador");
         	
         	if (!rolService.existe(rolAdm)){
         		Rol newRolAdm = rolService.addRol(rolAdm);                              
