@@ -1,5 +1,7 @@
 package com.nantia.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nantia.model.Cliente;
+import com.nantia.model.DataEnvasesEnPrestamo;
 import com.nantia.model.DataPago;
 import com.nantia.model.DataVenta;
 import com.nantia.model.EnvaseStock;
@@ -105,8 +108,6 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
         if(dataVenta.getFabricaid() != null)
         {
         	Fabrica fabricaUpd = fabricaService.getFabricaById(dataVenta.getFabricaid());
-    		
-        	//venta.setFabrica(fabricaService.getFabricaById(dataVenta.getFabricaid()));
         	Fabrica fabricaNew = actualizarStockFabricaPorVenta(venta.getSetProductoVenta(), fabricaUpd, -1); 
         	venta.setFabrica(fabricaUpd);
         }
@@ -123,7 +124,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 			Pago pago = new Pago();
 			
 			Cliente cliente = clienteService.getClienteById(datapago.getClienteid());
-			cliente.setSaldo(cliente.getSaldo() - datapago.getDifSaldo());
+			cliente.setSaldo(cliente.getSaldo() + datapago.getDifSaldo());
 			Cliente clienteUpd = clienteService.updateCliente(cliente);
 						
 			pago.setCliente(cliente);
@@ -160,6 +161,10 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    	    
 	    Iterator<ProductoVenta> iteProVenta1 = setProductoVenta.iterator();
 	    
+	    Set<EnvaseStock> newSetEnvaseStock = new HashSet<EnvaseStock>();	    
+	    
+	    List<EnvaseStock> listEnvaseStock = new ArrayList<>();		
+	    
 	    while(iteProVenta1.hasNext() && !parar && result.substring(0, 2) == "OK") {
 	    	encontro = false;
 	    	parar = false;
@@ -171,6 +176,17 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 		    	while(iteProStkFab2.hasNext() && !parar && !encontro) {
 		    		ProductoStock productoStockFab = iteProStkFab2.next();
 		    		Producto productoFab = productoStockFab.getProducto();
+		    		
+		    		if(productoFab.isRetornable()) {
+		    			EnvaseStock es = new EnvaseStock();
+		    			es.setCantidad(productoventa.getCantidad());
+		    			es.setEnvasesTipos(productoFab.getEnvasesTipos());
+		    			es.setFecha(productoStockFab.getFecha());
+		    			listEnvaseStock.add(es);
+		    		}
+		    		
+		    		newSetEnvaseStock = actualizarEnvasesFabrica(listEnvaseStock, fabrica, 1);
+		    				    		
 		    		LOG.info("productoFab.getId: {}, idProductoStock:{}.",productoFab.getProductoId(), idProductoStock);
 			    	if(productoFab.getProductoId() == idProductoStock)
 			    	{
@@ -200,8 +216,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    		}	    		
 	    }		
 	    
-
-	    Set<ProductoStock> setProductoStock =  stockFabrica.getSetProductoStock();						
+	    	    
+	    Set<ProductoStock> setProductoStock = stockFabrica.getSetProductoStock();						
 		Iterator<ProductoStock> iteProStk = stockFabrica.getSetProductoStock().iterator();
 	    while(iteProStk.hasNext()) {
 	    	ProductoStock productoStock = iteProStk.next();
@@ -209,15 +225,17 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    	setProductoStock.add(productoStock);
 	    }		
 	    stockFabrica.setSetProductoStock(setProductoStock); 
+	    
 		//************************************************
-		Set<EnvaseStock> setEnvaseStock =  stockFabrica.getSetEnvaseStock();						
-		Iterator<EnvaseStock> iteEnvStk = stockFabrica.getSetEnvaseStock().iterator();
+		//Set<EnvaseStock> setEnvaseStock = newSetEnvaseStock;// stockFabrica.getSetEnvaseStock();						
+		Iterator<EnvaseStock> iteEnvStk = newSetEnvaseStock.iterator();// stockFabrica.getSetEnvaseStock().iterator();
 	    while(iteEnvStk.hasNext()) {
 	    	EnvaseStock envaseStock = iteEnvStk.next();
 	    	envaseStock.setStock(stockFabrica);
-	    	setEnvaseStock.add(envaseStock);	    	
+	    	newSetEnvaseStock.add(envaseStock);	    	
 	    }			      
-	    stockFabrica.setSetEnvaseStock(setEnvaseStock);
+	    stockFabrica.setSetEnvaseStock(newSetEnvaseStock);
+	    
 	    //******************************
 	    
 	    Stock newStock = stockService.updateStock(stockFabrica); 
@@ -226,6 +244,50 @@ private final Logger LOG = LoggerFactory.getLogger(DataVentaController.class);
 	    
 		return fabrica;
 	}
+
+	private Set<EnvaseStock> actualizarEnvasesFabrica(List<EnvaseStock> listEnvaseStock, Fabrica fabrica, int coeficiente) {
+		
+		boolean parar = false;
+		boolean encontro = false;
+		
+		Stock stockFabrica = fabrica.getStock();
+		
+		Set<EnvaseStock> setEnvaseStock = new HashSet<EnvaseStock>(listEnvaseStock);
+		
+		Set<EnvaseStock> setEnvaseStockFabrica = stockFabrica.getSetEnvaseStock();		
+		Set<EnvaseStock> setEnvaseStockReparto = setEnvaseStock;//stock.getSetEnvaseStock();
+										
+		Iterator<EnvaseStock> iteEnvStkRep = setEnvaseStockReparto.iterator();
+		Iterator<EnvaseStock> iteEnvStkFab = null;
+		Long idEnvaseStock;
+		
+	    while(iteEnvStkRep.hasNext() && !parar) {
+	    	
+	    	encontro = false;
+	    	parar = false;
+	    	EnvaseStock envaseStockRep = iteEnvStkRep.next();
+	    	EnvasesTipos envasesTiposRep = envaseStockRep.getEnvasesTipos();
+	    	
+	    	idEnvaseStock = envasesTiposRep.getId();	    	
+	    	
+    		iteEnvStkFab = setEnvaseStockFabrica.iterator();
+	    	while(iteEnvStkFab.hasNext() && !parar && !encontro) {
+		    	EnvaseStock envaseStockFab = iteEnvStkFab.next();
+		    	EnvasesTipos envasesTiposFab = envaseStockFab.getEnvasesTipos();
+		    	if(envasesTiposFab.getId() == idEnvaseStock)
+		    	{
+		    		encontro = true;			    		
+	    			envaseStockFab.setCantidad(envaseStockFab.getCantidad() + (envaseStockRep.getCantidad() * coeficiente));
+	    			envaseStockFab.setStock(stockFabrica);
+	    			setEnvaseStockFabrica.add(envaseStockFab);		    			    		
+		    	}		    	
+	    	}
+	    }		
+	 
+	    return setEnvaseStockFabrica;
+		
+	}
+	
 
 	@RequestMapping(value = "ventasporperiodo/{fechaIni}/{fechaFin}/{cliente}", method = RequestMethod.GET)
 	public ResponseEntity<List<Venta>> getVentasPorPeriodo(@PathVariable("fechaIni") String fechaIni, @PathVariable("fechaFin") String fechaFin, @PathVariable("cliente") long cliente) {

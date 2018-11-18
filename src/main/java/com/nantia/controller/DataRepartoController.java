@@ -432,6 +432,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	public ResponseEntity<Reparto> updateEstadoReparto(@PathVariable Long id, @PathVariable String estado){
 		
 		Reparto reparto = repartoService.getRepartoById(id);
+		Fabrica fabrica = reparto.getFabrica();
+		Stock stock = reparto.getStock();
 		
 		Ruta ruta = reparto.getRuta();
 		
@@ -450,7 +452,13 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		   case "BORRADOR" : reparto.setEstado(EstadoReparto.BORRADOR);  break;
 		   case "CREADO" : reparto.setEstado(EstadoReparto.CREADO); break; 
 		   case "INICIADO" : reparto.setEstado(EstadoReparto.INICIADO); break;
-		   case "FINALIZADO" : reparto.setEstado(EstadoReparto.FINALIZADO); break;
+		   case "FINALIZADO" : reparto.setEstado(EstadoReparto.FINALIZADO); 
+							   Fabrica fabricaAct = actualizarStockFabrica(stock, fabrica, 1);
+							   reparto.setStock(null);
+							   Reparto repartoNew = repartoService.updateReparto(reparto); 
+							   stockService.deleteStock(stock.getId());
+							   //Stock stockTmp = actualizarStockReparto(stock, reparto, -1);
+							   break;
 		   default : reparto.setEstado(null); break;
 		   
 	    }

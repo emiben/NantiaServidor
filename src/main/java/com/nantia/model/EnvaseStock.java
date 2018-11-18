@@ -41,7 +41,7 @@ public class EnvaseStock implements Serializable {
 	@JoinColumn(name = "envasetipos_id")//@MapsId	
 	private EnvasesTipos envasesTipos;
 	
-	protected EnvaseStock() {
+	public EnvaseStock() {
 	}
 	
 	public EnvaseStock(Stock stock, float cantidad, Date fecha, EnvasesTipos envasesTipos) {
