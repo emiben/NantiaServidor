@@ -163,8 +163,8 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    //Ruta ruta2 = rutaService.updateRuta(rutaUpd);
 	    repartoUpd.setRuta(rutaUpd); 
 	    
-		repartoUpd = repartoService.updateReparto(repartoUpd);
-        return new ResponseEntity<Reparto>(repartoUpd, HttpStatus.OK);
+		Reparto newReparto = repartoService.updateReparto(repartoUpd);
+        return new ResponseEntity<Reparto>(newReparto, HttpStatus.OK);
        
 	}
 	
@@ -363,7 +363,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 			    		}
 			    		else 
 			    		{
-			    			result = String.format("No hay suficientes envases en fabrica: [envase=%s], Hay %d y necesita %d", envaseStockFab.getEnvasesTipos().getDescripcion(), envaseStockFab.getCantidad(), envaseStockRep.getCantidad());
+			    			result = String.format("No hay suficientes envases en fabrica: [envase=%s]", envaseStockFab.getEnvasesTipos().getDescripcion());
 				    		parar = true;			    		
 			    		}		    		
 			    	}		    	
@@ -412,7 +412,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 			    		}
 			    		else 
 			    		{
-			    			result = String.format("No hay suficientes productos en fabrica: [envase=%s], Hay %d y necesita %d", productoStockFab.getProducto().getNombre(), productoStockFab.getCantidad(), productoStockRep.getCantidad());
+			    			result = String.format("No hay suficientes productos en fabrica: [envase=%s]", productoStockFab.getProducto().getNombre());
 				    		parar = true;			    		
 			    		}		    		
 			    	}		    	
