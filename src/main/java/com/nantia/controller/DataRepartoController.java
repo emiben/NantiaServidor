@@ -52,6 +52,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	@Autowired
 	IRutaService rutaService;
 	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<DataReparto>> getAllDataReparto() {
 		LOG.info("trayendo todos los DataReparto");
@@ -133,6 +134,11 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 		
 		Reparto repartoUpd = repartoService.updateReparto(repartoOld);
 		
+		repartoUpd.setFecha(dataReparto.getFecha());
+		repartoUpd.setEstado(dataReparto.getEstado());
+		repartoUpd.setDescripcion(dataReparto.getDescripcion());
+		
+		
 		Fabrica fabricaAct = actualizarStockFabrica(stockNew, fabrica, -1);
 		Stock stockAct = actualizarStockReparto(stockNew, repartoOld, 1);
 		repartoUpd.setFabrica(fabricaAct);
@@ -154,6 +160,7 @@ private final Logger LOG = LoggerFactory.getLogger(DataRepartoController.class);
 	    }			      
 	    rutaUpd.setSetRutaCliente(setRutaCliente);
 	    //**********************
+	    //Ruta ruta2 = rutaService.updateRuta(rutaUpd);
 	    repartoUpd.setRuta(rutaUpd); 
 	    
 		repartoUpd = repartoService.updateReparto(repartoUpd);
