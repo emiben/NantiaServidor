@@ -94,9 +94,9 @@ public class ClienteService implements IClienteService{
 	}
 
 	@Override
-	public List<Object> getEnvasesEnPrestamo(long cliente) {
+	public List<Cliente> getEnvasesEnPrestamo(long cliente) {
 		
-		List<Object> list = new ArrayList<>();			
+		List<Cliente> list = new ArrayList<>();			
 		
 		if(cliente == 0)
 		{

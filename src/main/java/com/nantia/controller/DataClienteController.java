@@ -121,13 +121,17 @@ public class DataClienteController {
 	}
 	
 	@RequestMapping(value = "envasesenprestamo/{cliente}", method = RequestMethod.GET)
-	public ResponseEntity<List<DataEnvasesEnPrestamo>> getEnvasesEnPrestamo(@PathVariable("cliente") long cliente) {
+	public ResponseEntity<List<Cliente>> getEnvasesEnPrestamo(@PathVariable("cliente") long cliente) {
 		
 		LOG.info("trayendo todas los envases en prestamo"); 
 		
-		List<Object> listObject;
-		listObject = clienteService.getEnvasesEnPrestamo(cliente);
+		List<Cliente> listObject = clienteService.getEnvasesEnPrestamo(cliente);
 		
+		if (listObject == null || listObject.isEmpty()){
+	        LOG.info("no se encontraron envases en prestamo");
+	        return new ResponseEntity<List<Cliente>>(HttpStatus.NO_CONTENT);
+	    }
+		/*
 		List<DataEnvasesEnPrestamo> listEnvases = new ArrayList<>();		
 	
 	    if (listObject == null || listObject.isEmpty()){
@@ -148,7 +152,7 @@ public class DataClienteController {
 		    	listEnvases.add(envaseEnPrestamo);
 		    }	
 	    }
-	
-	    return new ResponseEntity<List<DataEnvasesEnPrestamo>>(listEnvases, HttpStatus.OK);		
+	    */
+	    return new ResponseEntity<List<Cliente>>(listObject, HttpStatus.OK);		
 	}
 }

@@ -18,5 +18,5 @@ public interface IClienteService {
 	boolean existe(Cliente cliente);
 	List<Cliente> getAllClientesPorDia(String fecha);
 	List<Cliente> getCuentasACobrar(long cliente);
-	List<Object> getEnvasesEnPrestamo(long cliente);
+	List<Cliente> getEnvasesEnPrestamo(long cliente);
 }

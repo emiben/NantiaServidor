@@ -23,7 +23,7 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 	
 	@Query(value = "SELECT cl.* FROM clientes cl WHERE saldo <> 0", nativeQuery = true)
     List<Cliente> getCuentasACobrar();
-	
+	/*
 	@Query(value = "SELECT envasesenprestamo.* FROM (SELECT cl.nombre1 AS nombre1, cl.nombre2 AS nombre2, et.descripcion AS descripcion, ep.cantidad AS cantidad \r\n" + 
 					"FROM clientes cl INNER JOIN envasesenprestamo ep ON cl.id = ep.clientes_id \r\n" + 
 					"                 INNER JOIN envasetipos et ON ep.envases_id = et.envases_id) AS envasesenprestamo\r\n" + 
@@ -35,6 +35,15 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 					"FROM clientes cl INNER JOIN envasesenprestamo ep ON cl.id = ep.clientes_id \r\n" + 
 					"                 INNER JOIN envasetipos et ON ep.envases_id = et.envases_id \r\n" + 
 					"WHERE cl.id = :cliente ORDER BY nombre1, nombre2", nativeQuery = true)
-	List<Object> getEnvasesEnPrestamoYCliente(@Param("cliente") long cliente);	
+	List<Object> getEnvasesEnPrestamoYCliente(@Param("cliente") long cliente);
+	*/
 	
+	@Query(value = "SELECT cl.* FROM public.clientes cl WHERE id in (SELECT ep.clientes_id FROM public.envasesenprestamo ep)\r\n" + 
+			" order by cl.nombre1", nativeQuery = true)
+	List<Cliente> getEnvasesEnPrestamo();
+		
+	@Query(value = "SELECT cl.* FROM public.clientes cl WHERE id in (SELECT ep.clientes_id FROM public.envasesenprestamo ep)\r\n" + 
+			       "AND cl.id = :cliente order by cl.nombre1", nativeQuery = true)
+	List<Cliente> getEnvasesEnPrestamoYCliente(@Param("cliente") long cliente);	
+			
 }
